@@ -1,0 +1,6 @@
+@import '../../shared/scss/vars';
+
+.container {
+    @include container;
+    height: calc(100vh - 50px);
+}

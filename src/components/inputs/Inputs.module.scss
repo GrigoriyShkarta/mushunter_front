@@ -1,0 +1,39 @@
+@import '../../shared/scss/vars';
+
+.wrapper {
+    height: 65px;
+}
+
+.label {
+    color: $grayText;
+    font-weight: 100;
+    margin-bottom: 8px;
+}
+
+.error {
+    color: red;
+    border-color: red;
+}
+
+.icon {
+    position: absolute;
+    right: 20px;
+    top: 6px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+    margin-top: 6px;
+    border: 1px solid $grayText;
+    border-radius: 9px;
+    padding: 10px;
+    position: relative;
+
+    &:hover {
+        border: 2px solid black;
+    }
+}

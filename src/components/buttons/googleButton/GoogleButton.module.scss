@@ -1,0 +1,10 @@
+@import '../../../shared/scss/vars';
+
+.button {
+    @include largeButton;
+    background-color: $googleBlack;
+
+    &:hover {
+        background-color: $googleBlackHover;
+    }
+}

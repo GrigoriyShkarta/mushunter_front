@@ -1,0 +1,37 @@
+@import '../../../shared/scss/vars';
+
+.form, .description {
+    width: 50%;
+    background-color: white;
+}
+
+.description {
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image {
+    height: 100%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.returnToSignIn {
+    padding: 16px 0;
+
+    &_link {
+        color: $orange;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}

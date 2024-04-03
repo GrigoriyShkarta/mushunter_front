@@ -1,0 +1,137 @@
+@import '../../../../shared/scss/vars';
+
+.form {
+    width: 75%;
+    margin-top: 20px;
+
+    &__title {
+        color: $orange;
+        font-weight: 100;
+        font-size: 50px;
+        text-align: center;
+        padding: 16px 0;
+    }
+
+    &__text {
+        color: $grayText;
+        font-size: 14px;
+        margin: 15px 0;
+    }
+
+    &__span {
+        color: $orange;
+        font-weight: bold;
+        margin-bottom: 5px;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}
+
+.input {
+    border: none;
+    outline: none;
+    height: 20px;
+    width: 90%;
+    background-color: inherit;
+    font-size: 16px;
+}
+
+.errorField {
+    height: 20px;
+    margin: 5px 0;
+
+    .errorText {
+        font-size: 12px;
+        color: red;
+    }
+}
+
+.errorResponseField {
+    height: 20px;
+    margin: 5px 0;
+    text-align: center;
+
+    .errorText {
+        font-size: 14px;
+        color: red;
+    }
+}
+
+.forgotPassword {
+    color: $orange;
+    cursor: pointer;
+    font-weight: 600;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.namesWrapper {
+    display: flex;
+    justify-content: space-between;
+
+    .name {
+        width: 45%
+    }
+}
+
+.button {
+    @include largeButton;
+    background-color: $orange;
+    color: white;
+    margin: 15px auto 5px;
+
+    &:hover {
+        background-color: $hoverOrange;
+    }
+
+    &:disabled, button[disabled] {
+        background-color: $orange;
+        cursor: auto;
+    }
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 15px 0;
+
+    &::before {
+        height: 1px;
+        width: auto;
+        background-color: $opacityGray;
+        --tw-content: '';
+        content: var(--tw-content);
+        flex-grow: 1;
+    }
+
+    &::after {
+        height: 1px;
+        width: auto;
+        background-color: $opacityGray;
+        --tw-content: '';
+        content: var(--tw-content);
+        flex-grow: 1;
+    }
+
+    &__text {
+        padding: 0 16px;
+    }
+}
+
+.joinButton {
+    @include largeButton;
+    border: 1px solid black;
+    color: $opacityBlackText;
+    background-color: white;
+
+    &:hover {
+        color: black;
+        background-color: rgb(230, 229, 229);
+    }
+}

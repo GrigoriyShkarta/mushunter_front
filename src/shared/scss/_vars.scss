@@ -1,0 +1,25 @@
+$orange: #ed6b15;
+$hoverOrange: #c9570b;
+$grayText: #635f5f;
+$googleBlack: #383838;
+$googleBlackHover: #272626;
+$opacityGray: rgb(0 0 0 / .35);
+$opacityBlackText: rgba(0, 0, 0, 0.75);
+
+@mixin largeButton {
+    width: 100%;
+    height: 45px;
+    color: white;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin container {
+    width: 1128px;
+    margin: 0 auto;
+    display: flex;
+}
