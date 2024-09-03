@@ -1,10 +1,13 @@
 $orange: #ed6b15;
 $hoverOrange: #c9570b;
-$grayText: #635f5f;
+$gray: #9DA6AA;
 $googleBlack: #383838;
 $googleBlackHover: #272626;
 $opacityGray: rgb(0 0 0 / .35);
 $opacityBlackText: rgba(0, 0, 0, 0.75);
+$errorText: #ff0606;
+
+$easyTransition: border 0.3s ease, background-color 0.3s ease;
 
 @mixin largeButton {
     width: 100%;
@@ -22,4 +25,9 @@ $opacityBlackText: rgba(0, 0, 0, 0.75);
     width: 1128px;
     margin: 0 auto;
     display: flex;
+}
+
+@mixin heightContainer {
+    height: calc(100vh - 50px);
+    min-height: 788px;
 }

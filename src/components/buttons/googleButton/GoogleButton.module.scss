@@ -3,6 +3,9 @@
 .button {
     @include largeButton;
     background-color: $googleBlack;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
     &:hover {
         background-color: $googleBlackHover;

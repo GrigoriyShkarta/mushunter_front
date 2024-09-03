@@ -1,17 +1,21 @@
-import { Dispatch, FC, SetStateAction } from 'react';
-import { Forms } from '../Form';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import TextInput from '../../../../components/inputs/TextInput';
 import PasswordInput from '../../../../components/inputs/PasswordInput';
 import Button from '../../../../components/buttons/Button';
 import GoogleButton from '../../../../components/buttons/googleButton';
-import api from '../../../../services/api';
-import { AxiosResponse } from 'axios';
 import s from './Forms.module.scss';
+import { useTranslation } from 'react-i18next';
+import { AuthForms, Field } from '../../../../shared/constants';
+import { RegisterSchema } from '../../../../shared/validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { sendSignInLinkToEmail } from 'firebase/auth';
+import { auth } from '../../../../firebase.ts';
+import useToast from '../../../../shared/hooks/useToast.ts';
 
 interface IRegistrationData {
-	firstName: string;
-	lastName: string;
+	firstname: string;
+	lastname: string;
 	email: string;
 	password: string;
 	confirmPassword: string;
@@ -19,144 +23,106 @@ interface IRegistrationData {
 }
 
 interface IRegistrationProps {
-	setCurrentForm: Dispatch<SetStateAction<Forms>>;
+	setCurrentForm: Dispatch<SetStateAction<AuthForms>>;
 }
 
 const Registration: FC<IRegistrationProps> = ({ setCurrentForm }) => {
+	const { t } = useTranslation();
+	const { notifySuccess, notifyError } = useToast();
+	const [loading, setLoading] = useState(false);
+
 	const {
 		register,
 		handleSubmit,
 		setError,
 		formState: { errors },
-	} = useForm<IRegistrationData>();
+	} = useForm<IRegistrationData>({
+		resolver: zodResolver(RegisterSchema),
+	});
 
 	const onSubmit: SubmitHandler<IRegistrationData> = async (data): Promise<void> => {
 		if (data.password !== data.confirmPassword) {
-			setError('confirmPassword', {
+			setError(Field.CONFIRM_PASSWORD, {
 				type: 'custom',
-				message: 'passwords must be match',
+				message: t('beMatch'),
 			});
 		} else {
+			const actionCodeSettings = {
+				url: 'http://localhost:5173/',
+				handleCodeInApp: true,
+			};
 			try {
-				const formData = {
-					firstname: data.firstName,
-					lastname: data.lastName,
-					email: data.email,
-					password: data.password,
-				}
-				const res: AxiosResponse = await api.auth.sendMailBeforeRegister(formData)
-				localStorage.setItem('temp_token', res.data);
-				localStorage.setItem('temp_user', JSON.stringify(formData));
-				setCurrentForm(Forms.ConfirmRegistration);
+				setLoading(true);
+				await sendSignInLinkToEmail(auth, data.email, actionCodeSettings);
+				const tempUser = {
+					[Field.NAME]: data.firstname,
+					[Field.LAST_NAME]: data.lastname,
+					[Field.EMAIL]: data.email,
+					[Field.PASSWORD]: data.password,
+				};
+				window.localStorage.setItem('temp_user', JSON.stringify(tempUser));
+				notifySuccess(t('response.success.sendVerifyEmail'));
+				setCurrentForm(AuthForms.ConfirmRegistration);
 			} catch (e) {
-				console.error(e)
-				if (e.response.status === 400) {
-					setError('responseError', {
-						type: 'custom',
-						message: e.response.data.message,
-					});
-				} else {
-					setError('responseError', {
-						type: 'custom',
-						message: 'something went wrong, please refresh the page or try again later',
-					});
-				}
-
+				console.error(e);
+				notifyError(t('response.error.registerError') + e.message);
+			} finally {
+				setLoading(false);
 			}
 		}
 	};
 
 	return (
 		<>
-			<h1 className={s.form__title}>Welcome to your musician community!</h1>
+			<h1 className={s.form__title}>{t('home.welcome')}</h1>
 			<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 				<div className={s.namesWrapper}>
 					<div className={s.name}>
 						<TextInput
-							register={register('firstName', {
-								required: 'field firstName must be required!',
-							})}
+							register={register(Field.NAME)}
 							className={s.input}
-							name={'firstName'}
-							error={errors.firstName?.message}
+							name={Field.NAME}
+							error={errors.firstname?.message}
 						/>
-						<div className={s.errorField}>
-							{errors.email?.message && <span className={s.errorText}>{errors.email.message}</span>}
-						</div>
 					</div>
 					<div className={s.name}>
 						<TextInput
-							register={register('lastName', {
-								required: 'field lastName must be required!',
-							})}
+							register={register(Field.LAST_NAME)}
 							className={s.input}
-							name={'lastName'}
-							error={errors.lastName?.message}
+							name={Field.LAST_NAME}
+							error={errors.lastname?.message}
 						/>
-						<div className={s.errorField}>
-							{errors.email?.message && <span className={s.errorText}>{errors.email.message}</span>}
-						</div>
 					</div>
 				</div>
 				<TextInput
-					register={register('email', {
-						required: 'field email must be required!',
-						pattern: {
-							value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-							message: 'enter correct email',
-						},
-					})}
+					register={register(Field.EMAIL)}
 					className={s.input}
-					name={'email'}
+					name={Field.EMAIL}
 					error={errors.email?.message}
 				/>
-				<div className={s.errorField}>
-					{errors.email?.message && <span className={s.errorText}>{errors.email.message}</span>}
-				</div>
 				<PasswordInput
-					register={register('password', {
-						required: 'field password must be required!',
-						min: {
-							value: 8,
-							message: 'the password must contain at least 8 characters',
-						},
-						pattern: {
-							value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-							message: 'the password must contain latin letters and numbers',
-						},
-					})}
+					register={register(Field.PASSWORD)}
 					className={s.input}
-					name={'password'}
+					name={Field.PASSWORD}
 					error={errors.password?.message}
 				/>
-				<div className={s.errorField}>
-					{errors.password?.message && (
-						<span className={s.errorText}>{errors.password.message}</span>
-					)}
-				</div>
 				<PasswordInput
-					register={register('confirmPassword', {
-						required: 'field password must be required!',
-					})}
+					register={register(Field.CONFIRM_PASSWORD)}
 					className={s.input}
-					name={'confirm password'}
+					name={Field.CONFIRM_PASSWORD}
 					error={errors.confirmPassword?.message}
 				/>
-				<div className={s.errorField}>
-					{errors.confirmPassword?.message && (
-						<span className={s.errorText}>{errors.confirmPassword.message}</span>
-					)}
-				</div>
-				{errors.responseError &&
+				{errors.responseError && (
 					<div className={s.errorField}>
 						<span className={s.errorText}>{errors.responseError.message}</span>
 					</div>
-				}
+				)}
 				<Button
 					type="submit"
-					value={'Send'}
+					value={t('general.send')}
 					className={s.button}
 					disabled={Object.keys(errors).length > 0 && !errors.responseError}
+					loading={loading}
 				/>
 				<GoogleButton />
 			</form>

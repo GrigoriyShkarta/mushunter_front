@@ -1,125 +1,88 @@
-import { FC, Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import TextInput from '../../../../components/inputs/TextInput';
 import PasswordInput from '../../../../components/inputs/PasswordInput';
 import Button from '../../../../components/buttons/Button';
 import GoogleButton from '../../../../components/buttons/googleButton';
 
-import { Forms } from '../Form';
-
 import s from './Forms.module.scss';
-import { useAppDispatch, useAppSelector } from '../../../../shared/hooks/redux.ts';
-import { login } from '../../../../store/reducers/user/actionCreators.ts';
-import { Statuses } from '../../../../shared/constants';
-import Loader from '../../../../components/loader';
-
-
-interface ISignInData {
-	email: string;
-	password: string;
-	responseError?: string;
-}
+import { AuthForms, Field, Statuses } from '../../../../shared/constants';
+import { useTranslation } from 'react-i18next';
+import { AiOutlineMail } from 'react-icons/ai';
+import { SignInSchema } from '../../../../shared/validation';
+import { useUserStore } from '../../../user/store';
+import { LoginSchemaType } from '../../../../services/endpoints/auth/schema';
+import useToast from '../../../../shared/hooks/useToast.ts';
+import { useNavigate } from 'react-router-dom';
 
 interface ISignInProps {
-	setCurrentForm: Dispatch<SetStateAction<Forms>>;
+	setCurrentForm: Dispatch<SetStateAction<AuthForms>>;
 }
 
 const SignIn: FC<ISignInProps> = ({ setCurrentForm }) => {
-	const {status, error } = useAppSelector(state => state.userSlice);
+	const { login, error, status } = useUserStore();
+	const navigate = useNavigate();
+	const { notifyError } = useToast();
+	const { t } = useTranslation();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-		setError,
-	} = useForm<ISignInData>();
+	} = useForm<LoginSchemaType>({
+		resolver: zodResolver(SignInSchema),
+	});
 
 	useEffect(() => {
-		if (status === Statuses.ERROR) {
-			console.log('work');
-			setError("responseError", {
-				type: "manual",
-				message: error,
-			});
+		switch (status) {
+			case Statuses.LOADED:
+				navigate('/user');
+				break;
+			case Statuses.ERROR:
+				notifyError(error || 'error!');
 		}
 	}, [status]);
 
-	console.log('status', status === Statuses.LOADING);
-
-
-	const dispatch = useAppDispatch();
-
-	const onSubmit: SubmitHandler<ISignInData> = (data): void => {
-		dispatch(login(data));
+	const onSubmit: SubmitHandler<LoginSchemaType> = async (data): Promise<void> => {
+		try {
+			login(data);
+		} catch (e) {
+			notifyError(e);
+		}
 	};
 
 	return (
 		<>
-			<h1 className={s.form__title}>Welcome to your musician community!</h1>
+			<h1 className={s.form__title}>{t('home.welcome')}</h1>
 			<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 				<TextInput
-					register={register('email', {
-						required: 'field email must be required!',
-						pattern: {
-							value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-							message: 'enter correct email',
-						},
-					})}
-					className={s.input}
-					name={'email'}
+					register={register(Field.EMAIL)}
+					name={Field.EMAIL}
 					error={errors.email?.message}
+					icon={<AiOutlineMail />}
 				/>
-				<div className={s.errorField}>
-					{errors.email?.message && <span className={s.errorText}>{errors.email.message}</span>}
-				</div>
-				<PasswordInput
-					register={register('password', {
-						required: 'field password must be required!',
-						minLength: {
-							value: 8,
-							message: 'the password must contain at least 8 characters',
-						},
-						pattern: {
-							value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]+$/,
-							message: 'the password must contain latin letters and numbers',
-						},
-					})}
-					className={s.input}
-					name={'password'}
-					error={errors.password?.message}
-				/>
-				<div className={s.errorField}>
-					{errors.password?.message && (
-						<span className={s.errorText}>{errors.password.message}</span>
-					)}
-				</div>
-				<span
-					className={s.forgotPassword}
-					onClick={(): void => setCurrentForm(Forms.ForgotPassword)}
-				>
-					Forgot Password?
+				<PasswordInput register={register(Field.PASSWORD)} name={Field.PASSWORD} error={errors.password?.message} />
+				<span className={s.forgotPassword} onClick={(): void => setCurrentForm(AuthForms.ForgotPassword)}>
+					{t('home.forgotPassword')}
 				</span>
-				{errors.responseError?.message && (
-					<div className={s.errorResponseField}>
-						<span className={s.errorText} style={{textAlign: 'center'}}>{errors.responseError.message}</span>
-					</div>
-				)}
 				<Button
 					type="submit"
-					value={status === Statuses.LOADING ? <Loader /> :'Sign In'}
+					value={t('home.signIn')}
 					className={s.button}
-					disabled={Object.keys(errors).length > 0 && !errors.responseError}
+					disabled={Object.keys(errors).length > 0}
+					loading={status === Statuses.LOADING}
 				/>
 				<GoogleButton />
 				<div className={s.divider}>
-					<span className={s.divider__text}>or</span>
+					<span className={s.divider__text}>{t('general.or')}</span>
 				</div>
 				<Button
 					type="button"
-					value={'Join Now!'}
+					value={t('home.joinNow')}
 					className={s.joinButton}
-					func={(): void => setCurrentForm(Forms.Registration)}
+					func={(): void => setCurrentForm(AuthForms.Registration)}
 				/>
 			</form>
 		</>

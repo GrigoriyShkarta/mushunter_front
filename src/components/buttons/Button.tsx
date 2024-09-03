@@ -1,4 +1,5 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { FC } from 'react';
+import Loader from '../loader';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -6,16 +7,15 @@ interface ISubmitButtonProps {
 	type: ButtonType;
 	value: string | JSX.Element;
 	className: string;
-	func?: Dispatch<SetStateAction<any>>;
+	func?: () => void;
 	disabled?: boolean;
+	loading?: boolean;
 }
 
-const Button: FC<ISubmitButtonProps> = ({ type, value, className, func, disabled }) => {
-	return (
-		<button type={type} className={className} disabled={disabled} onClick={func}>
-			{value}
-		</button>
-	);
-};
+const Button: FC<ISubmitButtonProps> = ({ type, value, className, func, disabled, loading }) => (
+	<button type={type} className={className} disabled={disabled} onClick={func}>
+		{loading ? <Loader /> : value}
+	</button>
+);
 
 export default Button;

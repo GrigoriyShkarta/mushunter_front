@@ -4,33 +4,34 @@ import SignIn from './forms/SignIn';
 import Registration from './forms/Registration';
 import ForgotPassword from './forms/ForgotPassword';
 import ConfirmRegistration from './forms/ConfirmRegistration';
-
-export enum Forms {
-	SignIn,
-	Registration,
-	ForgotPassword,
-	ConfirmRegistration,
-}
+import { useTranslation } from 'react-i18next';
+import { AuthForms } from '../../../shared/constants';
 
 const Form: FC = () => {
-	const [currentForm, setCurrentForm] = useState(Forms.SignIn);
+	const [currentForm, setCurrentForm] = useState(AuthForms.SignIn);
+	const { t } = useTranslation();
+
+	const getForm = (): JSX.Element => {
+		switch (currentForm) {
+			case AuthForms.SignIn:
+				return <SignIn setCurrentForm={setCurrentForm} />;
+			case AuthForms.Registration:
+				return <Registration setCurrentForm={setCurrentForm} />;
+			case AuthForms.ForgotPassword:
+				return <ForgotPassword />;
+			case AuthForms.ConfirmRegistration:
+				return <ConfirmRegistration />;
+		}
+	};
 
 	return (
 		<div className={s.form}>
-			<>
-				{currentForm === Forms.SignIn && <SignIn setCurrentForm={setCurrentForm} />}
-				{currentForm === Forms.Registration && <Registration setCurrentForm={setCurrentForm} />}
-				{currentForm === Forms.ForgotPassword && <ForgotPassword />}
-				{currentForm === Forms.ConfirmRegistration && <ConfirmRegistration />}
-			</>
-			{currentForm === Forms.Registration && (
+			{getForm()}
+			{currentForm === AuthForms.Registration && (
 				<p className={s.returnToSignIn}>
-					Already on MusHunter?{' '}
-					<span
-						className={s.returnToSignIn_link}
-						onClick={(): void => setCurrentForm(Forms.SignIn)}
-					>
-						Sign in
+					{t('home.alreadyOnMH')}
+					<span className={s.returnToSignIn_link} onClick={(): void => setCurrentForm(AuthForms.SignIn)}>
+						{t('home.signIn')}
 					</span>
 				</p>
 			)}

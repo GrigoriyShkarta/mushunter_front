@@ -1,0 +1,54 @@
+{
+    "home": {
+        "alreadyOnMH": "Already on MusHunter?",
+        "signIn": "Sign in",
+        "welcome": "Welcome to your musicians community!",
+        "forgotPassword": "Forgot Password?",
+        "join": "Join",
+        "joinNow": "Join Now!",
+        "checkEmail": "Check email for a verification code.",
+        "checkSpam": "If you don't see a code in your inbox, check your spam folder. If it's not there, the email address may not be confirmed, or it may not match an existing MusHunter account.",
+        "enterCode": "Enter code",
+        "enterEmail": "Enter your email",
+        "weSendCode": "We’ll send a verification code to this email if it matches an existing MusHunter account",
+        "retypeNewPassword": "Retype new password",
+        "chooseNewPassword": "Choose a new password",
+        "secureAccount": "To secure your account, choose a strong password you haven’t used before and is at least 8 characters long.",
+        "finishRegistration": "Check your email"
+    },
+    "validation": {
+        "invalidEmail": "Invalid email format",
+        "Required": "Field must be required!",
+        "correctEmail": "Email can only contain Latin letters, numbers, “.”, “-”, “_” and “@” signs.",
+        "minValue": "The field must contain at least 8 characters",
+        "onlyLatinSymbols": "The field must contain Latin letters",
+        "numbers": "The field must contain numbers",
+        "latinNumberSymbol": "Only Latin letters, numbers and special characters",
+        "noSpacesAllowed": "No Spaces Allowed",
+        "beMatch": "Passwords must be match"
+    },
+    "input": {
+        "enterValue": "enter {{value}}"
+    },
+    "general": {
+        "firstname": "name",
+        "lastName": "lastName",
+        "email": "email",
+        "password": "password",
+        "confirmPassword": "confirm Password",
+        "or": "or",
+        "send": "Send",
+        "code": "code",
+        "changeEmail": "Change email",
+        "newPassword": "new Password",
+        "checkPassword": "check Password"
+    },
+    "response": {
+        "success": {
+            "sendVerifyEmail": "Confirmation email sent! Check your email."
+        },
+        "error": {
+            "registerError": "Error during registration"
+        }
+    }
+}

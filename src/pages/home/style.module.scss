@@ -2,5 +2,5 @@
 
 .container {
     @include container;
-    height: calc(100vh - 50px);
+    @include heightContainer;
 }

@@ -21,10 +21,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 32px;
 }
 
 .returnToSignIn {
     padding: 16px 0;
+    display: flex;
+    gap: 6px;
 
     &_link {
         color: $orange;
