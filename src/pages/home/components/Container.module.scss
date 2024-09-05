@@ -3,6 +3,10 @@
 .form, .description {
     width: 50%;
     background-color: white;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .description {

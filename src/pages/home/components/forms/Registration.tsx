@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import TextInput from '../../../../components/inputs/TextInput';
 import PasswordInput from '../../../../components/inputs/PasswordInput';
 import Button from '../../../../components/buttons/Button';
-import GoogleButton from '../../../../components/buttons/googleButton';
 import s from './Forms.module.scss';
 import { useTranslation } from 'react-i18next';
 import { AuthForms, Field } from '../../../../shared/constants';
@@ -12,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { sendSignInLinkToEmail } from 'firebase/auth';
 import { auth } from '../../../../firebase.ts';
 import useToast from '../../../../shared/hooks/useToast.ts';
+import { checkEmail } from '../../../../services/endpoints/auth';
 
 interface IRegistrationData {
 	firstname: string;
@@ -38,13 +38,14 @@ const Registration: FC<IRegistrationProps> = ({ setCurrentForm }) => {
 		formState: { errors },
 	} = useForm<IRegistrationData>({
 		resolver: zodResolver(RegisterSchema),
+		mode: 'onBlur',
 	});
 
 	const onSubmit: SubmitHandler<IRegistrationData> = async (data): Promise<void> => {
 		if (data.password !== data.confirmPassword) {
 			setError(Field.CONFIRM_PASSWORD, {
 				type: 'custom',
-				message: t('beMatch'),
+				message: t('validation.beMatch'),
 			});
 		} else {
 			const actionCodeSettings = {
@@ -53,16 +54,21 @@ const Registration: FC<IRegistrationProps> = ({ setCurrentForm }) => {
 			};
 			try {
 				setLoading(true);
-				await sendSignInLinkToEmail(auth, data.email, actionCodeSettings);
-				const tempUser = {
-					[Field.NAME]: data.firstname,
-					[Field.LAST_NAME]: data.lastname,
-					[Field.EMAIL]: data.email,
-					[Field.PASSWORD]: data.password,
-				};
-				window.localStorage.setItem('temp_user', JSON.stringify(tempUser));
-				notifySuccess(t('response.success.sendVerifyEmail'));
-				setCurrentForm(AuthForms.ConfirmRegistration);
+				const res = await checkEmail({ [Field.EMAIL]: data.email });
+				if (!res) {
+					await sendSignInLinkToEmail(auth, data.email, actionCodeSettings);
+					const tempUser = {
+						[Field.NAME]: data.firstname,
+						[Field.LAST_NAME]: data.lastname,
+						[Field.EMAIL]: data.email,
+						[Field.PASSWORD]: data.password,
+					};
+					window.localStorage.setItem('temp_user', JSON.stringify(tempUser));
+					notifySuccess(t('response.success.sendVerifyEmail'));
+					setCurrentForm(AuthForms.ConfirmRegistration);
+				} else {
+					notifyError(t('response.error.emailAlreadyExist'));
+				}
 			} catch (e) {
 				console.error(e);
 				notifyError(t('response.error.registerError') + e.message);
@@ -112,11 +118,6 @@ const Registration: FC<IRegistrationProps> = ({ setCurrentForm }) => {
 					name={Field.CONFIRM_PASSWORD}
 					error={errors.confirmPassword?.message}
 				/>
-				{errors.responseError && (
-					<div className={s.errorField}>
-						<span className={s.errorText}>{errors.responseError.message}</span>
-					</div>
-				)}
 				<Button
 					type="submit"
 					value={t('general.send')}
@@ -124,7 +125,6 @@ const Registration: FC<IRegistrationProps> = ({ setCurrentForm }) => {
 					disabled={Object.keys(errors).length > 0 && !errors.responseError}
 					loading={loading}
 				/>
-				<GoogleButton />
 			</form>
 		</>
 	);

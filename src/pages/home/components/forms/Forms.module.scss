@@ -8,9 +8,13 @@
 
     &__title {
         color: $orange;
-        font-weight: 100;
-        font-size: 50px;
+        font-weight: 400;
+        font-size: 48px;
         text-align: center;
+
+        @media (max-width: 768px) {
+            font-size: 32px;
+        }
     }
 
     &__text {
@@ -26,6 +30,10 @@
             text-decoration: underline;
             cursor: pointer;
         }
+    }
+
+    @media (max-width: 480px) {
+        width: 90%;
     }
 }
 
@@ -102,6 +110,11 @@
     &__text {
         padding: 0 16px;
     }
+}
+
+.socialMedia {
+    display: flex;
+    gap: 8px;
 }
 
 .joinButton {

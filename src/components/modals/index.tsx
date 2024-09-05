@@ -1,21 +1,10 @@
-import { FC, MouseEvent, ReactNode } from 'react';
+import { FC, MouseEvent } from 'react';
 import Portal from './Portal';
 import s from './style.module.scss';
 import { useModalStore } from './store.ts';
 
-interface ModalProps {
-	isOpen: boolean;
-	onClose: () => void;
-	children: ReactNode;
-	title?: string;
-}
-
-const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
-	const { isOpen, title, setIsOpen } = useModalStore((state) => ({
-		isOpen: state.isOpen,
-		title: state.title,
-		setIsOpen: state.setIsOpen,
-	}));
+const Modal: FC = () => {
+	const { isOpen, title, setIsOpen, children } = useModalStore();
 
 	const handleOverlayClick = (e: MouseEvent) => {
 		if (e.target === e.currentTarget) {
@@ -31,10 +20,10 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
 	return (
 		<Portal>
-			<div className={`${s.overlay} ${isVisible ? s.open : ''}`} onClick={handleOverlayClick}>
-				<div className={`${s.modal} ${isVisible ? s.open : ''}`}>
+			<div className={`${s.overlay} ${isOpen ? s.open : ''}`} onClick={handleOverlayClick}>
+				<div className={`${s.modal} ${isOpen ? s.open : ''}`}>
 					{title && <h2>{title}</h2>}
-					<button className={s.close} onClick={onClose}>
+					<button className={s.close} onClick={handleClose}>
 						×
 					</button>
 					<div>{children}</div>

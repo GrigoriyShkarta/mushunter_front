@@ -1,0 +1,14 @@
+@import '../../../shared/scss/vars';
+
+.button {
+  @include largeButton;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background-color: $googleBlack;
+
+  &:hover {
+    background-color: $googleBlackHover;
+  }
+}

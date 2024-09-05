@@ -8,6 +8,10 @@ body {
   overflow-x: hidden;
   font-family: 'OpenSans', sans-serif;
   background-color: #f3f2f0;
+
+  @media (max-width: 768px) {
+    background-color: white;
+  }
 }
 
 code {

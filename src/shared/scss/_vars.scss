@@ -3,6 +3,8 @@ $hoverOrange: #c9570b;
 $gray: #9DA6AA;
 $googleBlack: #383838;
 $googleBlackHover: #272626;
+$facebookBlue: #0866ff;
+$facebookBlueHover: #3b82ff;
 $opacityGray: rgb(0 0 0 / .35);
 $opacityBlackText: rgba(0, 0, 0, 0.75);
 $errorText: #ff0606;
@@ -25,6 +27,10 @@ $easyTransition: border 0.3s ease, background-color 0.3s ease;
     width: 1128px;
     margin: 0 auto;
     display: flex;
+
+    @media (max-width:1280px){
+        width: 100%;
+    }
 }
 
 @mixin heightContainer {

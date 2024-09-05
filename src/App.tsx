@@ -6,22 +6,27 @@ import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastConfig } from './shared/constants';
+import ThemeProvider from './shared/context';
 
 const HomePage = lazy(() => import('./pages/home'));
+const UserPage = lazy(() => import('./pages/user'));
 
 function App(): JSX.Element {
 	return (
-		<div className={'App'}>
-			<Header />
-			<Router>
-				<Suspense fallback={<div>Loading...</div>}>
-					<Routes>
-						<Route path={'/'} element={<HomePage />} />
-					</Routes>
-				</Suspense>
-			</Router>
-			<ToastContainer {...toastConfig} />
-		</div>
+		<ThemeProvider>
+			<div className={'App'}>
+				<Header />
+				<Router>
+					<Suspense fallback={<div>Loading...</div>}>
+						<Routes>
+							<Route path={'/'} element={<HomePage />} />
+							<Route path={'/user'} element={<UserPage />} />
+						</Routes>
+					</Suspense>
+				</Router>
+				<ToastContainer {...toastConfig} />
+			</div>
+		</ThemeProvider>
 	);
 }
 

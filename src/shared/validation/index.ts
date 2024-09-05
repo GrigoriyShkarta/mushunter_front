@@ -8,7 +8,7 @@ const passwordValidation = z
 	.min(8, { message: 'validation.minValue' })
 	.regex(/^[a-zA-Z0-9!@#$%^&*()_+=-]*$/, { message: 'validation.latinNumberSymbol' })
 	.regex(/[a-zA-Z]/, { message: 'validation.onlyLatinSymbols' })
-	.regex(/\d/, { message: 'numbers' });
+	.regex(/\d/, { message: 'validation.numbers' });
 
 const nameValidation = z
 	.string()

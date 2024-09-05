@@ -1,0 +1,9 @@
+@import '../../shared/scss/vars';
+
+.container {
+  @include container;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 780px;
+  padding: 32px 0;
+}

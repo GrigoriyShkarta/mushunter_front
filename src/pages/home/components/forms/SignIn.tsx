@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '../../../../components/inputs/TextInput';
 import PasswordInput from '../../../../components/inputs/PasswordInput';
 import Button from '../../../../components/buttons/Button';
-import GoogleButton from '../../../../components/buttons/googleButton';
 
 import s from './Forms.module.scss';
 import { AuthForms, Field, Statuses } from '../../../../shared/constants';
@@ -17,12 +16,16 @@ import { useUserStore } from '../../../user/store';
 import { LoginSchemaType } from '../../../../services/endpoints/auth/schema';
 import useToast from '../../../../shared/hooks/useToast.ts';
 import { useNavigate } from 'react-router-dom';
+import SocialButton from '../../../../components/buttons/socialButton';
+import { FcGoogle } from 'react-icons/fc';
+import { facebookProvider, googleProvider } from '../../../../firebase.ts';
+import { FaFacebook } from 'react-icons/fa';
 
-interface ISignInProps {
+interface Props {
 	setCurrentForm: Dispatch<SetStateAction<AuthForms>>;
 }
 
-const SignIn: FC<ISignInProps> = ({ setCurrentForm }) => {
+const SignIn: FC<Props> = ({ setCurrentForm }) => {
 	const { login, error, status } = useUserStore();
 	const navigate = useNavigate();
 	const { notifyError } = useToast();
@@ -41,13 +44,14 @@ const SignIn: FC<ISignInProps> = ({ setCurrentForm }) => {
 				navigate('/user');
 				break;
 			case Statuses.ERROR:
+				console.log('work');
 				notifyError(error || 'error!');
 		}
 	}, [status]);
 
 	const onSubmit: SubmitHandler<LoginSchemaType> = async (data): Promise<void> => {
 		try {
-			login(data);
+			await login(data);
 		} catch (e) {
 			notifyError(e);
 		}
@@ -74,7 +78,11 @@ const SignIn: FC<ISignInProps> = ({ setCurrentForm }) => {
 					disabled={Object.keys(errors).length > 0}
 					loading={status === Statuses.LOADING}
 				/>
-				<GoogleButton />
+				<div className={s.socialMedia}>
+					<SocialButton name={'Google'} icon={<FcGoogle />} provider={googleProvider} />
+					<SocialButton name={'Facebook'} icon={<FaFacebook />} provider={facebookProvider} />
+				</div>
+
 				<div className={s.divider}>
 					<span className={s.divider__text}>{t('general.or')}</span>
 				</div>

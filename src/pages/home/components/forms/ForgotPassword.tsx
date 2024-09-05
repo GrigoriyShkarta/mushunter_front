@@ -1,33 +1,66 @@
-import { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import EmailStage from './componentsStages/EmailStage';
-import CodeStage from './componentsStages/CodeStage';
-import ChangePasswordStage from './componentsStages/ChangePasswordStage';
-import { ForgotPasswordStage } from '../../../../shared/constants';
+import { Dispatch, FC, SetStateAction } from 'react';
+import { AuthForms, Field } from '../../../../shared/constants';
+import TextInput from '../../../../components/inputs/TextInput.tsx';
+import { useTranslation } from 'react-i18next';
+import useToast from '../../../../shared/hooks/useToast.ts';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { EmailSchema } from '../../../../shared/validation';
+import { checkEmail } from '../../../../services/endpoints/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../../../firebase.ts';
+import Button from '../../../../components/buttons/Button.tsx';
+import s from './Forms.module.scss';
 
-const ForgotPassword: FC = () => {
-	const [stage, setStage] = useState<ForgotPasswordStage>(ForgotPasswordStage.EMAIL);
+interface Props {
+	setCurrentForm: Dispatch<SetStateAction<AuthForms>>;
+}
 
-	const navigate = useNavigate();
+const ForgotPassword: FC<Props> = ({ setCurrentForm }) => {
+	const { t } = useTranslation();
+	const { notifyError, notifySuccess } = useToast();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<{ [Field.EMAIL]: string }>({
+		resolver: zodResolver(EmailSchema),
+	});
 
-	useEffect(() => {
-		const handleBackButton = (): void => {
-			if (stage !== ForgotPasswordStage.EMAIL) {
-				navigate('/');
+	const onSubmit: SubmitHandler<{ email: string }> = async (data): Promise<void> => {
+		try {
+			const res = await checkEmail({ email: data.email });
+			if (res) {
+				await sendPasswordResetEmail(auth, data.email);
+				notifySuccess(t('response.success.sendVerifyEmail'));
+				setCurrentForm(AuthForms.SignIn);
+			} else {
+				notifyError(t('response.error.emailNoExist'));
 			}
-		};
-		window.addEventListener('popstate', handleBackButton);
-
-		return () => {
-			window.removeEventListener('popstate', handleBackButton);
-		};
-	}, []);
+		} catch (error) {
+			notifyError(error.message);
+		}
+	};
 
 	return (
 		<>
-			{stage === ForgotPasswordStage.EMAIL && <EmailStage setStage={setStage} />}
-			{stage === ForgotPasswordStage.CHECK_CODE && <CodeStage setStage={setStage} />}
-			{stage === ForgotPasswordStage.NEW_PASSWORD && <ChangePasswordStage />}
+			<h1 className={s.form__title}>{t('home.forgotPassword')}</h1>
+			<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+				<p className={s.form__text}>{t('home.enterEmail')}</p>
+				<TextInput
+					register={register(Field.EMAIL)}
+					className={s.input}
+					name={Field.EMAIL}
+					error={errors.email?.message}
+				/>
+				<p className={s.form__text}>{t('home.weSendEmail')}</p>
+				<Button
+					type={'submit'}
+					value={t('general.send')}
+					className={s.button}
+					disabled={Object.keys(errors).length > 0}
+				/>
+			</form>
 		</>
 	);
 };

@@ -18,7 +18,7 @@ const Form: FC = () => {
 			case AuthForms.Registration:
 				return <Registration setCurrentForm={setCurrentForm} />;
 			case AuthForms.ForgotPassword:
-				return <ForgotPassword />;
+				return <ForgotPassword setCurrentForm={setCurrentForm} />;
 			case AuthForms.ConfirmRegistration:
 				return <ConfirmRegistration />;
 		}

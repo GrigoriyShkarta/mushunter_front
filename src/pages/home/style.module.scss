@@ -3,4 +3,9 @@
 .container {
     @include container;
     @include heightContainer;
+
+    @media (max-width: 768px) {
+        flex-direction: column-reverse;
+        justify-content: space-evenly;
+    }
 }

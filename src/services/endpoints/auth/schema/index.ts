@@ -12,16 +12,15 @@ const RegisterSchema = z.object({
 	password: z.string(),
 });
 
-export interface CheckTempPasswordDto {
-	email: string;
-	tempPassword: string;
-	tempToken: string;
-}
+const EmailSchema = z.object({
+	email: z.string().email(),
+});
 
-export interface ChangePasswordDto {
-	tempToken: string;
-	newPassword: string;
-}
+const TokenSchema = z.object({
+	refreshToken: z.string(),
+});
 
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
+export type EmailSchemaType = z.infer<typeof EmailSchema>;
+export type TokenSchemaType = z.infer<typeof TokenSchema>;
