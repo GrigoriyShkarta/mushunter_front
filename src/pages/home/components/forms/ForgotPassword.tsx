@@ -33,6 +33,7 @@ const ForgotPassword: FC<Props> = ({ setCurrentForm }) => {
 			if (res) {
 				await sendPasswordResetEmail(auth, data.email);
 				notifySuccess(t('response.success.sendVerifyEmail'));
+				localStorage.setItem('changePassword', 'true');
 				setCurrentForm(AuthForms.SignIn);
 			} else {
 				notifyError(t('response.error.emailNoExist'));

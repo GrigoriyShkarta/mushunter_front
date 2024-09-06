@@ -18,8 +18,9 @@ import useToast from '../../../../shared/hooks/useToast.ts';
 import { useNavigate } from 'react-router-dom';
 import SocialButton from '../../../../components/buttons/socialButton';
 import { FcGoogle } from 'react-icons/fc';
-import { facebookProvider, googleProvider } from '../../../../firebase.ts';
+import { auth, facebookProvider, googleProvider } from '../../../../firebase.ts';
 import { FaFacebook } from 'react-icons/fa';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 interface Props {
 	setCurrentForm: Dispatch<SetStateAction<AuthForms>>;
@@ -44,16 +45,18 @@ const SignIn: FC<Props> = ({ setCurrentForm }) => {
 				navigate('/user');
 				break;
 			case Statuses.ERROR:
-				console.log('work');
 				notifyError(error || 'error!');
 		}
 	}, [status]);
 
 	const onSubmit: SubmitHandler<LoginSchemaType> = async (data): Promise<void> => {
 		try {
-			await login(data);
+			const res = await signInWithEmailAndPassword(auth, data.email, data.password);
+			if (res.user.email) {
+				await login({ email: res.user.email });
+			}
 		} catch (e) {
-			notifyError(e);
+			notifyError(t('response.error.invalidLogin'));
 		}
 	};
 

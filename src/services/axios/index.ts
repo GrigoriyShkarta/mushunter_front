@@ -15,7 +15,11 @@ axiosInstance.interceptors.request.use(
 			const parsedTokens = JSON.parse(tokens);
 			let token = parsedTokens.accessToken;
 			if (isTokenExpired(parsedTokens.accessToken)) {
-				token = await refreshToken(parsedTokens.refreshToken);
+				try {
+					token = await refreshToken(parsedTokens.refreshToken);
+				} catch (e) {
+					throw new Error(e);
+				}
 			}
 			config.headers.Authorization = `Bearer ${token}`;
 		}

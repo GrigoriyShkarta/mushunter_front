@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { UserSchemaType } from '../../../shared/models/user.ts';
-import { EmailSchemaType, LoginSchemaType, RegisterSchemaType } from '../../../services/endpoints/auth/schema';
+import { EmailSchemaType, RegisterSchemaType } from '../../../services/endpoints/auth/schema';
 import { authWithSocialMedia, login, registration } from '../../../services/endpoints/auth';
 import { devtools, persist } from 'zustand/middleware';
 import { Statuses } from '../../../shared/constants';
@@ -9,7 +9,7 @@ import { AuthSchemaType } from '../../../services/endpoints/auth/response';
 interface UserStore {
 	user: UserSchemaType | null;
 	register: (form: RegisterSchemaType) => void;
-	login: (form: LoginSchemaType) => Promise<AuthSchemaType>;
+	login: (form: EmailSchemaType) => Promise<AuthSchemaType>;
 	socialAuth: (form: EmailSchemaType) => Promise<AuthSchemaType | boolean>;
 	status: Statuses | null;
 	error: string | null;
@@ -33,7 +33,7 @@ export const useUserStore = create<UserStore>()(
 				}
 			},
 
-			login: async (form: LoginSchemaType): Promise<AuthSchemaType> => {
+			login: async (form: EmailSchemaType): Promise<AuthSchemaType> => {
 				try {
 					set({ status: Statuses.LOADING });
 					const authData = await login(form);

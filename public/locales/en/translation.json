@@ -50,7 +50,8 @@
         "error": {
             "registerError": "Error during registration",
             "emailAlreadyExist": "A user with this email already exists",
-            "emailNoExist": "There is no user with this email"
+            "emailNoExist": "There is no user with this email",
+            "invalidLogin": "Invalid email or password"
         }
     }
 }

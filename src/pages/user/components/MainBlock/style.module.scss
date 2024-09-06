@@ -1,13 +1,40 @@
+@import "../../../../shared/scss/vars";
+
 .section {
   width: 100%;
   border-radius: 10px;
-  padding: 10px;
   position: relative;
+  border: 1px solid $borderColor;
 }
 
 .background {
   width: 100%;
   height: 160px;
-  position: absolute;
   border-radius: 10px 10px 0 0;
+}
+
+.ava {
+  position: absolute;
+  left: 20px;
+  top: 45px;
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  border: 4px solid white;
+}
+
+.wrapper {
+  padding: 50px 24px 24px;
+  background-color: $whiteBg;
+  border-radius: 0 0 10px 10px;
+}
+
+.edit {
+  position: absolute;
+  right: 20px;
+  top: 180px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
