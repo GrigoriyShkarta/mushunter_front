@@ -13,6 +13,8 @@ const HomePage: FC = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		console.log('useeffect');
+
 		if (user) {
 			navigate('/user');
 			return;
@@ -39,6 +41,8 @@ const HomePage: FC = () => {
 
 		checkSignUp();
 	}, []);
+
+	console.log('component');
 
 	return (
 		<div className={s.container}>

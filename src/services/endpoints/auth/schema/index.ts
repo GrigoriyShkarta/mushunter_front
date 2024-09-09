@@ -10,7 +10,6 @@ const RegisterSchema = z.object({
 	[Field.NAME]: z.string(),
 	[Field.LAST_NAME]: z.string(),
 	[Field.EMAIL]: z.string().email(),
-	[Field.PASSWORD]: z.string(),
 });
 
 const EmailSchema = z.object({

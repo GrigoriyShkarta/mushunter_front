@@ -8,7 +8,7 @@ export enum Statuses {
 
 export enum Languages {
 	EN = 'en',
-	UK = 'uk',
+	UK = 'ua',
 }
 
 export enum EThemes {

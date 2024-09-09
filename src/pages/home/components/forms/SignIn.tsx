@@ -47,7 +47,7 @@ const SignIn: FC<Props> = ({ setCurrentForm }) => {
 			case Statuses.ERROR:
 				notifyError(error || 'error!');
 		}
-	}, [status]);
+	}, [status, navigate, notifyError, error]);
 
 	const onSubmit: SubmitHandler<LoginSchemaType> = async (data): Promise<void> => {
 		try {

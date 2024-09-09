@@ -1,5 +1,6 @@
 import axios from 'axios';
 import i18n from 'i18next';
+import pako from 'pako';
 import { isTokenExpired } from '../../shared/helpers/checkTokenExpired.ts';
 import { refreshToken } from '../endpoints/auth';
 
@@ -24,10 +25,37 @@ axiosInstance.interceptors.request.use(
 			config.headers.Authorization = `Bearer ${token}`;
 		}
 		config.headers['Accept-Language'] = i18n.language;
+
+		if (config.data) {
+			config.data = pako.deflate(JSON.stringify(config.data));
+			config.headers['Content-Type'] = 'application/octet-stream';
+		}
+
 		return config;
 	},
 	(error) => {
-		Promise.reject(error);
+		return Promise.reject(error);
+	},
+);
+
+axiosInstance.interceptors.response.use(
+	(response) => {
+		console.log('response.data', response.data);
+		console.log('response.data.compressedData', response.data.compressedData);
+		if (response.data && response.data.compressedData) {
+			const compressedData = response.data.compressedData;
+			console.log('compressedData', compressedData);
+			const uint8Array = new Uint8Array(Object.values(compressedData));
+			console.log('uint8Array', uint8Array);
+			const decompressedData = pako.inflate(uint8Array, { to: 'string' });
+			console.log('decompressedData', decompressedData);
+			response.data.decompressedData = JSON.parse(decompressedData);
+			delete response.data.compressedData;
+		}
+		return response;
+	},
+	(error) => {
+		return Promise.reject(error);
 	},
 );
 
