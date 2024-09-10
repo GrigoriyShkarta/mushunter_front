@@ -27,6 +27,15 @@
   padding: 50px 24px 24px;
   background-color: $whiteBg;
   border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .edit {
@@ -44,4 +53,65 @@
     cursor: pointer;
     background-color: $hoverGray;
   }
+}
+
+.skillsWrapper {
+  display: flex;
+  gap: 4px;
+  width: 50%;
+
+  .skill {
+    padding: 4px 8px;
+    background-color: $lightOrange;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+}
+
+.greyText, .blackText {
+  font-size: 16px;
+  color: $gray;
+}
+
+.blackText {
+  color: black;
+}
+
+.likeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background-color: $hoverGray;
+  height: 40px;
+  width: fit-content;
+  border-radius: 15px;
+  padding: 0 8px;
+
+  svg {
+    path {
+      fill: $lightOrange;
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      path {
+        fill: $orange;
+      }
+    }
+  }
+
+  .number {
+    color: $orange;
+  }
+}
+
+.button {
+  @include smallButton;
+  background-color: $orange;
+  gap: 8px;
+  width: 20%;
 }

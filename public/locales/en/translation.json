@@ -53,5 +53,9 @@
             "emailNoExist": "There is no user with this email",
             "invalidLogin": "Invalid email or password"
         }
+    },
+    "user": {
+        "recommend": "Recommend",
+        "write": "Write"
     }
 }

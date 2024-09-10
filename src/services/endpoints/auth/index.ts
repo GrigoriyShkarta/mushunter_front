@@ -9,7 +9,6 @@ export const registration = async (form: RegisterSchemaType): Promise<AuthSchema
 };
 
 export const login = async (form: EmailSchemaType): Promise<AuthSchemaType> => {
-	console.log('form', form);
 	const response = await axiosInstance.post('/auth/login', form);
 
 	localStorage.setItem('tokens', JSON.stringify(response.data.decompressedData.tokens));
@@ -24,7 +23,6 @@ export const checkEmail = async (form: EmailSchemaType): Promise<boolean> => {
 
 export const authWithSocialMedia = async (data: EmailSchemaType): Promise<AuthSchemaType | boolean> => {
 	const response = await axiosInstance.post('auth/socialAuth', data);
-	console.log('response', response);
 	if (typeof response.data.decompressedData === 'boolean') {
 		return response.data.decompressedData;
 	}

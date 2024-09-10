@@ -1,6 +1,7 @@
 $orange: #ed6b15;
 $hoverOrange: #c9570b;
-$gray: #9DA6AA;
+$lightOrange: #F4A876;
+$gray: #949494;
 $borderColor: #e8e8e8;
 $googleBlack: #383838;
 $googleBlackHover: #272626;
@@ -24,6 +25,17 @@ $easyTransition: border 0.3s ease, background-color 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@mixin smallButton {
+    color: white;
+    padding: 6px 16px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
 }
 
 @mixin container {
