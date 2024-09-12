@@ -5,7 +5,7 @@ import Loader from '../loader';
 interface ISubmitButtonProps {
 	type: 'button' | 'submit' | 'reset';
 	value: string;
-	icon: JSX.Element;
+	icon?: JSX.Element;
 	className: string;
 	func?: () => void;
 	disabled?: boolean;

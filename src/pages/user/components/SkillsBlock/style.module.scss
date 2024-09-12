@@ -1,0 +1,31 @@
+@import "../../../../shared/scss/vars";
+
+.section {
+  width: 100%;
+  border-radius: 10px;
+  position: relative;
+  border: 1px solid $borderColor;
+  padding: 24px;
+  background-color: $whiteBg;
+}
+
+.progress_bar_container {
+  display: flex;
+  align-items: center;
+}
+
+.progress_bar {
+  width: 200px;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.progress {
+  height: 100%;
+  background-color: #ed6b15; /* основной цвет прогресса */
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}

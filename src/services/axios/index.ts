@@ -40,15 +40,10 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
 	(response) => {
-		console.log('response.data', response.data);
-		console.log('response.data.compressedData', response.data.compressedData);
 		if (response.data && response.data.compressedData) {
 			const compressedData = response.data.compressedData;
-			console.log('compressedData', compressedData);
 			const uint8Array = new Uint8Array(Object.values(compressedData));
-			console.log('uint8Array', uint8Array);
 			const decompressedData = pako.inflate(uint8Array, { to: 'string' });
-			console.log('decompressedData', decompressedData);
 			response.data.decompressedData = JSON.parse(decompressedData);
 			delete response.data.compressedData;
 		}

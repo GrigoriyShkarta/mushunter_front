@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { getMe } from '../../services/endpoints/user';
 import { useTranslation } from 'react-i18next';
 import { Languages } from '../../shared/constants';
+import SkillsBlock from './components/SkillsBlock';
 
 const User: FC = () => {
 	const user = useUserStore((state) => state.user);
@@ -40,7 +41,10 @@ const User: FC = () => {
 				skills={user?.skills && user.skills.map((skill) => skill.name[i18n.language as Languages])}
 				birthday={user?.birthday}
 				likes={user.likes}
+				links={user.links}
+				phone={user?.phone}
 			/>
+			<SkillsBlock skills={user.skills} />
 		</div>
 	);
 };

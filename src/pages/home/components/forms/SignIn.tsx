@@ -56,7 +56,8 @@ const SignIn: FC<Props> = ({ setCurrentForm }) => {
 				await login({ email: res.user.email });
 			}
 		} catch (e) {
-			notifyError(t('response.error.invalidLogin'));
+			console.error(e);
+			// notifyError(t('response.error.invalidLogin'));
 		}
 	};
 

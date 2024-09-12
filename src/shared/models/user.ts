@@ -5,7 +5,12 @@ const TranslateObj = z.object({
 	en: z.string(),
 });
 
-const SkillSchema = z.object({
+const Style = z.object({
+	id: z.number(),
+	name: z.string(),
+});
+
+export const SkillSchema = z.object({
 	id: z.number(),
 	name: TranslateObj,
 	experience: z.number(),
@@ -21,7 +26,9 @@ export const UserSchema = z.object({
 	phone: z.string().optional(),
 	likes: z.number(),
 	city: TranslateObj.optional(),
-	skills: z.array(SkillSchema).optional(),
+	skills: z.array(SkillSchema).default([]),
+	links: z.array(z.string()).default([]),
+	styles: z.array(Style).default([]),
 });
 
 export type UserSchemaType = z.infer<typeof UserSchema>;

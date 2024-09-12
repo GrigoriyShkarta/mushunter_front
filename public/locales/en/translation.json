@@ -56,6 +56,7 @@
     },
     "user": {
         "recommend": "Recommend",
-        "write": "Write"
+        "write": "Write",
+        "skills": "Skills"
     }
 }

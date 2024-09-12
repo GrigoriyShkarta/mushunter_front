@@ -85,10 +85,9 @@
   justify-content: center;
   gap: 16px;
   background-color: $hoverGray;
-  height: 40px;
   width: fit-content;
   border-radius: 15px;
-  padding: 0 8px;
+  padding: 6px 10px;
 
   svg {
     path {
@@ -106,6 +105,25 @@
 
   .number {
     color: $orange;
+  }
+}
+
+.links {
+  display: flex;
+  position: relative;
+  gap: 4px;
+
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+
+    &:hover {
+      z-index: 100;
+    }
   }
 }
 
