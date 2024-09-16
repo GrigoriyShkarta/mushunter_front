@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../../firebase.ts';
 import { useUserStore } from '../../../pages/user/store';
+import SocialMediaAuthModal from '../../modals/socialMediaAuthModal';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
 	name: string;
@@ -14,8 +16,9 @@ interface Props {
 }
 
 const SocialButton: FC<Props> = ({ name, icon, provider }) => {
-	const { setIsOpen, setTitle } = useModalStore();
-	const { register, socialAuth } = useUserStore();
+	const { setIsOpen, setTitle, setChildren } = useModalStore();
+	const { registrationUser, socialAuth } = useUserStore();
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 
 	const handleClick = async (): Promise<void> => {
@@ -27,13 +30,19 @@ const SocialButton: FC<Props> = ({ name, icon, provider }) => {
 				const checkAuth = await socialAuth({ email: res.user.email });
 				if (!checkAuth) {
 					if (tokenResponse.firstName && tokenResponse.lastName && tokenResponse.email) {
-						register({
+						registrationUser({
 							email: tokenResponse.email,
 							firstname: tokenResponse.firstName,
 							lastname: tokenResponse.lastName,
 						});
+						// localStorage.setItem('emailForRegistration', res.user.email);
+						// setTitle(t('home.registration'));
+						// setChildren(<SocialMediaAuthModal />);
+						// setIsOpen(true);
 					} else {
-						setTitle('My Modal Title');
+						localStorage.setItem('emailForRegistration', res.user.email);
+						setTitle(t('home.registration'));
+						setChildren(<SocialMediaAuthModal />);
 						setIsOpen(true);
 					}
 				} else {

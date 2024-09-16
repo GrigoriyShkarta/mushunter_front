@@ -1,0 +1,20 @@
+@import "../../../shared/scss/vars";
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.button {
+  @include smallButton;
+  width: fit-content;
+  background-color: $orange;
+  margin: 0 auto;
+}

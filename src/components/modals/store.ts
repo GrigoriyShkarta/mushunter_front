@@ -7,6 +7,7 @@ interface ModalState {
 	children: ReactNode | null;
 	setIsOpen: (isOpen: boolean) => void;
 	setTitle: (title?: string) => void;
+	setChildren: (children: ReactNode | null) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -15,4 +16,5 @@ export const useModalStore = create<ModalState>((set) => ({
 	children: null,
 	setIsOpen: (isOpen) => set({ isOpen }),
 	setTitle: (title) => set({ title }),
+	setChildren: (children) => set({ children }),
 }));

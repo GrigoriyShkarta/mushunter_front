@@ -41,7 +41,7 @@
 .edit {
   position: absolute;
   right: 20px;
-  top: 180px;
+  top: 175px;
   width: 40px;
   height: 40px;
   display: flex;
@@ -55,19 +55,51 @@
   }
 }
 
-.skillsWrapper {
+.arrayWrapper {
   display: flex;
   gap: 4px;
   width: 50%;
+}
 
-  .skill {
-    padding: 4px 8px;
-    background-color: $lightOrange;
-    border-radius: 10px;
+.styleBlock {
+  padding: 12px;
+  border: 1px solid $borderColor;
+  border-radius: 10px;
+  max-width: 45%;
+
+  .top {
     display: flex;
-    align-items: center;
-    font-size: 14px;
+    gap: 8px;
   }
+
+  .stylesTitle {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .stylesWrapper {
+    display: flex;
+    gap: 4px;
+    padding-left: 24px;
+  }
+}
+
+
+
+.itemSkill, .itemStyle {
+  padding: 4px 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.itemSkill {
+  background-color: $lightOrange;
+}
+
+.itemStyle {
+  background-color: $gray;
 }
 
 .greyText, .blackText {
@@ -103,8 +135,15 @@
     }
   }
 
+  .line {
+    width: 1px;
+    height: 20px;
+    background-color: $orange;
+  }
+
   .number {
     color: $orange;
+    font-size: 20px;
   }
 }
 

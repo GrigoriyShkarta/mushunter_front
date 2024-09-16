@@ -8,7 +8,7 @@ import useToast from '../../shared/hooks/useToast.ts';
 import { RegisterSchemaType } from '../../services/endpoints/auth/schema';
 
 const HomePage: FC = () => {
-	const { register, user, error } = useUserStore();
+	const { registrationUser, user, error } = useUserStore();
 	const { notifySuccess, notifyError } = useToast();
 	const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ const HomePage: FC = () => {
 			try {
 				if (tempUserStr) {
 					const tempUser = JSON.parse(tempUserStr) as RegisterSchemaType;
-					register(tempUser);
+					registrationUser(tempUser);
 					if (!error) {
 						notifySuccess('success!');
 						localStorage.removeItem('temp_user');

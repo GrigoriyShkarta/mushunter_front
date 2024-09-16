@@ -8,7 +8,7 @@ import { AuthSchemaType } from '../../../services/endpoints/auth/response';
 
 interface UserStore {
 	user: UserSchemaType | null;
-	register: (form: RegisterSchemaType) => void;
+	registrationUser: (form: RegisterSchemaType) => void;
 	login: (form: EmailSchemaType) => Promise<AuthSchemaType>;
 	socialAuth: (form: EmailSchemaType) => Promise<AuthSchemaType | boolean>;
 	status: Statuses | null;
@@ -22,7 +22,7 @@ export const useUserStore = create<UserStore>()(
 			error: null,
 			status: null,
 
-			register: async (form: RegisterSchemaType) => {
+			registrationUser: async (form: RegisterSchemaType) => {
 				try {
 					set({ status: Statuses.LOADING });
 					const authData = await registration(form);

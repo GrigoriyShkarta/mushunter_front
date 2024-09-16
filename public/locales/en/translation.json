@@ -14,7 +14,8 @@
         "chooseNewPassword": "Choose a new password",
         "secureAccount": "To secure your account, choose a strong password you haven’t used before and is at least 8 characters long.",
         "finishRegistration": "Check your email",
-        "signWith": "Sign with"
+        "signWith": "Sign with",
+        "registration": "Реєстрація"
     },
     "validation": {
         "invalidEmail": "Invalid email format",
@@ -57,6 +58,9 @@
     "user": {
         "recommend": "Recommend",
         "write": "Write",
-        "skills": "Skills"
+        "skills": "Skills",
+        "more10Years": "more than 10 years",
+        "generalInformation": "General information",
+        "basicStyles": "Basic styles"
     }
 }

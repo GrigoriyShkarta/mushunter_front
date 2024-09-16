@@ -1,14 +1,48 @@
-import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { FC, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import s from './style.module.scss';
+import TextInput from '../../inputs/TextInput.tsx';
+import { Field } from '../../../shared/constants';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FinishRegisterSchema } from '../../../shared/validation';
+import { FinishedRegistrationSchemaType } from '../../../services/endpoints/auth/schema';
+import Button from '../../buttons/Button.tsx';
+import { useTranslation } from 'react-i18next';
+import { useUserStore } from '../../../pages/user/store';
 
 const SocialMediaAuthModal: FC = () => {
+	const { t } = useTranslation();
+	const { registrationUser } = useUserStore();
+	const [loading, setLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm();
+	} = useForm<FinishedRegistrationSchemaType>({
+		resolver: zodResolver(FinishRegisterSchema),
+	});
 
-	return <div></div>;
+	const onSubmit: SubmitHandler<FinishedRegistrationSchemaType> = async (data): Promise<void> => {
+		const email = localStorage.getItem('emailForRegistration');
+		if (email) {
+			setLoading(true);
+			registrationUser({
+				[Field.NAME]: data.firstname,
+				[Field.LAST_NAME]: data.lastname,
+				[Field.EMAIL]: email,
+			});
+		}
+	};
+
+	return (
+		<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+			<div className={s.inputs}>
+				<TextInput register={register(Field.NAME)} name={Field.NAME} error={errors.firstname?.message} />
+				<TextInput register={register(Field.LAST_NAME)} name={Field.LAST_NAME} error={errors.lastname?.message} />
+			</div>
+			<Button type={'submit'} value={t('general.send')} className={s.button} />
+		</form>
+	);
 };
 
 export default SocialMediaAuthModal;

@@ -22,11 +22,11 @@ const Modal: FC = () => {
 		<Portal>
 			<div className={`${s.overlay} ${isOpen ? s.open : ''}`} onClick={handleOverlayClick}>
 				<div className={`${s.modal} ${isOpen ? s.open : ''}`}>
-					{title && <h2>{title}</h2>}
+					{title && <h2 className={s.title}>{title}</h2>}
 					<button className={s.close} onClick={handleClose}>
 						×
 					</button>
-					<div>{children}</div>
+					{children}
 				</div>
 			</div>
 		</Portal>

@@ -25,8 +25,14 @@ const ChangePasswordSchema = z.object({
 	newPassword: z.string(),
 });
 
+const FinishedRegistrationSchema = z.object({
+	[Field.NAME]: z.string(),
+	[Field.LAST_NAME]: z.string(),
+});
+
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type EmailSchemaType = z.infer<typeof EmailSchema>;
 export type TokenSchemaType = z.infer<typeof TokenSchema>;
 export type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
+export type FinishedRegistrationSchemaType = z.infer<typeof FinishedRegistrationSchema>;

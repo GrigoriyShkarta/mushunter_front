@@ -1,15 +1,20 @@
 import { Languages } from '../constants';
 
-export function getAgeWord(birthDateString: string, lang: Languages): string {
-	const birthDate = new Date(birthDateString);
-	const today = new Date();
+export function getAgeWord(birthDateString: string | number, lang: Languages): string {
+	let age;
+	if (typeof birthDateString === 'string') {
+		const birthDate = new Date(birthDateString);
+		const today = new Date();
 
-	let age = today.getFullYear() - birthDate.getFullYear();
-	const monthDifference = today.getMonth() - birthDate.getMonth();
-	const dayDifference = today.getDate() - birthDate.getDate();
+		age = today.getFullYear() - birthDate.getFullYear();
+		const monthDifference = today.getMonth() - birthDate.getMonth();
+		const dayDifference = today.getDate() - birthDate.getDate();
 
-	if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
-		age--;
+		if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+			age--;
+		}
+	} else {
+		age = birthDateString;
 	}
 
 	if (lang === Languages.EN) {

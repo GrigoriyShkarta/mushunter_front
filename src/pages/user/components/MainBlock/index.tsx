@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import s from './style.module.scss';
 import Background from './Background.tsx';
 import { SvgDefaultAva } from '../../../../assets/svg';
@@ -11,6 +11,7 @@ import Button from '../../../../components/buttons/Button.tsx';
 import { BsSend } from 'react-icons/bs';
 import { useUserStore } from '../../store';
 import { getIconForLink } from '../../../../shared/helpers/getIconForLink.tsx';
+import { IoIosMusicalNote } from 'react-icons/io';
 
 interface Props {
 	id: number;
@@ -23,9 +24,24 @@ interface Props {
 	birthday?: string;
 	likes: number;
 	links: string[];
+	styles: string[];
+	education?: string;
 }
 
-const MainBlock: FC<Props> = ({ id, firstName, lastName, ava, city, skills, birthday, likes, links, phone }) => {
+const MainBlock: FC<Props> = ({
+	id,
+	firstName,
+	lastName,
+	ava,
+	city,
+	skills,
+	birthday,
+	likes,
+	links,
+	phone,
+	styles,
+	education,
+}) => {
 	const user = useUserStore((state) => state.user);
 	const { t, i18n } = useTranslation();
 
@@ -43,25 +59,43 @@ const MainBlock: FC<Props> = ({ id, firstName, lastName, ava, city, skills, birt
 					<h1>
 						{firstName} {lastName}
 					</h1>
-					<div className={s.skillsWrapper}>
-						{skills &&
-							skills.map((skill) => (
-								<div className={s.skill} key={skill}>
-									{skill}
-								</div>
-							))}
+					<div className={s.arrayWrapper}>
+						{skills?.map((skill) => (
+							<div className={s.itemSkill} key={skill}>
+								{skill}
+							</div>
+						))}
 					</div>
 				</div>
+
+				{styles.length > 0 && (
+					<div className={s.styleBlock}>
+						<div className={s.top}>
+							<IoIosMusicalNote />
+							<h4 className={s.stylesTitle}>{t('user.basicStyles')}</h4>
+						</div>
+						<div className={s.stylesWrapper}>
+							{styles.map((style, index) => (
+								<Fragment key={style}>
+									<p>{style}</p>
+									{index < styles.length - 1 && <span> • </span>}
+								</Fragment>
+							))}
+						</div>
+					</div>
+				)}
 
 				<div className={s.block}>
 					{city && <p className={s.blackText}>{city}</p>}
 					{birthday && <p className={s.greyText}>{getAgeWord(birthday, i18n.language as Languages)}</p>}
 					{phone && <p className={s.greyText}>{phone}</p>}
+					{education && <p className={s.greyText}>{education}</p>}
 				</div>
 
 				<div className={s.block}>
 					<div className={s.likeWrapper}>
 						<AiTwotoneLike size={'22px'} title={t('user.recommend')} />
+						<div className={s.line} />
 						<p className={s.number}>{likes}</p>
 					</div>
 				</div>

@@ -32,6 +32,7 @@ export const RegisterSchema = z.object({
 	[Field.CONFIRM_PASSWORD]: passwordValidation,
 });
 
-export const ChangePasswordSchema = z.object({
-	[Field.NEW_PASSWORD]: passwordValidation,
+export const FinishRegisterSchema = z.object({
+	[Field.NAME]: nameValidation,
+	[Field.LAST_NAME]: nameValidation,
 });

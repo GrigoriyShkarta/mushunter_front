@@ -7,6 +7,7 @@ import { getMe } from '../../services/endpoints/user';
 import { useTranslation } from 'react-i18next';
 import { Languages } from '../../shared/constants';
 import SkillsBlock from './components/SkillsBlock';
+import DescriptionBlock from './components/DescriptionBlock';
 
 const User: FC = () => {
 	const user = useUserStore((state) => state.user);
@@ -22,9 +23,9 @@ const User: FC = () => {
 
 		const check = async () => {
 			const res = await getMe();
-			console.log('check', res);
+			// console.log('check', res);
 		};
-		// check();
+		check();
 	}, [navigate, user]);
 
 	if (!user) {
@@ -40,11 +41,14 @@ const User: FC = () => {
 				city={user?.city && user.city[i18n.language as Languages]}
 				skills={user?.skills && user.skills.map((skill) => skill.name[i18n.language as Languages])}
 				birthday={user?.birthday}
+				education={user?.education}
 				likes={user.likes}
 				links={user.links}
 				phone={user?.phone}
+				styles={user.styles.map((style) => style.name)}
 			/>
-			<SkillsBlock skills={user.skills} />
+			<SkillsBlock skills={user.skills} id={user.id} />
+			<DescriptionBlock description={user.description} id={user.id} />
 		</div>
 	);
 };
