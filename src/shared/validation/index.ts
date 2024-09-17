@@ -36,3 +36,12 @@ export const FinishRegisterSchema = z.object({
 	[Field.NAME]: nameValidation,
 	[Field.LAST_NAME]: nameValidation,
 });
+
+export const ChangeMainSettingsValidationSchema = z.object({
+	[Field.NAME]: nameValidation,
+	[Field.LAST_NAME]: nameValidation,
+	[Field.CITY]: z.number().optional(),
+	[Field.PHONE]: z.string().optional(),
+	[Field.EDUCATION]: z.string().optional(),
+	[Field.LINKS]: z.array(z.string()).optional(),
+});

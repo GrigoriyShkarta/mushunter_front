@@ -3,7 +3,7 @@ import s from './style.module.scss';
 import { useUserStore } from './store';
 import { MainBlock } from './components';
 import { useNavigate } from 'react-router-dom';
-import { getMe } from '../../services/endpoints/user';
+import { getMe, getSettings } from '../../services/endpoints/user';
 import { useTranslation } from 'react-i18next';
 import { Languages } from '../../shared/constants';
 import SkillsBlock from './components/SkillsBlock';
@@ -19,6 +19,8 @@ const User: FC = () => {
 	useEffect(() => {
 		if (!user) {
 			navigate('/');
+		} else {
+			getSettings();
 		}
 
 		const check = async () => {

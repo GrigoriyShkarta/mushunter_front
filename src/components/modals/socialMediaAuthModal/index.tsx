@@ -9,10 +9,12 @@ import { FinishedRegistrationSchemaType } from '../../../services/endpoints/auth
 import Button from '../../buttons/Button.tsx';
 import { useTranslation } from 'react-i18next';
 import { useUserStore } from '../../../pages/user/store';
+import { useNavigate } from 'react-router-dom';
 
 const SocialMediaAuthModal: FC = () => {
 	const { t } = useTranslation();
 	const { registrationUser } = useUserStore();
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 	const {
 		register,
@@ -26,11 +28,18 @@ const SocialMediaAuthModal: FC = () => {
 		const email = localStorage.getItem('emailForRegistration');
 		if (email) {
 			setLoading(true);
-			registrationUser({
-				[Field.NAME]: data.firstname,
-				[Field.LAST_NAME]: data.lastname,
-				[Field.EMAIL]: email,
-			});
+			try {
+				registrationUser({
+					[Field.NAME]: data.firstname,
+					[Field.LAST_NAME]: data.lastname,
+					[Field.EMAIL]: email,
+				});
+				navigate('/user');
+			} catch (e) {
+				console.error(e);
+			} finally {
+				setLoading(false);
+			}
 		}
 	};
 
@@ -40,7 +49,7 @@ const SocialMediaAuthModal: FC = () => {
 				<TextInput register={register(Field.NAME)} name={Field.NAME} error={errors.firstname?.message} />
 				<TextInput register={register(Field.LAST_NAME)} name={Field.LAST_NAME} error={errors.lastname?.message} />
 			</div>
-			<Button type={'submit'} value={t('general.send')} className={s.button} />
+			<Button type={'submit'} value={t('general.send')} className={s.button} loading={loading} />
 		</form>
 	);
 };
