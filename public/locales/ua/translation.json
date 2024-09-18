@@ -29,7 +29,8 @@
         "beMatch": "Паролі повинні збігатися"
     },
     "input": {
-        "enterValue": "введіть {{value}}"
+        "enterValue": "введіть {{value}}",
+        "choose": "обери {{value}}"
     },
     "general": {
         "firstname": "ім'я",
@@ -42,7 +43,10 @@
         "code": "код",
         "changeEmail": "Змінити електронну адресу",
         "newPassword": "новий пароль",
-        "checkPassword": "перевірка паролю"
+        "checkPassword": "перевірка паролю",
+        "mainSettings": "Редагування основної інформації",
+        "styles": "стилі",
+        "city": "місто"
     },
     "response": {
         "success": {

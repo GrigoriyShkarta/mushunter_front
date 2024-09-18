@@ -5,7 +5,7 @@ import { SvgDefaultAva } from '../../../../assets/svg';
 import { MdOutlineModeEditOutline } from 'react-icons/md';
 import { getAgeWord } from '../../../../shared/helpers/getYears.ts';
 import { useTranslation } from 'react-i18next';
-import { Languages } from '../../../../shared/constants';
+import { Languages, UserModal } from '../../../../shared/constants';
 import { AiTwotoneLike } from 'react-icons/ai';
 import Button from '../../../../components/buttons/Button.tsx';
 import { BsSend } from 'react-icons/bs';
@@ -26,6 +26,7 @@ interface Props {
 	links: string[];
 	styles: string[];
 	education?: string;
+	openModal: (name: UserModal) => void;
 }
 
 const MainBlock: FC<Props> = ({
@@ -41,6 +42,7 @@ const MainBlock: FC<Props> = ({
 	phone,
 	styles,
 	education,
+	openModal,
 }) => {
 	const user = useUserStore((state) => state.user);
 	const { t, i18n } = useTranslation();
@@ -51,7 +53,7 @@ const MainBlock: FC<Props> = ({
 			{ava ? <img className={s.ava} src={ava} alt="user_avatar" /> : <SvgDefaultAva className={s.ava} />}
 			<div className={s.wrapper}>
 				{user?.id === id && (
-					<div className={s.edit}>
+					<div className={s.edit} onClick={() => openModal(UserModal.MainSettings)}>
 						<MdOutlineModeEditOutline size={'24px'} />
 					</div>
 				)}

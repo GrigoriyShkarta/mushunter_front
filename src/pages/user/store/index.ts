@@ -1,10 +1,12 @@
 import { create } from 'zustand';
-import { UserSchemaType } from '../../../shared/models/user.ts';
 import { EmailSchemaType, RegisterSchemaType } from '../../../services/endpoints/auth/schema';
 import { authWithSocialMedia, login, registration } from '../../../services/endpoints/auth';
 import { devtools, persist } from 'zustand/middleware';
 import { Statuses } from '../../../shared/constants';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
+import { GetSettingsSchemaType } from '../../../services/endpoints/user/schema';
+import { getSettings } from '../../../services/endpoints/user';
+import { UserSchemaType } from '../../../services/endpoints/user/response';
 
 interface UserStore {
 	user: UserSchemaType | null;
@@ -13,6 +15,8 @@ interface UserStore {
 	socialAuth: (form: EmailSchemaType) => Promise<AuthSchemaType | boolean>;
 	status: Statuses | null;
 	error: string | null;
+	settings: GetSettingsSchemaType | null;
+	fetchSettings: () => Promise<GetSettingsSchemaType>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -21,6 +25,7 @@ export const useUserStore = create<UserStore>()(
 			user: null,
 			error: null,
 			status: null,
+			settings: null,
 
 			registrationUser: async (form: RegisterSchemaType) => {
 				try {
@@ -52,6 +57,16 @@ export const useUserStore = create<UserStore>()(
 					if (res && typeof res === 'object' && 'user' in res) {
 						set({ user: res.user });
 					}
+					return res;
+				} catch (e) {
+					throw new Error(e as string);
+				}
+			},
+
+			fetchSettings: async (): Promise<GetSettingsSchemaType> => {
+				try {
+					const res = await getSettings();
+					set({ settings: res });
 					return res;
 				} catch (e) {
 					throw new Error(e as string);

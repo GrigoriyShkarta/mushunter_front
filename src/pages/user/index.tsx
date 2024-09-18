@@ -3,36 +3,52 @@ import s from './style.module.scss';
 import { useUserStore } from './store';
 import { MainBlock } from './components';
 import { useNavigate } from 'react-router-dom';
-import { getMe, getSettings } from '../../services/endpoints/user';
+import { getMe } from '../../services/endpoints/user';
 import { useTranslation } from 'react-i18next';
-import { Languages } from '../../shared/constants';
+import { Languages, UserModal } from '../../shared/constants';
 import SkillsBlock from './components/SkillsBlock';
 import DescriptionBlock from './components/DescriptionBlock';
+import { useModalStore } from '../../components/modals/store.ts';
+import MainSettingsModal from '../../components/modals/mainSettingsModal';
+import Modal from '../../components/modals';
 
 const User: FC = () => {
 	const user = useUserStore((state) => state.user);
-	const { i18n } = useTranslation();
+	const settings = useUserStore((state) => state.settings);
+	const fetchSettings = useUserStore((state) => state.fetchSettings);
+	const { setIsOpen, setTitle, setChildren } = useModalStore();
+	const { i18n, t } = useTranslation();
 	const navigate = useNavigate();
 
 	console.log('user', user);
+	console.log('settings', settings);
 
 	useEffect(() => {
 		if (!user) {
 			navigate('/');
 		} else {
-			getSettings();
+			fetchSettings();
 		}
 
 		const check = async () => {
 			const res = await getMe();
 			// console.log('check', res);
 		};
-		check();
+		// check();
 	}, [navigate, user]);
 
 	if (!user) {
 		return null;
 	}
+
+	const openModal = (name: UserModal): void => {
+		setIsOpen(true);
+		switch (name) {
+			case UserModal.MainSettings:
+				setTitle(t('general.mainSettings'));
+				setChildren(<MainSettingsModal />);
+		}
+	};
 
 	return (
 		<div className={s.container}>
@@ -40,7 +56,7 @@ const User: FC = () => {
 				id={user.id}
 				firstName={user?.firstname}
 				lastName={user?.lastname}
-				city={user?.city && user.city[i18n.language as Languages]}
+				city={user?.city && user.city.name[i18n.language as Languages]}
 				skills={user?.skills && user.skills.map((skill) => skill.name[i18n.language as Languages])}
 				birthday={user?.birthday}
 				education={user?.education}
@@ -48,9 +64,11 @@ const User: FC = () => {
 				links={user.links}
 				phone={user?.phone}
 				styles={user.styles.map((style) => style.name)}
+				openModal={openModal}
 			/>
 			<SkillsBlock skills={user.skills} id={user.id} />
 			<DescriptionBlock description={user.description} id={user.id} />
+			<Modal />
 		</div>
 	);
 };

@@ -12,9 +12,10 @@ interface ITextInputProps {
 	name: Field;
 	error?: string;
 	icon?: ReactNode;
+	value?: string;
 }
 
-const TextInput: FC<ITextInputProps> = ({ register, className, name, error, icon }) => {
+const TextInput: FC<ITextInputProps> = ({ register, className, name, error, icon, value }) => {
 	const { t } = useTranslation();
 	const inputClassname = cn({
 		[s.input]: true,
@@ -29,6 +30,7 @@ const TextInput: FC<ITextInputProps> = ({ register, className, name, error, icon
 				{icon && <div className={s.customIcon}>{icon}</div>}
 				<input
 					{...register}
+					value={value}
 					className={inputClassname}
 					type="text"
 					aria-invalid={!!error}

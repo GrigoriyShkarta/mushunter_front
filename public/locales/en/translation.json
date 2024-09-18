@@ -29,11 +29,12 @@
         "beMatch": "Passwords must be match"
     },
     "input": {
-        "enterValue": "enter {{value}}"
+        "enterValue": "enter {{value}}",
+        "choose": "choose {{value}}"
     },
     "general": {
         "firstname": "name",
-        "lastName": "lastName",
+        "lastname": "lastname",
         "email": "email",
         "password": "password",
         "confirmPassword": "confirm Password",
@@ -42,7 +43,10 @@
         "code": "code",
         "changeEmail": "Change email",
         "newPassword": "new Password",
-        "checkPassword": "check Password"
+        "checkPassword": "check Password",
+        "mainSettings": "Editing basic information",
+        "styles": "styles",
+        "city": "city"
     },
     "response": {
         "success": {

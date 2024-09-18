@@ -22,13 +22,10 @@ export const checkEmail = async (form: EmailSchemaType): Promise<boolean> => {
 };
 
 export const authWithSocialMedia = async (data: EmailSchemaType): Promise<AuthSchemaType | boolean> => {
-	console.log('data', data);
 	const response = await axiosInstance.post('auth/socialAuth', data);
-	console.log('response', response);
 	if (typeof response.data.decompressedData === 'boolean' || typeof response.data === 'boolean') {
 		return response.data.decompressedData;
 	}
-	console.log(response.data.decompressedData);
 	localStorage.setItem('tokens', JSON.stringify(response.data.decompressedData.tokens));
 	return AuthSchema.parse(response.data.decompressedData);
 };
