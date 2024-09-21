@@ -41,7 +41,9 @@ export const ChangeMainSettingsValidationSchema = z.object({
 	[Field.NAME]: nameValidation,
 	[Field.LAST_NAME]: nameValidation,
 	[Field.CITY]: z.number().optional(),
+	[Field.BIRTHDAY]: z.date().optional(),
 	[Field.PHONE]: z.string().optional(),
 	[Field.EDUCATION]: z.string().optional(),
 	[Field.LINKS]: z.array(z.string()).optional(),
+	[Field.STYLES]: z.array(z.string()).optional(),
 });

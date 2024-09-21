@@ -46,7 +46,10 @@
         "checkPassword": "перевірка паролю",
         "mainSettings": "Редагування основної інформації",
         "styles": "стилі",
-        "city": "місто"
+        "city": "місто",
+        "birthday": "день народження",
+        "phone": "номер телефону",
+        "education": "освіта"
     },
     "response": {
         "success": {

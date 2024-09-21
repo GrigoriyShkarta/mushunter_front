@@ -34,6 +34,7 @@ export enum Field {
 	EDUCATION = 'education',
 	LINKS = 'links',
 	STYLES = 'styles',
+	BIRTHDAY = 'birthday',
 	CODE = 'code',
 	NEW_PASSWORD = 'newPassword',
 	CHECK_PASSWORD = 'checkPassword',

@@ -46,7 +46,10 @@
         "checkPassword": "check Password",
         "mainSettings": "Editing basic information",
         "styles": "styles",
-        "city": "city"
+        "city": "city",
+        "birthday": "birthday",
+        "phone": "telephone number",
+        "education": "education"
     },
     "response": {
         "success": {
