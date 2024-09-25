@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import Select, { MultiValue, SingleValue, StylesConfig } from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Option } from '../../shared/models';
 import { useTranslation } from 'react-i18next';
 import { capitalizeFirstLetter } from '../../shared/helpers/capitalizeFirstLetter.ts';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import s from './Inputs.module.scss';
 
 const colourStyles: StylesConfig<Option, boolean> = {
@@ -26,6 +26,7 @@ const colourStyles: StylesConfig<Option, boolean> = {
 			borderColor: '#ed6b15',
 		},
 	}),
+
 	option: (styles, { isFocused }) => ({
 		...styles,
 		backgroundColor: isFocused ? '#F4A876' : 'white',
@@ -39,30 +40,36 @@ const colourStyles: StylesConfig<Option, boolean> = {
 const animatedComponents = makeAnimated();
 
 interface Props {
-	register: UseFormRegisterReturn;
 	defaultValue?: Option[];
 	isMulti?: boolean;
 	options?: Option[];
-	onChange: (newValue: MultiValue<Option> | SingleValue<Option>) => void;
 	name: string;
+	control: any;
 }
 
-const SelectInput: FC<Props> = ({ defaultValue, options, isMulti = false, onChange, name, register }) => {
+const SelectInput: FC<Props> = ({ defaultValue, options, isMulti = false, name, control }) => {
 	const { t } = useTranslation();
 
 	return (
 		<div>
 			<label className={`${s.label}`}>{capitalizeFirstLetter(t(`general.${name}`))}</label>
-			<Select
-				{...register}
-				closeMenuOnSelect={!isMulti}
-				components={animatedComponents}
+			<Controller
+				name={name}
+				control={control}
 				defaultValue={defaultValue}
-				isMulti={isMulti}
-				options={options}
-				onChange={onChange}
-				placeholder={capitalizeFirstLetter(t('input.choose', { value: t(`general.${name}`) }))}
-				styles={colourStyles}
+				render={({ field: { onChange, value } }) => (
+					<Select
+						components={animatedComponents}
+						options={
+							isMulti ? options : options?.filter((opt) => opt.value !== value?.value) // Фильтрация только если одиночный выбор
+						}
+						isMulti={isMulti}
+						onChange={onChange}
+						placeholder={capitalizeFirstLetter(t('input.choose', { value: t(`general.${name}`) }))}
+						styles={colourStyles}
+						value={value}
+					/>
+				)}
 			/>
 		</div>
 	);

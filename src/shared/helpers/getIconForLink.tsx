@@ -15,10 +15,9 @@ export function getIconForLink(link: string): ReactElement {
 		} else if (domain.includes('facebook.com')) {
 			return <FaFacebook size={'28px'} color={'#3b5998'} />;
 		} else {
-			return <MdLink size={'28px'} />;
+			return <MdLink size={'28px'} style={{ border: '1px solid', borderRadius: '50%' }} />;
 		}
 	} catch (error) {
-		console.error('Invalid URL:', link);
-		return <MdLink size={'20px'} />;
+		return <MdLink size={'28px'} style={{ border: '1px solid', borderRadius: '50%' }} />;
 	}
 }

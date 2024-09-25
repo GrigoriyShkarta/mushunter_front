@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const TranslateObj = z.object({
+export const TranslateObj = z.object({
 	ua: z.string(),
 	en: z.string(),
 });
@@ -25,7 +25,12 @@ export const UserSchema = z.object({
 	id: z.number(),
 	firstname: z.string(),
 	lastname: z.string(),
-	birthday: z.date().optional(),
+	birthday: z.preprocess((arg) => {
+		if (typeof arg === 'string' || arg instanceof Date) {
+			return new Date(arg);
+		}
+		return arg;
+	}, z.date().optional()),
 	description: z.string().optional(),
 	education: z.string().optional(),
 	phone: z.string().optional(),

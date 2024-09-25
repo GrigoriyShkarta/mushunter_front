@@ -26,7 +26,8 @@
         "numbers": "The field must contain numbers",
         "latinNumberSymbol": "Only Latin letters, numbers and special characters",
         "noSpacesAllowed": "No Spaces Allowed",
-        "beMatch": "Passwords must be match"
+        "beMatch": "Passwords must be match",
+        "link": "Incorrect link"
     },
     "input": {
         "enterValue": "enter {{value}}",
@@ -49,7 +50,9 @@
         "city": "city",
         "birthday": "birthday",
         "phone": "telephone number",
-        "education": "education"
+        "education": "education",
+        "links": "link",
+        "skillSettings": "Editing skill"
     },
     "response": {
         "success": {
@@ -68,6 +71,8 @@
         "skills": "Skills",
         "more10Years": "more than 10 years",
         "generalInformation": "General information",
-        "basicStyles": "Basic styles"
+        "basicStyles": "Basic styles",
+        "addLink": "Add Link",
+        "addSection": "Add section"
     }
 }

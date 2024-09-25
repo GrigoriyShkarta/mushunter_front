@@ -55,7 +55,7 @@ const DatePickerInput: FC<Props> = ({ name, control, defaultValue }) => {
 					<DatePicker
 						selected={value}
 						locale={'uk'}
-						onChange={(date) => onChange(date)} // Обновляем значение
+						onChange={(date) => onChange(date)}
 						onBlur={onBlur}
 						className={s.container}
 						renderCustomHeader={({

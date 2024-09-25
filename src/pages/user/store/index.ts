@@ -4,8 +4,8 @@ import { authWithSocialMedia, login, registration } from '../../../services/endp
 import { devtools, persist } from 'zustand/middleware';
 import { Statuses } from '../../../shared/constants';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
-import { GetSettingsSchemaType } from '../../../services/endpoints/user/schema';
-import { getSettings } from '../../../services/endpoints/user';
+import { ChangeMainSettingsSchemaType, GetSettingsSchemaType } from '../../../services/endpoints/user/schema';
+import { getSettings, sendMainData } from '../../../services/endpoints/user';
 import { UserSchemaType } from '../../../services/endpoints/user/response';
 
 interface UserStore {
@@ -17,6 +17,9 @@ interface UserStore {
 	error: string | null;
 	settings: GetSettingsSchemaType | null;
 	fetchSettings: () => Promise<GetSettingsSchemaType>;
+	changeMainData: (data: ChangeMainSettingsSchemaType) => Promise<UserSchemaType>;
+	sendForm: boolean;
+	toggleSendForm: () => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -26,6 +29,7 @@ export const useUserStore = create<UserStore>()(
 			error: null,
 			status: null,
 			settings: null,
+			sendForm: false,
 
 			registrationUser: async (form: RegisterSchemaType) => {
 				try {
@@ -71,6 +75,21 @@ export const useUserStore = create<UserStore>()(
 				} catch (e) {
 					throw new Error(e as string);
 				}
+			},
+
+			changeMainData: async (data: ChangeMainSettingsSchemaType): Promise<UserSchemaType> => {
+				try {
+					console.log('data', data);
+					const res = await sendMainData(data);
+					set({ user: res });
+					return res;
+				} catch (e) {
+					throw new Error(e as string);
+				}
+			},
+
+			toggleSendForm: (): void => {
+				set((state) => ({ sendForm: !state.sendForm }));
 			},
 		})),
 		{

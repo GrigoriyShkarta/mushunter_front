@@ -40,10 +40,34 @@ export const FinishRegisterSchema = z.object({
 export const ChangeMainSettingsValidationSchema = z.object({
 	[Field.NAME]: nameValidation,
 	[Field.LAST_NAME]: nameValidation,
-	[Field.CITY]: z.number().optional(),
-	[Field.BIRTHDAY]: z.date().optional(),
+	[Field.CITY]: z.preprocess((arg) => {
+		if (Array.isArray(arg)) {
+			return arg[0].value;
+		}
+		if (arg && typeof arg === 'object' && 'value' in arg) {
+			return arg.value;
+		}
+		return arg;
+	}, z.number().optional()),
+	[Field.BIRTHDAY]: z.preprocess((arg) => {
+		if (typeof arg === 'string') {
+			return new Date(arg);
+		}
+		return arg;
+	}, z.date().optional()),
 	[Field.PHONE]: z.string().optional(),
 	[Field.EDUCATION]: z.string().optional(),
-	[Field.LINKS]: z.array(z.string()).optional(),
-	[Field.STYLES]: z.array(z.string()).optional(),
+	[Field.LINKS]: z.preprocess((arg) => {
+		if (Array.isArray(arg)) {
+			return arg.filter((link) => link !== '');
+		}
+		return arg;
+	}, z.array(z.string()).optional()),
+
+	[Field.STYLES]: z.preprocess((arg) => {
+		if (Array.isArray(arg)) {
+			return arg.map((item) => item.value);
+		}
+		return arg;
+	}, z.array(z.number()).optional()),
 });

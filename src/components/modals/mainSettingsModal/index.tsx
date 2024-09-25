@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import s from './style.module.scss';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ChangeMainSettingsSchemaType } from '../../../services/endpoints/user/schema';
@@ -7,101 +7,114 @@ import TextInput from '../../inputs/TextInput.tsx';
 import { Field } from '../../../shared/constants';
 import { useUserStore } from '../../../pages/user/store';
 import SelectInput from '../../inputs/Select.tsx';
-import { MultiValue, SingleValue } from 'react-select';
-import { Option } from '../../../shared/models';
 import { useTranslation } from 'react-i18next';
 import DatePickerInput from '../../inputs/DatePickerInput.tsx';
 import Button from '../../buttons/Button.tsx';
 import { ChangeMainSettingsValidationSchema } from '../../../shared/validation';
+import { formatToOption } from '../../../shared/helpers/formatToOption.ts';
+import { IoIosCloseCircle } from 'react-icons/io';
+import { useModalStore } from '../store.ts';
 
 const MainSettingsModal: FC = () => {
 	const settings = useUserStore((state) => state.settings);
 	const user = useUserStore((state) => state.user);
-	const [linksCount, setLinksCount] = useState(1);
-	const { i18n, t } = useTranslation();
+	const changeMainData = useUserStore((state) => state.changeMainData);
+	const toggleSendForm = useUserStore((state) => state.toggleSendForm);
+	const sendForm = useUserStore((state) => state.sendForm);
+	const { setIsOpen } = useModalStore();
+
+	const { t } = useTranslation();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
+		getValues,
+		setValue,
 		control,
+		watch,
 	} = useForm<ChangeMainSettingsSchemaType>({
 		resolver: zodResolver(ChangeMainSettingsValidationSchema),
+		defaultValues: {
+			[Field.BIRTHDAY]: user?.birthday,
+			[Field.EDUCATION]: user?.education,
+			[Field.NAME]: user?.firstname,
+			[Field.LAST_NAME]: user?.lastname,
+			[Field.PHONE]: user?.phone,
+			[Field.LINKS]: user?.links,
+		},
 	});
-
-	const formatToOption = (
-		array?: { id: number; name: string | { ua: string; en: string } }[],
-	): Option[] | undefined => {
-		return array?.map((item) => {
-			if (typeof item.name === 'string') {
-				return {
-					value: item.id,
-					label: item.name,
-				};
-			} else {
-				return {
-					value: item.id,
-					label: item.name[i18n.language as 'ua' | 'en'] || item.name.en,
-				};
-			}
-		});
-	};
 
 	const formatedStyles = formatToOption(settings?.styles);
 	const formatedCities = formatToOption(settings?.cities);
 	const formatedUserStyles = formatToOption(user?.styles);
 	const formatedUserCities = formatToOption(user?.city ? [user.city] : []);
-
-	const handleChangeStyle = (styleObj: MultiValue<Option> | SingleValue<Option>): void => {
-		console.log(styleObj);
-	};
+	const linksArray = watch(Field.LINKS) || [];
 
 	const onSubmit: SubmitHandler<ChangeMainSettingsSchemaType> = async (data): Promise<void> => {
-		console.log('data', data);
+		try {
+			toggleSendForm();
+			await changeMainData(data);
+		} catch (e) {
+			console.error('responseError', e);
+		} finally {
+			toggleSendForm();
+			setIsOpen(false);
+		}
+	};
+
+	const addField = (): void => {
+		const currentLinks = getValues(Field.LINKS) || [];
+		const updatedLinks = [...currentLinks, ''];
+		setValue(Field.LINKS, updatedLinks);
+	};
+
+	const deleteLink = (index: number): void => {
+		const currentLinks = getValues(Field.LINKS) || [];
+		const updatedLinks = [...currentLinks];
+		updatedLinks.splice(index, 1);
+		setValue(Field.LINKS, updatedLinks);
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 			<div className={s.inputs}>
 				<div className={s.nameWrapper}>
 					<TextInput
 						register={register(Field.NAME)}
 						name={Field.NAME}
 						error={errors.firstname?.message}
-						value={user?.firstname}
+						className={s.input}
 					/>
 					<TextInput
 						register={register(Field.LAST_NAME)}
 						name={Field.LAST_NAME}
 						error={errors.lastname?.message}
-						value={user?.lastname}
+						className={s.input}
 					/>
 				</div>
 				<SelectInput
-					register={register(Field.STYLES)}
 					defaultValue={formatedUserStyles}
 					options={formatedStyles}
-					onChange={handleChangeStyle}
 					isMulti
 					name={Field.STYLES}
+					control={control}
 				/>
-				<SelectInput
-					register={register(Field.CITY)}
-					defaultValue={formatedUserCities}
-					options={formatedCities}
-					onChange={handleChangeStyle}
-					name={Field.CITY}
-				/>
+				<SelectInput defaultValue={formatedUserCities} options={formatedCities} control={control} name={Field.CITY} />
 				<DatePickerInput name={Field.BIRTHDAY} defaultValue={user?.birthday} control={control} />
 				<TextInput register={register(Field.PHONE)} name={Field.PHONE} error={errors.phone?.message} />
 				<TextInput register={register(Field.EDUCATION)} name={Field.EDUCATION} error={errors.education?.message} />
 				<div className={s.linksWrapper}>
-					{Array.from({ length: linksCount }, (_, index) => (
-						<TextInput key={index} register={register(Field.LINKS)} name={Field.LINKS} value={user?.links[index]} />
+					{linksArray.map((_, idx) => (
+						<div className={s.link} key={idx}>
+							<TextInput register={register(`links.${idx}`)} name={Field.LINKS} />
+							<IoIosCloseCircle size={'24px'} color={'red'} onClick={() => deleteLink(idx)} />
+						</div>
 					))}
-					<Button type={'button'} value={'add'} className={''} func={() => setLinksCount(linksCount + 1)} />
+
+					<Button type={'button'} value={t('user.addLink')} func={addField} className={s.addBtn} />
 				</div>
 			</div>
-			<Button type={'submit'} value={t('general.send')} className={''} />
+			<Button type={'submit'} value={t('general.send')} className={s.button} loading={sendForm} />
 		</form>
 	);
 };

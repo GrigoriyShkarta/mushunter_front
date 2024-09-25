@@ -11,6 +11,7 @@ import DescriptionBlock from './components/DescriptionBlock';
 import { useModalStore } from '../../components/modals/store.ts';
 import MainSettingsModal from '../../components/modals/mainSettingsModal';
 import Modal from '../../components/modals';
+import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
 
 const User: FC = () => {
 	const user = useUserStore((state) => state.user);
@@ -47,6 +48,10 @@ const User: FC = () => {
 			case UserModal.MainSettings:
 				setTitle(t('general.mainSettings'));
 				setChildren(<MainSettingsModal />);
+				break;
+			case UserModal.SkillSettings:
+				setTitle(t('general.skillSettings'));
+				setChildren(<SkillsSettingsModal />);
 		}
 	};
 
@@ -66,8 +71,8 @@ const User: FC = () => {
 				styles={user.styles.map((style) => style.name)}
 				openModal={openModal}
 			/>
-			<SkillsBlock skills={user.skills} id={user.id} />
-			<DescriptionBlock description={user.description} id={user.id} />
+			<SkillsBlock skills={user.skills} id={user.id} openModal={openModal} />
+			<DescriptionBlock description={user.description} id={user.id} openModal={openModal} />
 			<Modal />
 		</div>
 	);

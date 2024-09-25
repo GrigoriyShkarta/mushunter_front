@@ -70,3 +70,10 @@
     white-space: nowrap;
   }
 }
+
+.addSection {
+  @include smallButton;
+  background-color: $orange;
+  width: fit-content;
+  margin: 0 auto;
+}

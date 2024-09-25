@@ -29,6 +29,8 @@ axiosInstance.interceptors.request.use(
 		if (config.data) {
 			config.data = pako.deflate(JSON.stringify(config.data));
 			config.headers['Content-Type'] = 'application/octet-stream';
+			// config.data = JSON.stringify(config.data);
+			// config.headers['Content-Type'] = 'application/json';
 		}
 
 		console.log('config', config);

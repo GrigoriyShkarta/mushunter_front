@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import s from './style.module.scss';
 import { useTranslation } from 'react-i18next';
-import { Languages } from '../../../../shared/constants';
+import { Languages, UserModal } from '../../../../shared/constants';
 import { getAgeWord } from '../../../../shared/helpers/getYears.ts';
 import { MdOutlineModeEditOutline } from 'react-icons/md';
 import { useUserStore } from '../../store';
+import Button from '../../../../components/buttons/Button.tsx';
 
 interface Props {
 	id: number;
@@ -16,11 +17,26 @@ interface Props {
 		};
 		experience: number;
 	}[];
+	openModal: (name: UserModal) => void;
 }
 
-const SkillsBlock: FC<Props> = ({ skills, id }) => {
+const SkillsBlock: FC<Props> = ({ skills, id, openModal }) => {
 	const user = useUserStore((state) => state.user);
 	const { t, i18n } = useTranslation();
+
+	if (skills.length === 0) {
+		return (
+			<section className={s.section}>
+				<h2 className={s.title}>{t('user.skills')}</h2>
+				<Button
+					type={'button'}
+					value={t('user.addSection')}
+					className={s.addSection}
+					func={() => openModal(UserModal.SkillSettings)}
+				/>
+			</section>
+		);
+	}
 
 	return (
 		<section className={s.section}>

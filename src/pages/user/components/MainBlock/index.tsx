@@ -21,7 +21,7 @@ interface Props {
 	phone?: string;
 	ava?: string;
 	skills?: string[];
-	birthday?: string;
+	birthday?: Date;
 	likes: number;
 	links: string[];
 	styles: string[];
