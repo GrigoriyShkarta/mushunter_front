@@ -52,6 +52,9 @@ const User: FC = () => {
 			case UserModal.SkillSettings:
 				setTitle(t('general.skillSettings'));
 				setChildren(<SkillsSettingsModal />);
+				break;
+			case UserModal.DescriptionSettings:
+				setTitle(t(''));
 		}
 	};
 

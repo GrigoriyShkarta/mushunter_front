@@ -6,16 +6,19 @@ import { capitalizeFirstLetter } from '../../shared/helpers/capitalizeFirstLette
 import { useTranslation } from 'react-i18next';
 import { Field } from '../../shared/constants';
 
+type InputType = 'text' | 'number';
+
 interface ITextInputProps {
 	register: UseFormRegisterReturn;
 	className?: string;
-	name: Field;
+	name: Field | string;
 	error?: string;
 	icon?: ReactNode;
 	value?: string;
+	type?: InputType;
 }
 
-const TextInput: FC<ITextInputProps> = ({ register, className, name, error, icon, value }) => {
+const TextInput: FC<ITextInputProps> = ({ register, className, name, error, icon, value, type = 'text' }) => {
 	const { t } = useTranslation();
 	const inputClassname = cn({
 		[s.input]: true,
@@ -32,7 +35,7 @@ const TextInput: FC<ITextInputProps> = ({ register, className, name, error, icon
 					{...register}
 					value={value}
 					className={inputClassname}
-					type="text"
+					type={type}
 					aria-invalid={!!error}
 					placeholder={capitalizeFirstLetter(t('input.enterValue', { value: t(`general.${name}`) }))}
 				/>

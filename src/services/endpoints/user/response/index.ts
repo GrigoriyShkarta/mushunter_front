@@ -42,3 +42,4 @@ export const UserSchema = z.object({
 });
 
 export type UserSchemaType = z.infer<typeof UserSchema>;
+export type SkillSchemaType = z.infer<typeof SkillSchema>;

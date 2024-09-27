@@ -22,6 +22,9 @@ export function getAgeWord(birthDateString: string | Date | number, lang: Langua
 
 	// Логика для возврата результата в зависимости от языка
 	if (lang === Languages.EN) {
+		if (age === 0) {
+			return 'less than a year';
+		}
 		return `${age} years`;
 	}
 
@@ -31,6 +34,8 @@ export function getAgeWord(birthDateString: string | Date | number, lang: Langua
 	}
 
 	switch (age % 10) {
+		case 0:
+			return 'меньше року';
 		case 1:
 			return `${age} рік`;
 		case 2:

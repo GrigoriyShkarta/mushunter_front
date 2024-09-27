@@ -22,6 +22,10 @@ const colourStyles: StylesConfig<Option, boolean> = {
 		boxShadow: 'none',
 		borderRadius: '9px',
 
+		div: {
+			padding: '4px',
+		},
+
 		':hover': {
 			borderColor: '#ed6b15',
 		},
@@ -40,18 +44,32 @@ const colourStyles: StylesConfig<Option, boolean> = {
 const animatedComponents = makeAnimated();
 
 interface Props {
-	defaultValue?: Option[];
+	defaultValue?: Option | Option[];
 	isMulti?: boolean;
 	options?: Option[];
 	name: string;
 	control: any;
+	objPath?: string;
+	idxPath?: number;
+	handleChange?: (selectedOption: Option | Option[]) => void;
 }
 
-const SelectInput: FC<Props> = ({ defaultValue, options, isMulti = false, name, control }) => {
+const SelectInput: FC<Props> = ({
+	defaultValue,
+	options,
+	isMulti = false,
+	name,
+	control,
+	handleChange,
+	objPath,
+	idxPath = 0,
+}) => {
 	const { t } = useTranslation();
 
+	console.log('defaultValue', defaultValue);
+
 	return (
-		<div>
+		<div className={s.wrapper}>
 			<label className={`${s.label}`}>{capitalizeFirstLetter(t(`general.${name}`))}</label>
 			<Controller
 				name={name}
@@ -60,14 +78,12 @@ const SelectInput: FC<Props> = ({ defaultValue, options, isMulti = false, name, 
 				render={({ field: { onChange, value } }) => (
 					<Select
 						components={animatedComponents}
-						options={
-							isMulti ? options : options?.filter((opt) => opt.value !== value?.value) // Фильтрация только если одиночный выбор
-						}
+						options={isMulti ? options : options?.filter((opt) => opt.value !== value?.value)}
 						isMulti={isMulti}
-						onChange={onChange}
+						onChange={handleChange || onChange}
 						placeholder={capitalizeFirstLetter(t('input.choose', { value: t(`general.${name}`) }))}
 						styles={colourStyles}
-						value={value}
+						value={objPath ? value[idxPath][objPath] : value}
 					/>
 				)}
 			/>

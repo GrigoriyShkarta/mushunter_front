@@ -48,7 +48,7 @@ const MainSettingsModal: FC = () => {
 	const formatedCities = formatToOption(settings?.cities);
 	const formatedUserStyles = formatToOption(user?.styles);
 	const formatedUserCities = formatToOption(user?.city ? [user.city] : []);
-	const linksArray = watch(Field.LINKS) || [];
+	const linksArray = watch(Field.LINKS) ?? [];
 
 	const onSubmit: SubmitHandler<ChangeMainSettingsSchemaType> = async (data): Promise<void> => {
 		try {

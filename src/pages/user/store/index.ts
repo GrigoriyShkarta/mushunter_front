@@ -4,8 +4,12 @@ import { authWithSocialMedia, login, registration } from '../../../services/endp
 import { devtools, persist } from 'zustand/middleware';
 import { Statuses } from '../../../shared/constants';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
-import { ChangeMainSettingsSchemaType, GetSettingsSchemaType } from '../../../services/endpoints/user/schema';
-import { getSettings, sendMainData } from '../../../services/endpoints/user';
+import {
+	ChangeMainSettingsSchemaType,
+	GetChangeSkillsSchemaType,
+	GetSettingsSchemaType,
+} from '../../../services/endpoints/user/schema';
+import { getSettings, sendMainData, sendSkills } from '../../../services/endpoints/user';
 import { UserSchemaType } from '../../../services/endpoints/user/response';
 
 interface UserStore {
@@ -20,6 +24,7 @@ interface UserStore {
 	changeMainData: (data: ChangeMainSettingsSchemaType) => Promise<UserSchemaType>;
 	sendForm: boolean;
 	toggleSendForm: () => void;
+	changeSkills: (data: GetChangeSkillsSchemaType) => Promise<UserSchemaType>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -79,12 +84,23 @@ export const useUserStore = create<UserStore>()(
 
 			changeMainData: async (data: ChangeMainSettingsSchemaType): Promise<UserSchemaType> => {
 				try {
-					console.log('data', data);
 					const res = await sendMainData(data);
 					set({ user: res });
 					return res;
 				} catch (e) {
 					throw new Error(e as string);
+				}
+			},
+
+			changeSkills: async (data: GetChangeSkillsSchemaType): Promise<UserSchemaType> => {
+				try {
+					const res = await sendSkills(data);
+					set({ user: res, sendForm: true });
+					return res;
+				} catch (e) {
+					throw new Error(e as string);
+				} finally {
+					set({ sendForm: false });
 				}
 			},
 

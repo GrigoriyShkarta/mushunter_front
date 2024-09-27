@@ -52,7 +52,10 @@
         "phone": "telephone number",
         "education": "education",
         "links": "link",
-        "skillSettings": "Editing skill"
+        "skillSettings": "Editing skill",
+        "skills": "skill",
+        "experience": "experience",
+        "descriptionEdit": "Editing the description"
     },
     "response": {
         "success": {
@@ -72,7 +75,8 @@
         "more10Years": "more than 10 years",
         "generalInformation": "General information",
         "basicStyles": "Basic styles",
-        "addLink": "Add Link",
-        "addSection": "Add section"
+        "addLink": "Add link",
+        "addSection": "Add section",
+        "addSkill": "Add skill"
     }
 }

@@ -43,7 +43,7 @@ const SkillsBlock: FC<Props> = ({ skills, id, openModal }) => {
 			<h2 className={s.title}>{t('user.skills')}</h2>
 			<div className={s.wrapper}>
 				{user?.id === id && (
-					<div className={s.edit}>
+					<div className={s.edit} onClick={() => openModal(UserModal.SkillSettings)}>
 						<MdOutlineModeEditOutline size={'24px'} />
 					</div>
 				)}

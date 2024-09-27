@@ -1,7 +1,5 @@
 import { z } from 'zod';
-import { i18n } from 'i18next';
 import { Field } from '../../../../shared/constants';
-import { SkillSchema, TranslateObj } from '../response';
 
 const ObjectSchema = z.object({
 	id: z.number(),
@@ -28,18 +26,9 @@ export const ChangeMainSettingsSchema = z.object({
 	[Field.STYLES]: z.array(z.number()).optional(),
 });
 
-export const ChangeSkillsSchema = z.preprocess(
-	(arg: any) => {
-		if (Array.isArray(arg) && arg.length > 0) {
-			return arg.map((item: { id: number; name: { ua: string; en: string }; experience: number }) => ({
-				name: item.name,
-				experience: item.experience,
-			}));
-		}
-		return arg;
-	},
-	z.array(z.object({ name: z.number(), experience: z.number() })).default([]),
-);
+export const ChangeSkillsSchema = z.object({
+	[Field.SKILLS]: z.array(z.object({ skill: z.number(), experience: z.number() })).default([]),
+});
 
 export type ChangeMainSettingsSchemaType = z.infer<typeof ChangeMainSettingsSchema>;
 export type GetSettingsSchemaType = z.infer<typeof GetSettingsSchema>;
