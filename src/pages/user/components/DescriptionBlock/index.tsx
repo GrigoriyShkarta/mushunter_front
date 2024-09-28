@@ -33,7 +33,7 @@ const DescriptionBlock: FC<Props> = ({ description, id, openModal }) => {
 	return (
 		<section className={s.section}>
 			{user?.id === id && (
-				<div className={s.edit}>
+				<div className={s.edit} onClick={() => openModal(UserModal.DescriptionSettings)}>
 					<MdOutlineModeEditOutline size={'24px'} />
 				</div>
 			)}

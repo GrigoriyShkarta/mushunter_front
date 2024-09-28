@@ -1,5 +1,6 @@
 import axiosInstance from '../../axios';
 import {
+	ChangeDescriptionSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
 	GetSettingsSchema,
@@ -23,5 +24,10 @@ export const sendMainData = async (data: ChangeMainSettingsSchemaType): Promise<
 
 export const sendSkills = async (data: GetChangeSkillsSchemaType): Promise<UserSchemaType> => {
 	const response = await axiosInstance.post('/user/changeSkills', data);
+	return UserSchema.parse(response.data.decompressedData);
+};
+
+export const sendDescription = async (data: ChangeDescriptionSchemaType): Promise<UserSchemaType> => {
+	const response = await axiosInstance.post('/user/changeDescription', data);
 	return UserSchema.parse(response.data.decompressedData);
 };

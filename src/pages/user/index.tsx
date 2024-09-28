@@ -3,7 +3,6 @@ import s from './style.module.scss';
 import { useUserStore } from './store';
 import { MainBlock } from './components';
 import { useNavigate } from 'react-router-dom';
-import { getMe } from '../../services/endpoints/user';
 import { useTranslation } from 'react-i18next';
 import { Languages, UserModal } from '../../shared/constants';
 import SkillsBlock from './components/SkillsBlock';
@@ -12,6 +11,7 @@ import { useModalStore } from '../../components/modals/store.ts';
 import MainSettingsModal from '../../components/modals/mainSettingsModal';
 import Modal from '../../components/modals';
 import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
+import DescriptionSettingsModal from '../../components/modals/descriptionSettingsModal';
 
 const User: FC = () => {
 	const user = useUserStore((state) => state.user);
@@ -21,22 +21,13 @@ const User: FC = () => {
 	const { i18n, t } = useTranslation();
 	const navigate = useNavigate();
 
-	console.log('user', user);
-	console.log('settings', settings);
-
 	useEffect(() => {
 		if (!user) {
 			navigate('/');
-		} else {
+		} else if (!settings) {
 			fetchSettings();
 		}
-
-		const check = async () => {
-			const res = await getMe();
-			// console.log('check', res);
-		};
-		// check();
-	}, [navigate, user]);
+	}, [navigate, user, settings]);
 
 	if (!user) {
 		return null;
@@ -54,7 +45,8 @@ const User: FC = () => {
 				setChildren(<SkillsSettingsModal />);
 				break;
 			case UserModal.DescriptionSettings:
-				setTitle(t(''));
+				setTitle(t('general.descriptionEdit'));
+				setChildren(<DescriptionSettingsModal />);
 		}
 	};
 

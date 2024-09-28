@@ -55,7 +55,8 @@
         "skillSettings": "Редагування навичок",
         "skills": "навичка",
         "experience": "досвід",
-        "descriptionEdit": "Редагування опису"
+        "descriptionEdit": "Редагування опису",
+        "description": "опис"
     },
     "response": {
         "success": {

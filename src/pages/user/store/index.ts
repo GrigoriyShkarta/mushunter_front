@@ -5,11 +5,12 @@ import { devtools, persist } from 'zustand/middleware';
 import { Statuses } from '../../../shared/constants';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
 import {
+	ChangeDescriptionSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
 	GetSettingsSchemaType,
 } from '../../../services/endpoints/user/schema';
-import { getSettings, sendMainData, sendSkills } from '../../../services/endpoints/user';
+import { getSettings, sendDescription, sendMainData, sendSkills } from '../../../services/endpoints/user';
 import { UserSchemaType } from '../../../services/endpoints/user/response';
 
 interface UserStore {
@@ -25,6 +26,7 @@ interface UserStore {
 	sendForm: boolean;
 	toggleSendForm: () => void;
 	changeSkills: (data: GetChangeSkillsSchemaType) => Promise<UserSchemaType>;
+	changeDescription: (data: ChangeDescriptionSchemaType) => Promise<UserSchemaType>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -104,6 +106,18 @@ export const useUserStore = create<UserStore>()(
 				}
 			},
 
+			changeDescription: async (data: ChangeDescriptionSchemaType): Promise<UserSchemaType> => {
+				try {
+					const res = await sendDescription(data);
+					set({ user: res, sendForm: true });
+					return res;
+				} catch (e) {
+					throw new Error(e as string);
+				} finally {
+					set({ sendForm: false });
+				}
+			},
+
 			toggleSendForm: (): void => {
 				set((state) => ({ sendForm: !state.sendForm }));
 			},
@@ -112,6 +126,7 @@ export const useUserStore = create<UserStore>()(
 			name: 'user-storage',
 			partialize: (state) => ({
 				user: state.user,
+				settings: state.settings,
 			}),
 		},
 	),

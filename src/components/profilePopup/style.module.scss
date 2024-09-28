@@ -1,0 +1,19 @@
+.popup {
+  position: absolute;
+  top: 75px;
+  left: -16px;
+  display: flex;
+  flex-direction: column;
+  width: 236px;
+  gap: 10px;
+  opacity: 0;
+  justify-content: flex-start;
+  //transition: var(--transition-main);
+  transform: translateY(-10px);
+  z-index: 2;
+  //background: var(--light);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 1px 5px 17px #0000001a;
+  pointer-events: none;
+}

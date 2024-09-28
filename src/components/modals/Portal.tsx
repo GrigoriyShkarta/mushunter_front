@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 interface PortalProps {
@@ -7,17 +7,15 @@ interface PortalProps {
 }
 
 const Portal: FC<PortalProps> = ({ children, containerId = 'portal-root' }) => {
-	const container = document.getElementById(containerId);
+	// Создаем контейнер, если его еще нет
+	let container = document.getElementById(containerId);
+	if (!container) {
+		container = document.createElement('div');
+		container.id = containerId;
+		document.body.appendChild(container);
+	}
 
-	useEffect(() => {
-		if (!container) {
-			const newContainer = document.createElement('div');
-			newContainer.id = containerId;
-			document.body.appendChild(newContainer);
-		}
-	}, [container, containerId]);
-
-	return container ? createPortal(children, container) : null;
+	return createPortal(children, container);
 };
 
 export default Portal;

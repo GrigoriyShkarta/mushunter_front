@@ -55,7 +55,8 @@
         "skillSettings": "Editing skill",
         "skills": "skill",
         "experience": "experience",
-        "descriptionEdit": "Editing the description"
+        "descriptionEdit": "Editing the description",
+        "description": "description"
     },
     "response": {
         "success": {

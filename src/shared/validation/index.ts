@@ -71,3 +71,7 @@ export const ChangeMainSettingsValidationSchema = z.object({
 		return arg;
 	}, z.array(z.number()).optional()),
 });
+
+export const ChangeDescriptionSchema = z.object({
+	[Field.DESCRIPTION]: z.string().optional(),
+});

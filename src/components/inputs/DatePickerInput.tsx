@@ -2,7 +2,7 @@ import { FC } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { uk } from 'date-fns/locale/uk';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Field } from '../../shared/constants';
+import { Field, Languages } from '../../shared/constants';
 import s from './Inputs.module.scss';
 import { capitalizeFirstLetter } from '../../shared/helpers/capitalizeFirstLetter.ts';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const DatePickerInput: FC<Props> = ({ name, control, defaultValue }) => {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 
 	const range = (start: number, end: number): number[] => {
 		const result: number[] = [];
@@ -29,20 +29,36 @@ const DatePickerInput: FC<Props> = ({ name, control, defaultValue }) => {
 	};
 
 	const years = range(1940, getYear(new Date()) + 1);
-	const months = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December',
-	];
+	const months = {
+		en: [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December',
+		],
+		ua: [
+			'Січень',
+			'Лютий',
+			'Березень',
+			'Квітень',
+			'Травень',
+			'Червень',
+			'Липень',
+			'Серпень',
+			'Вересень',
+			'Жовтень',
+			'Листопад',
+			'Грудень',
+		],
+	};
 
 	return (
 		<div className={s.wrapper}>
@@ -79,10 +95,10 @@ const DatePickerInput: FC<Props> = ({ name, control, defaultValue }) => {
 									))}
 								</select>
 								<select
-									value={months[getMonth(date)]}
-									onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
+									value={months[i18n.language as Languages][getMonth(date)]}
+									onChange={({ target: { value } }) => changeMonth(months[i18n.language as Languages].indexOf(value))}
 								>
-									{months.map((option) => (
+									{months[i18n.language as Languages].map((option) => (
 										<option key={option} value={option}>
 											{option}
 										</option>

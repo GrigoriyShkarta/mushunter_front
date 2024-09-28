@@ -1,0 +1,14 @@
+@import "../../../shared/scss/vars";
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.button {
+  @include largeButton;
+  background-color: $orange;
+  width: 30%;
+  margin: 0 auto;
+}

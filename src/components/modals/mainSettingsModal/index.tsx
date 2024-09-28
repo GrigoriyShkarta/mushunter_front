@@ -23,6 +23,8 @@ const MainSettingsModal: FC = () => {
 	const sendForm = useUserStore((state) => state.sendForm);
 	const { setIsOpen } = useModalStore();
 
+	console.log('main');
+
 	const { t } = useTranslation();
 	const {
 		register,

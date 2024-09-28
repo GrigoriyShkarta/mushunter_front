@@ -30,6 +30,11 @@ export const ChangeSkillsSchema = z.object({
 	[Field.SKILLS]: z.array(z.object({ skill: z.number(), experience: z.number() })).default([]),
 });
 
+export const ChangeDescriptionSchema = z.object({
+	[Field.DESCRIPTION]: z.string().optional(),
+});
+
 export type ChangeMainSettingsSchemaType = z.infer<typeof ChangeMainSettingsSchema>;
 export type GetSettingsSchemaType = z.infer<typeof GetSettingsSchema>;
 export type GetChangeSkillsSchemaType = z.infer<typeof ChangeSkillsSchema>;
+export type ChangeDescriptionSchemaType = z.infer<typeof ChangeDescriptionSchema>;

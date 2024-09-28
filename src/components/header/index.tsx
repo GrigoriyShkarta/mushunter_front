@@ -1,12 +1,19 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { GiBinoculars } from 'react-icons/gi';
 import { BiSolidUser } from 'react-icons/bi';
 import { HiUserGroup } from 'react-icons/hi';
 import s from './header.module.scss';
 import { useTranslation } from 'react-i18next';
+import { useUserStore } from '../../pages/user/store';
+import { SvgDefaultAva } from '../../assets/svg';
+import { MdArrowDropDown } from 'react-icons/md';
+import { TiArrowSortedDown } from 'react-icons/ti';
+import ProfilePopup from '../profilePopup';
 
 const Header: FC = () => {
 	const { i18n } = useTranslation();
+	const user = useUserStore((state) => state.user);
+	const [showPopup, setShowPopup] = useState(false);
 
 	const changeLanguage = (lng: string): void => {
 		i18n.changeLanguage(lng);
@@ -50,9 +57,16 @@ const Header: FC = () => {
 							<HiUserGroup className={s.navigate__item_icon} color={'#9DA6AA'} size={'25px'} />
 							<span className={s.navigate__item_text}>Groups</span>
 						</li>
+						<li className={s.navigate__item} onClick={() => setShowPopup(true)}>
+							<SvgDefaultAva className={s.ava} />
+							<span className={s.navigate__item_text}>
+								Profile <TiArrowSortedDown size={'16px'} />
+							</span>
+						</li>
 					</ul>
 				</nav>
 			</div>
+			{showPopup && <ProfilePopup />}
 		</header>
 	);
 };

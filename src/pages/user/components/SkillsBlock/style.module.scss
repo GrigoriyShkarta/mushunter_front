@@ -48,11 +48,11 @@
 .progress_bar_container {
   display: flex;
   align-items: center;
-  width: 45%;
 }
 
 .progress_bar {
   width: 100%;
+  max-width: 35%;
   height: 2px;
   background-color: #e0e0e0;
   border-radius: 10px;
