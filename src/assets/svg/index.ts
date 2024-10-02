@@ -1,6 +1,8 @@
 import { FC, SVGProps } from 'react';
 import defaultAva from './profileDefault.svg?react';
-import youtubeIcon from './youtubeIcon.svg?react';
+import uaFlag from './uaFlag.svg?react';
+import usaFlag from './usaFlag.svg?react';
 
 export const SvgDefaultAva: FC<SVGProps<SVGSVGElement>> = defaultAva;
-export const SvgYoutubeIcon: FC<SVGProps<SVGSVGElement>> = youtubeIcon;
+export const SvgUsaFlagIcon: FC<SVGProps<SVGSVGElement>> = usaFlag;
+export const SvgUaFlagIcon: FC<SVGProps<SVGSVGElement>> = uaFlag;

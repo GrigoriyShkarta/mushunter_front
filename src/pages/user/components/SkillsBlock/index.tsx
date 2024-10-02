@@ -21,7 +21,7 @@ interface Props {
 }
 
 const SkillsBlock: FC<Props> = ({ skills, id, openModal }) => {
-	const user = useUserStore((state) => state.user);
+	const user = useUserStore((state) => state.profile);
 	const { t, i18n } = useTranslation();
 
 	if (skills.length === 0) {

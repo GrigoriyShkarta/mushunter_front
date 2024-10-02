@@ -1,19 +1,81 @@
+@import "../../shared/scss/vars";
+
 .popup {
   position: absolute;
-  top: 75px;
-  left: -16px;
+  top: 70px;
+  right: 370px;
   display: flex;
   flex-direction: column;
   width: 236px;
   gap: 10px;
-  opacity: 0;
   justify-content: flex-start;
-  //transition: var(--transition-main);
   transform: translateY(-10px);
-  z-index: 2;
-  //background: var(--light);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 100;
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 1px 5px 17px #0000001a;
-  pointer-events: none;
+  box-shadow: 1px 5px 17px rgba(0, 0, 0, 0.1019607843);
+  background-color: white;
+  transition: all 0.3s, ease-in-out;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  &:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background: white;
+    position: absolute;
+    top: -8px;
+    right: 9px;
+    border-radius: 3px;
+    transform: rotate(45deg);
+  }
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.button {
+  @include largeButton;
+  background-color: $orange;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 12px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+  }
+}
+
+.line {
+  margin: 0;
+}
+
+.panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &__block {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
 }

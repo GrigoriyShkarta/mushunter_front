@@ -12,12 +12,8 @@ import ProfilePopup from '../profilePopup';
 
 const Header: FC = () => {
 	const { i18n } = useTranslation();
-	const user = useUserStore((state) => state.user);
+	const user = useUserStore((state) => state.profile);
 	const [showPopup, setShowPopup] = useState(false);
-
-	const changeLanguage = (lng: string): void => {
-		i18n.changeLanguage(lng);
-	};
 
 	return (
 		<header className={s.header}>
@@ -27,16 +23,6 @@ const Header: FC = () => {
 						<GiBinoculars size={'2rem'} color="#ed6b15" />
 					</div>
 					<h1 className={s.logo__name}>MusHunter</h1>
-				</div>
-				<div className={s.menu}>
-					<div className={s.menu__container}>
-						<span onClick={() => changeLanguage('en')}>EN</span>
-						<span onClick={() => changeLanguage('ua')}>UA</span>
-					</div>
-					{/*<div className={s.menu__container}>*/}
-					{/*	<span>Dark</span>*/}
-					{/*	<span>Light</span>*/}
-					{/*</div>*/}
 				</div>
 				<nav className={s.navigate}>
 					<ul className={s.navigate__items}>
@@ -66,7 +52,7 @@ const Header: FC = () => {
 					</ul>
 				</nav>
 			</div>
-			{showPopup && <ProfilePopup />}
+			{showPopup && <ProfilePopup setShowPopup={setShowPopup} showPopup={showPopup} />}
 		</header>
 	);
 };

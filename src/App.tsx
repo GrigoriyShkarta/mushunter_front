@@ -13,12 +13,14 @@ const UserPage = lazy(() => import('./pages/user'));
 function App(): JSX.Element {
 	return (
 		<div className={'App'}>
-			<Header />
 			<Router>
+				<Header />
 				<Suspense fallback={<div>Loading...</div>}>
 					<Routes>
 						<Route path={'/'} element={<HomePage />} />
 						<Route path={'/user'} element={<UserPage />} />
+						<Route path={'/user/:id'} element={<UserPage />} />
+						{/*<Route path={'/user/:id'} element={<div>hi</div>} />*/}
 					</Routes>
 				</Suspense>
 			</Router>

@@ -35,6 +35,7 @@ export const UserSchema = z.object({
 	education: z.string().optional(),
 	phone: z.string().optional(),
 	likes: z.number(),
+	hasLiked: z.boolean(),
 	city: City.optional(),
 	skills: z.array(SkillSchema).default([]),
 	links: z.array(z.string()).default([]),

@@ -1,8 +1,8 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import s from './style.module.scss';
 import { useUserStore } from './store';
 import { MainBlock } from './components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Languages, UserModal } from '../../shared/constants';
 import SkillsBlock from './components/SkillsBlock';
@@ -12,24 +12,45 @@ import MainSettingsModal from '../../components/modals/mainSettingsModal';
 import Modal from '../../components/modals';
 import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
 import DescriptionSettingsModal from '../../components/modals/descriptionSettingsModal';
+import { UserSchemaType } from '../../services/endpoints/user/response';
 
 const User: FC = () => {
+	const profile = useUserStore((state) => state.profile);
 	const user = useUserStore((state) => state.user);
 	const settings = useUserStore((state) => state.settings);
 	const fetchSettings = useUserStore((state) => state.fetchSettings);
+	const getUser = useUserStore((state) => state.getUserFromId);
 	const { setIsOpen, setTitle, setChildren } = useModalStore();
 	const { i18n, t } = useTranslation();
 	const navigate = useNavigate();
+	const { id } = useParams();
+
+	const [pageData, setPageData] = useState<UserSchemaType | null>(null);
 
 	useEffect(() => {
-		if (!user) {
+		if (!profile && !id) {
 			navigate('/');
-		} else if (!settings) {
+			return;
+		}
+
+		if (id) {
+			getUser({ id: +id });
+		} else {
+			setPageData(profile);
+		}
+
+		if (!settings && profile) {
 			fetchSettings();
 		}
-	}, [navigate, user, settings]);
+	}, [navigate, profile, settings, fetchSettings]);
 
-	if (!user) {
+	useEffect(() => {
+		if (id) {
+			setPageData(user);
+		}
+	}, [id, profile, user]);
+
+	if (!profile && !id) {
 		return null;
 	}
 
@@ -52,22 +73,31 @@ const User: FC = () => {
 
 	return (
 		<div className={s.container}>
-			<MainBlock
-				id={user.id}
-				firstName={user?.firstname}
-				lastName={user?.lastname}
-				city={user?.city && user.city.name[i18n.language as Languages]}
-				skills={user?.skills && user.skills.map((skill) => skill.name[i18n.language as Languages])}
-				birthday={user?.birthday}
-				education={user?.education}
-				likes={user.likes}
-				links={user.links}
-				phone={user?.phone}
-				styles={user.styles.map((style) => style.name)}
-				openModal={openModal}
-			/>
-			<SkillsBlock skills={user.skills} id={user.id} openModal={openModal} />
-			<DescriptionBlock description={user.description} id={user.id} openModal={openModal} />
+			{pageData && (
+				<>
+					<MainBlock
+						id={pageData.id}
+						firstName={pageData?.firstname}
+						lastName={pageData?.lastname}
+						city={pageData?.city && pageData.city.name[i18n.language as Languages]}
+						skills={pageData?.skills && pageData.skills.map((skill) => skill.name[i18n.language as Languages])}
+						birthday={pageData?.birthday}
+						education={pageData?.education}
+						likes={pageData.likes}
+						links={pageData.links}
+						phone={pageData?.phone}
+						styles={pageData.styles.map((style) => style.name)}
+						openModal={openModal}
+						hasLiked={pageData.hasLiked}
+					/>
+					{pageData.skills.length > 0 && (
+						<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} />
+					)}
+					{pageData.description && (
+						<DescriptionBlock description={pageData.description} id={pageData.id} openModal={openModal} />
+					)}
+				</>
+			)}
 			<Modal />
 		</div>
 	);

@@ -5,6 +5,7 @@ import {
 	GetChangeSkillsSchemaType,
 	GetSettingsSchema,
 	GetSettingsSchemaType,
+	ToggleLikeSchemaType,
 } from './schema';
 import { UserSchema, UserSchemaType } from './response';
 
@@ -29,5 +30,18 @@ export const sendSkills = async (data: GetChangeSkillsSchemaType): Promise<UserS
 
 export const sendDescription = async (data: ChangeDescriptionSchemaType): Promise<UserSchemaType> => {
 	const response = await axiosInstance.post('/user/changeDescription', data);
+	return UserSchema.parse(response.data.decompressedData);
+};
+
+export const getUser = async (data: { id: number }): Promise<UserSchemaType> => {
+	const response = await axiosInstance.get('/user/getUser', {
+		params: data,
+	});
+	return UserSchema.parse(response.data.decompressedData);
+};
+
+export const sendToggleLike = async (data: ToggleLikeSchemaType): Promise<UserSchemaType> => {
+	const response = await axiosInstance.post('/user/like', data);
+	console.log('response.data.decompressedData', response.data.decompressedData);
 	return UserSchema.parse(response.data.decompressedData);
 };

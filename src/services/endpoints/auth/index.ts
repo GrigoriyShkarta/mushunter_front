@@ -1,6 +1,7 @@
 import axiosInstance from '../../axios/';
 import { ChangePasswordSchemaType, EmailSchemaType, RegisterSchemaType, TokenSchemaType } from './schema';
 import { AuthSchema, AuthSchemaType } from './response';
+import axios from 'axios';
 
 export const registration = async (form: RegisterSchemaType): Promise<AuthSchemaType> => {
 	const response = await axiosInstance.post('/auth/register', form);
@@ -31,9 +32,10 @@ export const authWithSocialMedia = async (data: EmailSchemaType): Promise<AuthSc
 };
 
 export const refreshToken = async (token: TokenSchemaType): Promise<AuthSchemaType> => {
-	const response = await axiosInstance.post('token/access-token', token);
-	localStorage.setItem('tokens', JSON.stringify(response.data.decompressedData.tokens));
-	return AuthSchema.parse(response.data.decompressedData);
+	console.log('token', token);
+	const response = await axios.post('http://localhost:4200/token/access-token', token);
+	localStorage.setItem('tokens', JSON.stringify(response.data.tokens));
+	return AuthSchema.parse(response.data);
 };
 
 export const changePassword = async (token: ChangePasswordSchemaType): Promise<boolean> => {

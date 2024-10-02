@@ -10,28 +10,41 @@ import {
 	GetChangeSkillsSchemaType,
 	GetSettingsSchemaType,
 } from '../../../services/endpoints/user/schema';
-import { getSettings, sendDescription, sendMainData, sendSkills } from '../../../services/endpoints/user';
+import {
+	getSettings,
+	getUser,
+	sendDescription,
+	sendMainData,
+	sendSkills,
+	sendToggleLike,
+} from '../../../services/endpoints/user';
 import { UserSchemaType } from '../../../services/endpoints/user/response';
 
 interface UserStore {
+	profile: UserSchemaType | null;
 	user: UserSchemaType | null;
 	registrationUser: (form: RegisterSchemaType) => void;
-	login: (form: EmailSchemaType) => Promise<AuthSchemaType>;
+	login: (form: EmailSchemaType) => Promise<void>;
 	socialAuth: (form: EmailSchemaType) => Promise<AuthSchemaType | boolean>;
 	status: Statuses | null;
 	error: string | null;
 	settings: GetSettingsSchemaType | null;
-	fetchSettings: () => Promise<GetSettingsSchemaType>;
-	changeMainData: (data: ChangeMainSettingsSchemaType) => Promise<UserSchemaType>;
+	fetchSettings: () => Promise<void>;
+	changeMainData: (data: ChangeMainSettingsSchemaType) => Promise<void>;
 	sendForm: boolean;
 	toggleSendForm: () => void;
-	changeSkills: (data: GetChangeSkillsSchemaType) => Promise<UserSchemaType>;
-	changeDescription: (data: ChangeDescriptionSchemaType) => Promise<UserSchemaType>;
+	changeSkills: (data: GetChangeSkillsSchemaType) => Promise<void>;
+	changeDescription: (data: ChangeDescriptionSchemaType) => Promise<void>;
+	getUserFromId: (data: { id: number }) => Promise<void>;
+	toggleLike: () => void;
+	logOut: () => void;
+	fetchToggleLike: (data: { id: number }) => void;
 }
 
 export const useUserStore = create<UserStore>()(
 	persist(
 		devtools((set) => ({
+			profile: null,
 			user: null,
 			error: null,
 			status: null,
@@ -42,31 +55,34 @@ export const useUserStore = create<UserStore>()(
 				try {
 					set({ status: Statuses.LOADING });
 					const authData = await registration(form);
-					set({ user: authData.user, error: null, status: Statuses.LOADED });
+					set({ profile: authData.user, error: null, status: Statuses.LOADED });
 				} catch (error) {
 					const errorMessage = error.response?.data?.message || error.message || 'Registration failed';
-					set({ user: null, error: errorMessage, status: Statuses.ERROR });
+					set({ profile: null, error: errorMessage, status: Statuses.ERROR });
 				}
 			},
 
-			login: async (form: EmailSchemaType): Promise<AuthSchemaType> => {
+			login: async (form: EmailSchemaType): Promise<void> => {
 				try {
 					set({ status: Statuses.LOADING });
 					const authData = await login(form);
-					set({ user: authData.user, error: null, status: Statuses.LOADED });
-					return authData;
+					set({ profile: authData.user, error: null, status: Statuses.LOADED });
 				} catch (error) {
 					const errorMessage = error.response?.data?.message || error.message || 'Auth failed';
-					set({ user: null, error: errorMessage, status: Statuses.ERROR });
+					set({ profile: null, error: errorMessage, status: Statuses.ERROR });
 					throw new Error(errorMessage);
 				}
+			},
+
+			logOut: (): void => {
+				set({ profile: null });
 			},
 
 			socialAuth: async (form: EmailSchemaType): Promise<AuthSchemaType | boolean> => {
 				try {
 					const res = await authWithSocialMedia(form);
 					if (res && typeof res === 'object' && 'user' in res) {
-						set({ user: res.user });
+						set({ profile: res.user });
 					}
 					return res;
 				} catch (e) {
@@ -74,31 +90,37 @@ export const useUserStore = create<UserStore>()(
 				}
 			},
 
-			fetchSettings: async (): Promise<GetSettingsSchemaType> => {
+			getUserFromId: async (data: { id: number }): Promise<void> => {
+				try {
+					const res = await getUser(data);
+					set({ user: res });
+				} catch (e) {
+					throw new Error(e as string);
+				}
+			},
+
+			fetchSettings: async (): Promise<void> => {
 				try {
 					const res = await getSettings();
 					set({ settings: res });
-					return res;
 				} catch (e) {
 					throw new Error(e as string);
 				}
 			},
 
-			changeMainData: async (data: ChangeMainSettingsSchemaType): Promise<UserSchemaType> => {
+			changeMainData: async (data: ChangeMainSettingsSchemaType): Promise<void> => {
 				try {
 					const res = await sendMainData(data);
-					set({ user: res });
-					return res;
+					set({ profile: res });
 				} catch (e) {
 					throw new Error(e as string);
 				}
 			},
 
-			changeSkills: async (data: GetChangeSkillsSchemaType): Promise<UserSchemaType> => {
+			changeSkills: async (data: GetChangeSkillsSchemaType): Promise<void> => {
 				try {
 					const res = await sendSkills(data);
-					set({ user: res, sendForm: true });
-					return res;
+					set({ profile: res, sendForm: true });
 				} catch (e) {
 					throw new Error(e as string);
 				} finally {
@@ -106,11 +128,10 @@ export const useUserStore = create<UserStore>()(
 				}
 			},
 
-			changeDescription: async (data: ChangeDescriptionSchemaType): Promise<UserSchemaType> => {
+			changeDescription: async (data: ChangeDescriptionSchemaType): Promise<void> => {
 				try {
 					const res = await sendDescription(data);
-					set({ user: res, sendForm: true });
-					return res;
+					set({ profile: res, sendForm: true });
 				} catch (e) {
 					throw new Error(e as string);
 				} finally {
@@ -121,11 +142,29 @@ export const useUserStore = create<UserStore>()(
 			toggleSendForm: (): void => {
 				set((state) => ({ sendForm: !state.sendForm }));
 			},
+
+			fetchToggleLike: async (data: { id: number }): Promise<void> => {
+				const res = await sendToggleLike(data);
+				set({ user: res });
+			},
+
+			toggleLike: (): void => {
+				// set((state) => {
+				// 	if (!state.user) return state;
+				//
+				// 	return {
+				// 		user: {
+				// 			...state.user,
+				// 			likes: (state.user.likes || 0) + 1,
+				// 		},
+				// 	};
+				// });
+			},
 		})),
 		{
 			name: 'user-storage',
 			partialize: (state) => ({
-				user: state.user,
+				profile: state.profile,
 				settings: state.settings,
 			}),
 		},

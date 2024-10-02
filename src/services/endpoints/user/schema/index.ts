@@ -34,7 +34,12 @@ export const ChangeDescriptionSchema = z.object({
 	[Field.DESCRIPTION]: z.string().optional(),
 });
 
+export const ToggleLikeSchema = z.object({
+	[Field.ID]: z.number(),
+});
+
 export type ChangeMainSettingsSchemaType = z.infer<typeof ChangeMainSettingsSchema>;
 export type GetSettingsSchemaType = z.infer<typeof GetSettingsSchema>;
 export type GetChangeSkillsSchemaType = z.infer<typeof ChangeSkillsSchema>;
 export type ChangeDescriptionSchemaType = z.infer<typeof ChangeDescriptionSchema>;
+export type ToggleLikeSchemaType = z.infer<typeof ToggleLikeSchema>;

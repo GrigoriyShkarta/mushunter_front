@@ -17,7 +17,7 @@ import { useModalStore } from '../store.ts';
 
 const MainSettingsModal: FC = () => {
 	const settings = useUserStore((state) => state.settings);
-	const user = useUserStore((state) => state.user);
+	const user = useUserStore((state) => state.profile);
 	const changeMainData = useUserStore((state) => state.changeMainData);
 	const toggleSendForm = useUserStore((state) => state.toggleSendForm);
 	const sendForm = useUserStore((state) => state.sendForm);

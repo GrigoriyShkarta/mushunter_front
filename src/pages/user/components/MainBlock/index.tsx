@@ -1,4 +1,5 @@
 import { FC, Fragment } from 'react';
+import cn from 'classnames';
 import s from './style.module.scss';
 import Background from './Background.tsx';
 import { SvgDefaultAva } from '../../../../assets/svg';
@@ -12,16 +13,19 @@ import { BsSend } from 'react-icons/bs';
 import { useUserStore } from '../../store';
 import { getIconForLink } from '../../../../shared/helpers/getIconForLink.tsx';
 import { IoIosMusicalNote } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
 	id: number;
-	firstName: string;
-	lastName: string;
+	firstName?: string;
+	lastName?: string;
+	groupName?: string;
 	city?: string;
 	phone?: string;
 	ava?: string;
 	skills?: string[];
 	birthday?: Date;
+	hasLiked: boolean;
 	likes: number;
 	links: string[];
 	styles: string[];
@@ -33,6 +37,7 @@ const MainBlock: FC<Props> = ({
 	id,
 	firstName,
 	lastName,
+	groupName,
 	ava,
 	city,
 	skills,
@@ -43,23 +48,37 @@ const MainBlock: FC<Props> = ({
 	styles,
 	education,
 	openModal,
+	hasLiked,
 }) => {
-	const user = useUserStore((state) => state.user);
+	const profile = useUserStore((state) => state.profile);
+	const { toggleLike, fetchToggleLike } = useUserStore((state) => state);
 	const { t, i18n } = useTranslation();
+	const navigate = useNavigate();
+
+	const likesClass = cn({
+		[s.likeWrapper]: true,
+		[s.hoverLikeWrapper]: profile?.id && id !== profile.id,
+		[s.activeLike]: hasLiked,
+	});
+
+	const onClickLike = () => {
+		toggleLike();
+		fetchToggleLike({ id });
+	};
 
 	return (
 		<section className={s.section}>
 			<Background />
 			{ava ? <img className={s.ava} src={ava} alt="user_avatar" /> : <SvgDefaultAva className={s.ava} />}
 			<div className={s.wrapper}>
-				{user?.id === id && (
+				{profile?.id === id && (
 					<div className={s.edit} onClick={() => openModal(UserModal.MainSettings)}>
 						<MdOutlineModeEditOutline size={'24px'} />
 					</div>
 				)}
 				<div className={s.block}>
 					<h1>
-						{firstName} {lastName}
+						{firstName} {lastName} {groupName}
 					</h1>
 					<div className={s.arrayWrapper}>
 						{skills?.map((skill) => (
@@ -95,8 +114,8 @@ const MainBlock: FC<Props> = ({
 				</div>
 
 				<div className={s.block}>
-					<div className={s.likeWrapper}>
-						<AiTwotoneLike size={'22px'} title={t('user.recommend')} />
+					<div className={likesClass}>
+						<AiTwotoneLike size={'22px'} title={t('user.recommend')} onClick={onClickLike} />
 						<div className={s.line} />
 						<p className={s.number}>{likes}</p>
 					</div>
@@ -114,7 +133,20 @@ const MainBlock: FC<Props> = ({
 					</div>
 				)}
 
-				{user?.id !== id && <Button type={'button'} value={'user.write'} className={s.button} icon={<BsSend />} />}
+				{!profile && (
+					<div className={s.joinBlock}>
+						<p className={s.joinBlock__text}>
+							<span className={s.joinBlock__link} onClick={() => navigate('/')}>
+								{t('user.join')}
+							</span>
+							{' ' + t('user.pleaseLogin')}
+						</p>
+					</div>
+				)}
+
+				{profile && profile.id !== id && (
+					<Button type={'button'} value={'user.write'} className={s.button} icon={<BsSend />} />
+				)}
 			</div>
 		</section>
 	);

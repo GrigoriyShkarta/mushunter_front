@@ -13,7 +13,7 @@ interface Props {
 }
 
 const DescriptionBlock: FC<Props> = ({ description, id, openModal }) => {
-	const user = useUserStore((state) => state.user);
+	const user = useUserStore((state) => state.profile);
 	const { t } = useTranslation();
 
 	if (!description) {

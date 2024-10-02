@@ -29,7 +29,7 @@ interface UserSkills {
 const SkillsSettingsModal: FC = () => {
 	const { settings, user, changeSkills, sendForm } = useUserStore((state) => ({
 		settings: state.settings,
-		user: state.user,
+		user: state.profile,
 		changeSkills: state.changeSkills,
 		sendForm: state.sendForm,
 	}));

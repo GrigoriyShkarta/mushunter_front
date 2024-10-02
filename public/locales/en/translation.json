@@ -56,7 +56,10 @@
         "skills": "skill",
         "experience": "experience",
         "descriptionEdit": "Editing the description",
-        "description": "description"
+        "description": "description",
+        "myProfile": "My Profile",
+        "exit": "Exit",
+        "signIn": "Sign In"
     },
     "response": {
         "success": {
@@ -78,6 +81,8 @@
         "basicStyles": "Basic styles",
         "addLink": "Add link",
         "addSection": "Add section",
-        "addSkill": "Add skill"
+        "addSkill": "Add skill",
+        "pleaseLogin": "to interact with MusHunter members",
+        "join": "Join"
     }
 }

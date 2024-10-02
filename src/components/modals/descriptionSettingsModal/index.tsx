@@ -12,7 +12,7 @@ import { ChangeDescriptionSchemaType } from '../../../services/endpoints/user/sc
 import { useModalStore } from '../store.ts';
 
 const DescriptionSettingsModule: FC = () => {
-	const user = useUserStore((state) => state.user);
+	const user = useUserStore((state) => state.profile);
 	const changeDescription = useUserStore((state) => state.changeDescription);
 	const sendForm = useUserStore((state) => state.sendForm);
 	const { setIsOpen } = useModalStore();

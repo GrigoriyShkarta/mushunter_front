@@ -111,7 +111,7 @@
   color: black;
 }
 
-.likeWrapper {
+.likeWrapper, .hoverLikeWrapper, .activeLike {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,14 +125,6 @@
     path {
       fill: $lightOrange;
     }
-
-    &:hover {
-      cursor: pointer;
-
-      path {
-        fill: $orange;
-      }
-    }
   }
 
   .line {
@@ -144,6 +136,26 @@
   .number {
     color: $orange;
     font-size: 20px;
+  }
+}
+
+.hoverLikeWrapper {
+  svg {
+    &:hover {
+      cursor: pointer;
+
+      path {
+        fill: $orange;
+      }
+    }
+  }
+}
+
+.activeLike {
+  svg {
+    path {
+      fill: $orange;
+    }
   }
 }
 
@@ -163,6 +175,20 @@
     &:hover {
       z-index: 100;
     }
+  }
+}
+
+.joinBlock {
+  padding: 10px;
+  border: 1px solid $orange;
+  border-radius: 10px;
+  width: 45%;
+
+  &__link {
+    font-weight: 600;
+    color: $orange;
+    cursor: pointer;
+    text-decoration: underline;
   }
 }
 

@@ -8,14 +8,12 @@ import useToast from '../../shared/hooks/useToast.ts';
 import { RegisterSchemaType } from '../../services/endpoints/auth/schema';
 
 const HomePage: FC = () => {
-	const { registrationUser, user, error } = useUserStore();
+	const { registrationUser, profile, error } = useUserStore();
 	const { notifySuccess, notifyError } = useToast();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log('useeffect');
-
-		if (user) {
+		if (profile) {
 			navigate('/user');
 			return;
 		}

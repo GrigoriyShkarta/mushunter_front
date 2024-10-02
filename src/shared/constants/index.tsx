@@ -38,6 +38,7 @@ export enum Field {
 	SKILLS = 'skills',
 	EXPERIENCE = 'experience',
 	DESCRIPTION = 'description',
+	ID = 'id',
 	CODE = 'code',
 	NEW_PASSWORD = 'newPassword',
 	CHECK_PASSWORD = 'checkPassword',

@@ -56,7 +56,10 @@
         "skills": "навичка",
         "experience": "досвід",
         "descriptionEdit": "Редагування опису",
-        "description": "опис"
+        "description": "опис",
+        "myProfile": "Мій профіль",
+        "exit": "Вийти",
+        "signIn": "Увійти"
     },
     "response": {
         "success": {
@@ -78,6 +81,8 @@
         "basicStyles": "Основні стилі",
         "addLink": "Додати посилання",
         "addSection": "Додати розділ",
-        "addSkill": "Додати навичку"
+        "addSkill": "Додати навичку",
+        "pleaseLogin": "щоб взаємодіяти з учасниками MusHunter",
+        "join": "Приєднуйтесь"
     }
 }
