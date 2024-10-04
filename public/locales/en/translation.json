@@ -54,12 +54,15 @@
         "links": "link",
         "skillSettings": "Editing skill",
         "skills": "skill",
+        "skill": "skill",
         "experience": "experience",
         "descriptionEdit": "Editing the description",
         "description": "description",
         "myProfile": "My Profile",
         "exit": "Exit",
-        "signIn": "Sign In"
+        "signIn": "Sign In",
+        "isLookingForBand": "looking for a band",
+        "lookingForSkills": "in search"
     },
     "response": {
         "success": {

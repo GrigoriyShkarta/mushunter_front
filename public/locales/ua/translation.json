@@ -54,12 +54,15 @@
         "links": "посилання",
         "skillSettings": "Редагування навичок",
         "skills": "навичка",
+        "skill": "навичку",
         "experience": "досвід",
         "descriptionEdit": "Редагування опису",
         "description": "опис",
         "myProfile": "Мій профіль",
         "exit": "Вийти",
-        "signIn": "Увійти"
+        "signIn": "Увійти",
+        "isLookingForBand": "в пошуках гурту",
+        "lookingForSkills": "в пошуках"
     },
     "response": {
         "success": {

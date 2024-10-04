@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Field } from '../../../../shared/constants';
 
 export const TranslateObj = z.object({
 	ua: z.string(),
@@ -22,24 +23,27 @@ export const SkillSchema = z.object({
 });
 
 export const UserSchema = z.object({
-	id: z.number(),
-	firstname: z.string(),
-	lastname: z.string(),
-	birthday: z.preprocess((arg) => {
+	[Field.ID]: z.number(),
+	[Field.NAME]: z.string(),
+	[Field.LAST_NAME]: z.string(),
+	[Field.BIRTHDAY]: z.preprocess((arg) => {
 		if (typeof arg === 'string' || arg instanceof Date) {
 			return new Date(arg);
 		}
 		return arg;
 	}, z.date().optional()),
-	description: z.string().optional(),
-	education: z.string().optional(),
-	phone: z.string().optional(),
+	[Field.DESCRIPTION]: z.string().optional(),
+	[Field.EDUCATION]: z.string().optional(),
+	[Field.PHONE]: z.string().optional(),
 	likes: z.number(),
 	hasLiked: z.boolean(),
-	city: City.optional(),
-	skills: z.array(SkillSchema).default([]),
-	links: z.array(z.string()).default([]),
-	styles: z.array(Style).default([]),
+	[Field.CITY]: City.optional(),
+	[Field.SKILLS]: z.array(SkillSchema).default([]),
+	[Field.LINKS]: z.array(z.string()).default([]),
+	[Field.STYLES]: z.array(Style).default([]),
+	[Field.SEARCH_BAND]: z.boolean(),
+	[Field.IN_SEARCH]: z.array(z.object({ id: z.number(), name: TranslateObj })).default([]),
+	[Field.AVATAR]: z.string().optional(),
 });
 
 export type UserSchemaType = z.infer<typeof UserSchema>;

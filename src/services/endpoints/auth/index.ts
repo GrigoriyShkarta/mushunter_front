@@ -24,6 +24,7 @@ export const checkEmail = async (form: EmailSchemaType): Promise<boolean> => {
 
 export const authWithSocialMedia = async (data: EmailSchemaType): Promise<AuthSchemaType | boolean> => {
 	const response = await axiosInstance.post('auth/socialAuth', data);
+	console.log('response', response);
 	if (typeof response.data.decompressedData === 'boolean' || typeof response.data === 'boolean') {
 		return response.data.decompressedData;
 	}

@@ -8,6 +8,7 @@ import { auth } from '../../../firebase.ts';
 import { useUserStore } from '../../../pages/user/store';
 import SocialMediaAuthModal from '../../modals/socialMediaAuthModal';
 import { useTranslation } from 'react-i18next';
+import { Field } from '../../../shared/constants';
 
 interface Props {
 	name: string;
@@ -26,14 +27,16 @@ const SocialButton: FC<Props> = ({ name, icon, provider }) => {
 			provider.addScope('email profile');
 			const res = await signInWithPopup(auth, provider);
 			const tokenResponse = (res as any)._tokenResponse;
+			console.log('tokenResponse', tokenResponse);
 			if (res.user.email) {
 				const checkAuth = await socialAuth({ email: res.user.email });
 				if (!checkAuth) {
 					if (tokenResponse.firstName && tokenResponse.lastName && tokenResponse.email) {
 						registrationUser({
-							email: tokenResponse.email,
-							firstname: tokenResponse.firstName,
-							lastname: tokenResponse.lastName,
+							[Field.EMAIL]: tokenResponse.email,
+							[Field.NAME]: tokenResponse.firstName,
+							[Field.LAST_NAME]: tokenResponse.lastName,
+							[Field.AVATAR]: tokenResponse.photoUrl,
 						});
 						// localStorage.setItem('emailForRegistration', res.user.email);
 						// setTitle(t('home.registration'));

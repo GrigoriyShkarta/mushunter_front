@@ -24,6 +24,8 @@ export const ChangeMainSettingsSchema = z.object({
 	[Field.EDUCATION]: z.string().optional(),
 	[Field.LINKS]: z.array(z.string().url()).optional(),
 	[Field.STYLES]: z.array(z.number()).optional(),
+	[Field.SEARCH_BAND]: z.boolean(),
+	[Field.IN_SEARCH]: z.array(z.number()),
 });
 
 export const ChangeSkillsSchema = z.object({

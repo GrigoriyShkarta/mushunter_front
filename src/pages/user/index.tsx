@@ -89,6 +89,11 @@ const User: FC = () => {
 						styles={pageData.styles.map((style) => style.name)}
 						openModal={openModal}
 						hasLiked={pageData.hasLiked}
+						isLookingForBand={pageData.isLookingForBand}
+						lookingForSkills={
+							pageData?.lookingForSkills &&
+							pageData.lookingForSkills.map((skill) => skill.name[i18n.language as Languages])
+						}
 					/>
 					{pageData.skills.length > 0 && (
 						<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} />

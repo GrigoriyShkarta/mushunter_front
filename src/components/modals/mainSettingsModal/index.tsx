@@ -14,16 +14,16 @@ import { ChangeMainSettingsValidationSchema } from '../../../shared/validation';
 import { formatToOption } from '../../../shared/helpers/formatToOption.ts';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { useModalStore } from '../store.ts';
+import CheckboxInput from '../../inputs/CheckboxInput.tsx';
 
 const MainSettingsModal: FC = () => {
 	const settings = useUserStore((state) => state.settings);
 	const user = useUserStore((state) => state.profile);
-	const changeMainData = useUserStore((state) => state.changeMainData);
-	const toggleSendForm = useUserStore((state) => state.toggleSendForm);
 	const sendForm = useUserStore((state) => state.sendForm);
+	const { changeMainData, toggleSendForm } = useUserStore((state) => state);
 	const { setIsOpen } = useModalStore();
 
-	console.log('main');
+	console.log('user', user);
 
 	const { t } = useTranslation();
 	const {
@@ -43,18 +43,26 @@ const MainSettingsModal: FC = () => {
 			[Field.LAST_NAME]: user?.lastname,
 			[Field.PHONE]: user?.phone,
 			[Field.LINKS]: user?.links,
+			[Field.SEARCH_BAND]: user?.isLookingForBand,
 		},
 	});
+
+	console.log('errors', errors);
 
 	const formatedStyles = formatToOption(settings?.styles);
 	const formatedCities = formatToOption(settings?.cities);
 	const formatedUserStyles = formatToOption(user?.styles);
+	const formatedSearchForSkill = formatToOption(user?.lookingForSkills);
+	console.log('formatedSearchForSkill', formatedSearchForSkill);
+	const formatedSkills = formatToOption(settings?.skills);
 	const formatedUserCities = formatToOption(user?.city ? [user.city] : []);
 	const linksArray = watch(Field.LINKS) ?? [];
+	const isCheckedSearchBand = watch(Field.SEARCH_BAND);
 
 	const onSubmit: SubmitHandler<ChangeMainSettingsSchemaType> = async (data): Promise<void> => {
 		try {
 			toggleSendForm();
+			console.log('data', data);
 			await changeMainData(data);
 		} catch (e) {
 			console.error('responseError', e);
@@ -102,6 +110,20 @@ const MainSettingsModal: FC = () => {
 					control={control}
 				/>
 				<SelectInput defaultValue={formatedUserCities} options={formatedCities} control={control} name={Field.CITY} />
+				<CheckboxInput
+					register={register(Field.SEARCH_BAND)}
+					name={Field.SEARCH_BAND}
+					checked={isCheckedSearchBand}
+					onChange={(e) => setValue(Field.SEARCH_BAND, e.target.checked)}
+				/>
+				<SelectInput
+					defaultValue={formatedSearchForSkill}
+					options={formatedSkills}
+					isMulti
+					name={Field.IN_SEARCH}
+					control={control}
+					placeholder={'skill'}
+				/>
 				<DatePickerInput name={Field.BIRTHDAY} defaultValue={user?.birthday} control={control} />
 				<TextInput register={register(Field.PHONE)} name={Field.PHONE} error={errors.phone?.message} />
 				<TextInput register={register(Field.EDUCATION)} name={Field.EDUCATION} error={errors.education?.message} />

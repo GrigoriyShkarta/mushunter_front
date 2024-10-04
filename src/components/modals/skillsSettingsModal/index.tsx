@@ -95,7 +95,7 @@ const SkillsSettingsModal: FC = () => {
 								control={control}
 								objPath={'skill'}
 								idxPath={index}
-								defaultValue={skillObj.skill}
+								defaultValue={[skillObj.skill]}
 								options={formattedOptions}
 								handleChange={(selectedSkill) => updateSkill(index, selectedSkill as Option)}
 							/>

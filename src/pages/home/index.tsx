@@ -40,8 +40,6 @@ const HomePage: FC = () => {
 		checkSignUp();
 	}, []);
 
-	console.log('component');
-
 	return (
 		<div className={s.container}>
 			<Description />

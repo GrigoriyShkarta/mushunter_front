@@ -10,6 +10,7 @@ const RegisterSchema = z.object({
 	[Field.NAME]: z.string(),
 	[Field.LAST_NAME]: z.string(),
 	[Field.EMAIL]: z.string().email(),
+	[Field.AVATAR]: z.string().url().optional(),
 });
 
 const EmailSchema = z.object({

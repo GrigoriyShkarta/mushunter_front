@@ -81,6 +81,7 @@ export const useUserStore = create<UserStore>()(
 			socialAuth: async (form: EmailSchemaType): Promise<AuthSchemaType | boolean> => {
 				try {
 					const res = await authWithSocialMedia(form);
+					console.log('res', res);
 					if (res && typeof res === 'object' && 'user' in res) {
 						set({ profile: res.user });
 					}

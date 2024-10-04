@@ -13,12 +13,11 @@ axiosInstance.interceptors.request.use(
 	async (config) => {
 		const tokens = localStorage.getItem('tokens');
 		if (tokens) {
-			const parsedTokens = JSON.parse(tokens);
-			let token = parsedTokens.accessToken;
-			console.log('checkToken', token);
+			const parsedTokens = JSON.parse(tokens).tokens;
+			console.log('parsedTokens', parsedTokens);
+			let token = parsedTokens?.accessToken;
 			if (token && isTokenExpired(token)) {
 				try {
-					console.log('look');
 					const newTokens = await refreshToken({ refreshToken: parsedTokens.refreshToken });
 					localStorage.setItem('tokens', JSON.stringify(newTokens));
 					token = newTokens.tokens.accessToken; // Обновляем accessToken

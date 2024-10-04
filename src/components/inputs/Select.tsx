@@ -23,7 +23,11 @@ const colourStyles: StylesConfig<Option, boolean> = {
 		borderRadius: '9px',
 
 		div: {
-			padding: '4px',
+			padding: '3px',
+
+			div: {
+				width: 'fit-content !important',
+			},
 		},
 
 		':hover': {
@@ -39,12 +43,29 @@ const colourStyles: StylesConfig<Option, boolean> = {
 			backgroundColor: '#F4A876',
 		},
 	}),
+
+	multiValue: (styles) => ({
+		...styles,
+		borderRadius: '5px',
+		backgroundColor: '#ed6b15',
+		color: 'white',
+		padding: '2px',
+
+		div: {
+			color: 'white',
+			padding: '2px',
+
+			svg: {
+				cursor: 'pointer',
+			},
+		},
+	}),
 };
 
 const animatedComponents = makeAnimated();
 
 interface Props {
-	defaultValue?: Option | Option[];
+	defaultValue?: Option[] | Option | any;
 	isMulti?: boolean;
 	options?: Option[];
 	name: string;
@@ -52,6 +73,7 @@ interface Props {
 	objPath?: string;
 	idxPath?: number;
 	handleChange?: (selectedOption: Option | Option[]) => void;
+	placeholder?: string;
 }
 
 const SelectInput: FC<Props> = ({
@@ -63,6 +85,7 @@ const SelectInput: FC<Props> = ({
 	handleChange,
 	objPath,
 	idxPath = 0,
+	placeholder,
 }) => {
 	const { t } = useTranslation();
 
@@ -78,10 +101,18 @@ const SelectInput: FC<Props> = ({
 				render={({ field: { onChange, value } }) => (
 					<Select
 						components={animatedComponents}
-						options={isMulti ? options : options?.filter((opt) => opt.value !== value?.value)}
+						options={
+							isMulti
+								? options
+								: options?.filter(
+										(opt) =>
+											opt.value !==
+											(value?.value || (defaultValue !== undefined && defaultValue[0].value) || value || defaultValue),
+									)
+						}
 						isMulti={isMulti}
 						onChange={handleChange || onChange}
-						placeholder={capitalizeFirstLetter(t('input.choose', { value: t(`general.${name}`) }))}
+						placeholder={capitalizeFirstLetter(t('input.choose', { value: t(`general.${placeholder || name}`) }))}
 						styles={colourStyles}
 						value={objPath ? value[idxPath][objPath] : value}
 					/>
