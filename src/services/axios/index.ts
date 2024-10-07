@@ -13,12 +13,11 @@ axiosInstance.interceptors.request.use(
 	async (config) => {
 		const tokens = localStorage.getItem('tokens');
 		if (tokens) {
-			const parsedTokens = JSON.parse(tokens).tokens;
-			console.log('parsedTokens', parsedTokens);
-			let token = parsedTokens?.accessToken;
+			const parsedTokens = JSON.parse(tokens);
+			let token = parsedTokens?.tokens?.accessToken;
 			if (token && isTokenExpired(token)) {
 				try {
-					const newTokens = await refreshToken({ refreshToken: parsedTokens.refreshToken });
+					const newTokens = await refreshToken({ refreshToken: parsedTokens.tokens.refreshToken });
 					localStorage.setItem('tokens', JSON.stringify(newTokens));
 					token = newTokens.tokens.accessToken; // Обновляем accessToken
 				} catch (error) {
@@ -32,7 +31,7 @@ axiosInstance.interceptors.request.use(
 		}
 		config.headers['Accept-Language'] = i18n.language;
 
-		if (config.data) {
+		if (config.data && !(config.data instanceof FormData)) {
 			config.data = pako.deflate(JSON.stringify(config.data));
 			config.headers['Content-Type'] = 'application/octet-stream';
 		}

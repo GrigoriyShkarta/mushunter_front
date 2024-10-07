@@ -62,7 +62,8 @@
         "exit": "Вийти",
         "signIn": "Увійти",
         "isLookingForBand": "в пошуках гурту",
-        "lookingForSkills": "в пошуках"
+        "lookingForSkills": "в пошуках",
+        "changeAva": "Змінити аватар"
     },
     "response": {
         "success": {
@@ -86,6 +87,7 @@
         "addSection": "Додати розділ",
         "addSkill": "Додати навичку",
         "pleaseLogin": "щоб взаємодіяти з учасниками MusHunter",
-        "join": "Приєднуйтесь"
+        "join": "Приєднуйтесь",
+        "choosePhoto": "Виберіть фото профілю"
     }
 }

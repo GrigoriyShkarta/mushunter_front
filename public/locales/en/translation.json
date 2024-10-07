@@ -62,7 +62,8 @@
         "exit": "Exit",
         "signIn": "Sign In",
         "isLookingForBand": "looking for a band",
-        "lookingForSkills": "in search"
+        "lookingForSkills": "in search",
+        "changeAva": "Change avatar"
     },
     "response": {
         "success": {
@@ -86,6 +87,7 @@
         "addSection": "Add section",
         "addSkill": "Add skill",
         "pleaseLogin": "to interact with MusHunter members",
-        "join": "Join"
+        "join": "Join",
+        "choosePhoto": "Choose profile photo"
     }
 }

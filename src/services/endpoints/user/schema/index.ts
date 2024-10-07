@@ -40,8 +40,11 @@ export const ToggleLikeSchema = z.object({
 	[Field.ID]: z.number(),
 });
 
+export const AvatarSchema = z.object({});
+
 export type ChangeMainSettingsSchemaType = z.infer<typeof ChangeMainSettingsSchema>;
 export type GetSettingsSchemaType = z.infer<typeof GetSettingsSchema>;
 export type GetChangeSkillsSchemaType = z.infer<typeof ChangeSkillsSchema>;
 export type ChangeDescriptionSchemaType = z.infer<typeof ChangeDescriptionSchema>;
 export type ToggleLikeSchemaType = z.infer<typeof ToggleLikeSchema>;
+export type AvatarSchemaType = z.infer<typeof AvatarSchema>;

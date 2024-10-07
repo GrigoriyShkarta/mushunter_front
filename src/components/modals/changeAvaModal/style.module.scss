@@ -1,0 +1,14 @@
+@import "../../../shared/scss/vars";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.button {
+  @include largeButton;
+  width: 40%;
+  background-color: $orange;
+}

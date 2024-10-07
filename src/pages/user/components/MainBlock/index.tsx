@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC, Fragment, useState } from 'react';
 import cn from 'classnames';
 import s from './style.module.scss';
 import Background from './Background.tsx';
@@ -74,8 +74,14 @@ const MainBlock: FC<Props> = ({
 	return (
 		<section className={s.section}>
 			<Background />
-
-			{ava ? <img className={s.ava} src={ava} alt="user_avatar" /> : <SvgDefaultAva className={s.ava} />}
+			<div className={s.avaBlock}>
+				{ava ? <img className={s.ava} src={ava} alt="user_avatar" /> : <SvgDefaultAva className={s.ava} />}
+				{profile?.id === id && (
+					<div className={s.avaEdit} onClick={() => openModal(UserModal.ChangeAva)}>
+						<MdOutlineModeEditOutline size={'24px'} />
+					</div>
+				)}
+			</div>
 			<div className={s.wrapper}>
 				{profile?.id === id && (
 					<div className={s.edit} onClick={() => openModal(UserModal.MainSettings)}>

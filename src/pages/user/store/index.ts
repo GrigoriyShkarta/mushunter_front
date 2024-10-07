@@ -5,6 +5,7 @@ import { devtools, persist } from 'zustand/middleware';
 import { Statuses } from '../../../shared/constants';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
 import {
+	AvatarSchemaType,
 	ChangeDescriptionSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
@@ -13,6 +14,7 @@ import {
 import {
 	getSettings,
 	getUser,
+	sendAvatar,
 	sendDescription,
 	sendMainData,
 	sendSkills,
@@ -39,6 +41,7 @@ interface UserStore {
 	toggleLike: () => void;
 	logOut: () => void;
 	fetchToggleLike: (data: { id: number }) => void;
+	changeAvatar: (data) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -149,17 +152,16 @@ export const useUserStore = create<UserStore>()(
 				set({ user: res });
 			},
 
-			toggleLike: (): void => {
-				// set((state) => {
-				// 	if (!state.user) return state;
-				//
-				// 	return {
-				// 		user: {
-				// 			...state.user,
-				// 			likes: (state.user.likes || 0) + 1,
-				// 		},
-				// 	};
-				// });
+			changeAvatar: async (data): Promise<void> => {
+				try {
+					set({ sendForm: true });
+					const res = await sendAvatar(data);
+					set({ profile: res });
+				} catch (e) {
+					throw new Error(e as string);
+				} finally {
+					set({ sendForm: false });
+				}
 			},
 		})),
 		{

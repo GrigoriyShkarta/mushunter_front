@@ -107,7 +107,10 @@ const SelectInput: FC<Props> = ({
 								: options?.filter(
 										(opt) =>
 											opt.value !==
-											(value?.value || (defaultValue !== undefined && defaultValue[0].value) || value || defaultValue),
+											(value?.value ||
+												(defaultValue !== undefined && defaultValue.length > 0 && defaultValue[0].value) ||
+												value ||
+												defaultValue),
 									)
 						}
 						isMulti={isMulti}

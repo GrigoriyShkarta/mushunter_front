@@ -61,4 +61,5 @@ export enum UserModal {
 	MainSettings,
 	SkillSettings,
 	DescriptionSettings,
+	ChangeAva,
 }

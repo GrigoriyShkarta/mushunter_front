@@ -13,14 +13,34 @@
   border-radius: 10px 10px 0 0;
 }
 
-.ava {
+.avaBlock {
   position: absolute;
   left: 20px;
   top: 45px;
-  border-radius: 50%;
   width: 160px;
   height: 160px;
-  border: 4px solid white;
+
+  .ava {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    border: 4px solid white;
+  }
+
+  .avaEdit {
+    position: absolute;
+    top: 135px;
+    left: 65px;
+    width: 35px;
+    height: 35px;
+    background-color: $gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid white;
+    cursor: pointer;
+  }
 }
 
 .wrapper {

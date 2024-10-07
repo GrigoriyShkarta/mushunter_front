@@ -23,8 +23,6 @@ const MainSettingsModal: FC = () => {
 	const { changeMainData, toggleSendForm } = useUserStore((state) => state);
 	const { setIsOpen } = useModalStore();
 
-	console.log('user', user);
-
 	const { t } = useTranslation();
 	const {
 		register,
@@ -47,13 +45,10 @@ const MainSettingsModal: FC = () => {
 		},
 	});
 
-	console.log('errors', errors);
-
 	const formatedStyles = formatToOption(settings?.styles);
 	const formatedCities = formatToOption(settings?.cities);
 	const formatedUserStyles = formatToOption(user?.styles);
 	const formatedSearchForSkill = formatToOption(user?.lookingForSkills);
-	console.log('formatedSearchForSkill', formatedSearchForSkill);
 	const formatedSkills = formatToOption(settings?.skills);
 	const formatedUserCities = formatToOption(user?.city ? [user.city] : []);
 	const linksArray = watch(Field.LINKS) ?? [];
@@ -62,7 +57,6 @@ const MainSettingsModal: FC = () => {
 	const onSubmit: SubmitHandler<ChangeMainSettingsSchemaType> = async (data): Promise<void> => {
 		try {
 			toggleSendForm();
-			console.log('data', data);
 			await changeMainData(data);
 		} catch (e) {
 			console.error('responseError', e);

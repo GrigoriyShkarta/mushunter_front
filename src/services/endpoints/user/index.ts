@@ -1,5 +1,6 @@
 import axiosInstance from '../../axios';
 import {
+	AvatarSchemaType,
 	ChangeDescriptionSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
@@ -42,6 +43,10 @@ export const getUser = async (data: { id: number }): Promise<UserSchemaType> => 
 
 export const sendToggleLike = async (data: ToggleLikeSchemaType): Promise<UserSchemaType> => {
 	const response = await axiosInstance.post('/user/like', data);
-	console.log('response.data.decompressedData', response.data.decompressedData);
+	return UserSchema.parse(response.data.decompressedData);
+};
+
+export const sendAvatar = async (data: FormData): Promise<UserSchemaType> => {
+	const response = await axiosInstance.post('/user/changeAvatar', data);
 	return UserSchema.parse(response.data.decompressedData);
 };

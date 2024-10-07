@@ -13,6 +13,7 @@ import Modal from '../../components/modals';
 import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
 import DescriptionSettingsModal from '../../components/modals/descriptionSettingsModal';
 import { UserSchemaType } from '../../services/endpoints/user/response';
+import ChangeAvaModal from '../../components/modals/changeAvaModal';
 
 const User: FC = () => {
 	const profile = useUserStore((state) => state.profile);
@@ -68,6 +69,11 @@ const User: FC = () => {
 			case UserModal.DescriptionSettings:
 				setTitle(t('general.descriptionEdit'));
 				setChildren(<DescriptionSettingsModal />);
+				break;
+			case UserModal.ChangeAva:
+				setTitle(t('general.changeAva'));
+				setChildren(<ChangeAvaModal />);
+				break;
 		}
 	};
 
@@ -94,6 +100,7 @@ const User: FC = () => {
 							pageData?.lookingForSkills &&
 							pageData.lookingForSkills.map((skill) => skill.name[i18n.language as Languages])
 						}
+						ava={pageData.avatar}
 					/>
 					{pageData.skills.length > 0 && (
 						<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} />
