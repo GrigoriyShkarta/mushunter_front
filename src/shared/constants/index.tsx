@@ -26,7 +26,8 @@ export enum AuthForms {
 export enum Field {
 	EMAIL = 'email',
 	PASSWORD = 'password',
-	NAME = 'firstname',
+	NAME = 'name',
+	FIRST_NAME = 'firstname',
 	LAST_NAME = 'lastname',
 	CONFIRM_PASSWORD = 'confirmPassword',
 	CITY = 'city',

@@ -1,6 +1,5 @@
 import axiosInstance from '../../axios';
 import {
-	AvatarSchemaType,
 	ChangeDescriptionSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
@@ -10,9 +9,9 @@ import {
 } from './schema';
 import { UserSchema, UserSchemaType } from './response';
 
-export const getMe = async () => {
-	const response = await axiosInstance.get('/user/me');
-};
+// export const getMe = async () => {
+// 	const response = await axiosInstance.get('/user/me');
+// };
 
 export const getSettings = async (): Promise<GetSettingsSchemaType> => {
 	const response = await axiosInstance.get('/user/settings');

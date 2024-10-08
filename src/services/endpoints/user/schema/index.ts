@@ -16,7 +16,7 @@ export const GetSettingsSchema = z.object({
 });
 
 export const ChangeMainSettingsSchema = z.object({
-	[Field.NAME]: z.string(),
+	[Field.FIRST_NAME]: z.string(),
 	[Field.LAST_NAME]: z.string(),
 	[Field.CITY]: z.number().optional(),
 	[Field.PHONE]: z.string().optional(),

@@ -37,7 +37,7 @@ const MainSettingsModal: FC = () => {
 		defaultValues: {
 			[Field.BIRTHDAY]: user?.birthday,
 			[Field.EDUCATION]: user?.education,
-			[Field.NAME]: user?.firstname,
+			[Field.FIRST_NAME]: user?.firstname,
 			[Field.LAST_NAME]: user?.lastname,
 			[Field.PHONE]: user?.phone,
 			[Field.LINKS]: user?.links,
@@ -84,8 +84,8 @@ const MainSettingsModal: FC = () => {
 			<div className={s.inputs}>
 				<div className={s.nameWrapper}>
 					<TextInput
-						register={register(Field.NAME)}
-						name={Field.NAME}
+						register={register(Field.FIRST_NAME)}
+						name={Field.FIRST_NAME}
 						error={errors.firstname?.message}
 						className={s.input}
 					/>

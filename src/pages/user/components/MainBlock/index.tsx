@@ -1,4 +1,4 @@
-import { FC, Fragment, useState } from 'react';
+import { FC, Fragment } from 'react';
 import cn from 'classnames';
 import s from './style.module.scss';
 import Background from './Background.tsx';
@@ -56,7 +56,7 @@ const MainBlock: FC<Props> = ({
 	lookingForSkills,
 }) => {
 	const profile = useUserStore((state) => state.profile);
-	const { toggleLike, fetchToggleLike } = useUserStore((state) => state);
+	const { fetchToggleLike } = useUserStore((state) => state);
 	const { t, i18n } = useTranslation();
 	const navigate = useNavigate();
 
@@ -67,7 +67,6 @@ const MainBlock: FC<Props> = ({
 	});
 
 	const onClickLike = () => {
-		toggleLike();
 		fetchToggleLike({ id });
 	};
 

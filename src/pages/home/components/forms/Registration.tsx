@@ -58,7 +58,7 @@ const Registration: FC<IRegistrationProps> = ({ setCurrentForm }) => {
 				if (!res) {
 					await sendSignInLinkToEmail(auth, data.email, actionCodeSettings);
 					const tempUser = {
-						[Field.NAME]: data.firstname,
+						[Field.FIRST_NAME]: data.firstname,
 						[Field.LAST_NAME]: data.lastname,
 						[Field.EMAIL]: data.email,
 						[Field.PASSWORD]: data.password,
@@ -85,9 +85,9 @@ const Registration: FC<IRegistrationProps> = ({ setCurrentForm }) => {
 				<div className={s.namesWrapper}>
 					<div className={s.name}>
 						<TextInput
-							register={register(Field.NAME)}
+							register={register(Field.FIRST_NAME)}
 							className={s.input}
-							name={Field.NAME}
+							name={Field.FIRST_NAME}
 							error={errors.firstname?.message}
 						/>
 					</div>

@@ -27,14 +27,13 @@ const SocialButton: FC<Props> = ({ name, icon, provider }) => {
 			provider.addScope('email profile');
 			const res = await signInWithPopup(auth, provider);
 			const tokenResponse = (res as any)._tokenResponse;
-			console.log('tokenResponse', tokenResponse);
 			if (res.user.email) {
 				const checkAuth = await socialAuth({ email: res.user.email });
 				if (!checkAuth) {
 					if (tokenResponse.firstName && tokenResponse.lastName && tokenResponse.email) {
 						registrationUser({
 							[Field.EMAIL]: tokenResponse.email,
-							[Field.NAME]: tokenResponse.firstName,
+							[Field.FIRST_NAME]: tokenResponse.firstName,
 							[Field.LAST_NAME]: tokenResponse.lastName,
 							[Field.AVATAR]: tokenResponse.photoUrl,
 						});

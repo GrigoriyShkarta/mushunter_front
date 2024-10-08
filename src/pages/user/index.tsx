@@ -43,7 +43,7 @@ const User: FC = () => {
 		if (!settings && profile) {
 			fetchSettings();
 		}
-	}, [navigate, profile, settings, fetchSettings]);
+	}, [navigate, profile, settings, fetchSettings, id, getUser]);
 
 	useEffect(() => {
 		if (id) {
@@ -102,10 +102,11 @@ const User: FC = () => {
 						}
 						ava={pageData.avatar}
 					/>
-					{pageData.skills.length > 0 && (
+					{(pageData.id === profile?.id || pageData.skills.length > 0) && (
 						<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} />
 					)}
-					{pageData.description && (
+
+					{(pageData.id === profile?.id || pageData.skills.length > 0) && (
 						<DescriptionBlock description={pageData.description} id={pageData.id} openModal={openModal} />
 					)}
 				</>

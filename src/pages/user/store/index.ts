@@ -5,7 +5,6 @@ import { devtools, persist } from 'zustand/middleware';
 import { Statuses } from '../../../shared/constants';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
 import {
-	AvatarSchemaType,
 	ChangeDescriptionSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
@@ -38,10 +37,9 @@ interface UserStore {
 	changeSkills: (data: GetChangeSkillsSchemaType) => Promise<void>;
 	changeDescription: (data: ChangeDescriptionSchemaType) => Promise<void>;
 	getUserFromId: (data: { id: number }) => Promise<void>;
-	toggleLike: () => void;
 	logOut: () => void;
 	fetchToggleLike: (data: { id: number }) => void;
-	changeAvatar: (data) => Promise<void>;
+	changeAvatar: (data: FormData) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -84,7 +82,6 @@ export const useUserStore = create<UserStore>()(
 			socialAuth: async (form: EmailSchemaType): Promise<AuthSchemaType | boolean> => {
 				try {
 					const res = await authWithSocialMedia(form);
-					console.log('res', res);
 					if (res && typeof res === 'object' && 'user' in res) {
 						set({ profile: res.user });
 					}
@@ -152,7 +149,7 @@ export const useUserStore = create<UserStore>()(
 				set({ user: res });
 			},
 
-			changeAvatar: async (data): Promise<void> => {
+			changeAvatar: async (data: FormData): Promise<void> => {
 				try {
 					set({ sendForm: true });
 					const res = await sendAvatar(data);

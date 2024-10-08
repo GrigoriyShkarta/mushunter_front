@@ -25,7 +25,7 @@ export const SignInSchema = z.object({
 });
 
 export const RegisterSchema = z.object({
-	[Field.NAME]: nameValidation,
+	[Field.FIRST_NAME]: nameValidation,
 	[Field.LAST_NAME]: nameValidation,
 	[Field.EMAIL]: emailValidation,
 	[Field.PASSWORD]: passwordValidation,
@@ -33,12 +33,12 @@ export const RegisterSchema = z.object({
 });
 
 export const FinishRegisterSchema = z.object({
-	[Field.NAME]: nameValidation,
+	[Field.FIRST_NAME]: nameValidation,
 	[Field.LAST_NAME]: nameValidation,
 });
 
 export const ChangeMainSettingsValidationSchema = z.object({
-	[Field.NAME]: nameValidation,
+	[Field.FIRST_NAME]: nameValidation,
 	[Field.LAST_NAME]: nameValidation,
 	[Field.CITY]: z.preprocess((arg) => {
 		if (Array.isArray(arg)) {

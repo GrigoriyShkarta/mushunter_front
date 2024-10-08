@@ -7,7 +7,7 @@ const LoginSchema = z.object({
 });
 
 const RegisterSchema = z.object({
-	[Field.NAME]: z.string(),
+	[Field.FIRST_NAME]: z.string(),
 	[Field.LAST_NAME]: z.string(),
 	[Field.EMAIL]: z.string().email(),
 	[Field.AVATAR]: z.string().url().optional(),
@@ -27,7 +27,7 @@ const ChangePasswordSchema = z.object({
 });
 
 const FinishedRegistrationSchema = z.object({
-	[Field.NAME]: z.string(),
+	[Field.FIRST_NAME]: z.string(),
 	[Field.LAST_NAME]: z.string(),
 });
 

@@ -30,7 +30,7 @@ const SocialMediaAuthModal: FC = () => {
 			setLoading(true);
 			try {
 				registrationUser({
-					[Field.NAME]: data.firstname,
+					[Field.FIRST_NAME]: data.firstname,
 					[Field.LAST_NAME]: data.lastname,
 					[Field.EMAIL]: email,
 				});
@@ -46,7 +46,7 @@ const SocialMediaAuthModal: FC = () => {
 	return (
 		<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 			<div className={s.inputs}>
-				<TextInput register={register(Field.NAME)} name={Field.NAME} error={errors.firstname?.message} />
+				<TextInput register={register(Field.FIRST_NAME)} name={Field.FIRST_NAME} error={errors.firstname?.message} />
 				<TextInput register={register(Field.LAST_NAME)} name={Field.LAST_NAME} error={errors.lastname?.message} />
 			</div>
 			<Button type={'submit'} value={t('general.send')} className={s.button} loading={loading} />

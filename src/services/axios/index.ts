@@ -12,12 +12,18 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
 	async (config) => {
 		const tokens = localStorage.getItem('tokens');
+		console.log('tokens', tokens);
 		if (tokens) {
 			const parsedTokens = JSON.parse(tokens);
-			let token = parsedTokens?.tokens?.accessToken;
+			console.log('parsedTokens', parsedTokens);
+			let token = parsedTokens?.accessToken;
+			console.log('isTokenExpired(token)', isTokenExpired(token));
+			console.log('token', token);
 			if (token && isTokenExpired(token)) {
 				try {
+					console.log('try');
 					const newTokens = await refreshToken({ refreshToken: parsedTokens.tokens.refreshToken });
+					console.log('newTokens', newTokens);
 					localStorage.setItem('tokens', JSON.stringify(newTokens));
 					token = newTokens.tokens.accessToken; // Обновляем accessToken
 				} catch (error) {
