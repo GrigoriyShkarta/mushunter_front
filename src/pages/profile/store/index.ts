@@ -162,7 +162,7 @@ export const useUserStore = create<UserStore>()(
 			},
 		})),
 		{
-			name: 'user-storage',
+			name: 'profile-storage',
 			partialize: (state) => ({
 				profile: state.profile,
 				settings: state.settings,

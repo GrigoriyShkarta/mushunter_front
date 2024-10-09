@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toastConfig } from './shared/constants';
 
 const HomePage = lazy(() => import('./pages/home'));
-const UserPage = lazy(() => import('./pages/user'));
+const ProfilePage = lazy(() => import('./pages/profile'));
 
 function App(): JSX.Element {
 	return (
@@ -18,9 +18,9 @@ function App(): JSX.Element {
 				<Suspense fallback={<div>Loading...</div>}>
 					<Routes>
 						<Route path={'/'} element={<HomePage />} />
-						<Route path={'/user'} element={<UserPage />} />
-						<Route path={'/user/:id'} element={<UserPage />} />
-						{/*<Route path={'/user/:id'} element={<div>hi</div>} />*/}
+						<Route path={'/user'} element={<ProfilePage />} />
+						<Route path={'/user/:id'} element={<ProfilePage />} />
+						{/*<Route path={'/profile/:id'} element={<div>hi</div>} />*/}
 					</Routes>
 				</Suspense>
 			</Router>

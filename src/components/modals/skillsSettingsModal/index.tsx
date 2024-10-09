@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import s from './style.module.scss';
-import { useUserStore } from '../../../pages/user/store';
+import { useUserStore } from '../../../pages/profile/store';
 import { useForm } from 'react-hook-form';
 import { Field, Languages } from '../../../shared/constants';
 import { useTranslation } from 'react-i18next';

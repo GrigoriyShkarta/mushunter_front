@@ -3,7 +3,7 @@ import s from './style.module.scss';
 import { useTranslation } from 'react-i18next';
 import Avatar from 'react-avatar-edit';
 import Button from '../../buttons/Button.tsx';
-import { useUserStore } from '../../../pages/user/store';
+import { useUserStore } from '../../../pages/profile/store';
 import { useModalStore } from '../store.ts';
 
 const ChangeAvaModal: FC = () => {

@@ -12,7 +12,7 @@ import { AuthForms, Field, Statuses } from '../../../../shared/constants';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineMail } from 'react-icons/ai';
 import { SignInSchema } from '../../../../shared/validation';
-import { useUserStore } from '../../../user/store';
+import { useUserStore } from '../../../profile/store';
 import { LoginSchemaType } from '../../../../services/endpoints/auth/schema';
 import useToast from '../../../../shared/hooks/useToast.ts';
 import { useNavigate } from 'react-router-dom';

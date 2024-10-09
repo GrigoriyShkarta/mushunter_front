@@ -8,7 +8,7 @@ import { FinishRegisterSchema } from '../../../shared/validation';
 import { FinishedRegistrationSchemaType } from '../../../services/endpoints/auth/schema';
 import Button from '../../buttons/Button.tsx';
 import { useTranslation } from 'react-i18next';
-import { useUserStore } from '../../../pages/user/store';
+import { useUserStore } from '../../../pages/profile/store';
 import { useNavigate } from 'react-router-dom';
 
 const SocialMediaAuthModal: FC = () => {

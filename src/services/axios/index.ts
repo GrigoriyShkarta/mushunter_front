@@ -12,18 +12,14 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
 	async (config) => {
 		const tokens = localStorage.getItem('tokens');
-		console.log('tokens', tokens);
 		if (tokens) {
 			const parsedTokens = JSON.parse(tokens);
-			console.log('parsedTokens', parsedTokens);
-			let token = parsedTokens?.accessToken;
-			console.log('isTokenExpired(token)', isTokenExpired(token));
-			console.log('token', token);
+			let token = parsedTokens?.accessToken || parsedTokens.tokens.refreshToken;
 			if (token && isTokenExpired(token)) {
 				try {
-					console.log('try');
-					const newTokens = await refreshToken({ refreshToken: parsedTokens.tokens.refreshToken });
-					console.log('newTokens', newTokens);
+					const newTokens = await refreshToken({
+						refreshToken: parsedTokens.refreshToken || parsedTokens.tokens.refreshToken,
+					});
 					localStorage.setItem('tokens', JSON.stringify(newTokens));
 					token = newTokens.tokens.accessToken; // Обновляем accessToken
 				} catch (error) {
@@ -38,7 +34,10 @@ axiosInstance.interceptors.request.use(
 		config.headers['Accept-Language'] = i18n.language;
 
 		if (config.data && !(config.data instanceof FormData)) {
-			config.data = pako.deflate(JSON.stringify(config.data));
+			console.log('config.data', config.data);
+			const compressedData = pako.deflate(JSON.stringify(config.data));
+			console.log('Compressed data:', compressedData);
+			config.data = compressedData;
 			config.headers['Content-Type'] = 'application/octet-stream';
 		}
 

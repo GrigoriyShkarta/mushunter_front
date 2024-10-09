@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChangeDescriptionSchema } from '../../../shared/validation';
 import { Field } from '../../../shared/constants';
-import { useUserStore } from '../../../pages/user/store';
+import { useUserStore } from '../../../pages/profile/store';
 import TextareaInput from '../../inputs/TextareaInput.tsx';
 import { ChangeDescriptionSchemaType } from '../../../services/endpoints/user/schema';
 import { useModalStore } from '../store.ts';

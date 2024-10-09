@@ -34,6 +34,7 @@
         "choose": "обери {{value}}"
     },
     "general": {
+        "name": "назва",
         "firstname": "ім'я",
         "lastname": "прізвище",
         "email": "email",
@@ -63,7 +64,8 @@
         "signIn": "Увійти",
         "isLookingForBand": "в пошуках гурту",
         "lookingForSkills": "в пошуках",
-        "changeAva": "Змінити аватар"
+        "changeAva": "Змінити аватар",
+        "created_date": "дата створення"
     },
     "response": {
         "success": {
@@ -88,6 +90,8 @@
         "addSkill": "Додати навичку",
         "pleaseLogin": "щоб взаємодіяти з учасниками MusHunter",
         "join": "Приєднуйтесь",
-        "choosePhoto": "Виберіть фото профілю"
+        "choosePhoto": "Виберіть фото профілю",
+        "createBand": "Створити гурт",
+        "createBandPhoto": "Виберіть фото"
     }
 }

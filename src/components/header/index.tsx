@@ -4,7 +4,7 @@ import { BiSolidUser } from 'react-icons/bi';
 import { HiUserGroup } from 'react-icons/hi';
 import s from './header.module.scss';
 import { useTranslation } from 'react-i18next';
-import { useUserStore } from '../../pages/user/store';
+import { useUserStore } from '../../pages/profile/store';
 import { SvgDefaultAva } from '../../assets/svg';
 import { MdArrowDropDown } from 'react-icons/md';
 import { TiArrowSortedDown } from 'react-icons/ti';

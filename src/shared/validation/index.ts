@@ -15,6 +15,37 @@ const nameValidation = z
 	.regex(/^\S*$/, { message: 'validation.noSpacesAllowed' })
 	.min(1, { message: 'validation.required' });
 
+const cityValidation = z.preprocess((arg) => {
+	if (Array.isArray(arg)) {
+		return arg[0].value;
+	}
+	if (arg && typeof arg === 'object' && 'value' in arg) {
+		return arg.value;
+	}
+	return arg;
+}, z.number().optional());
+
+const birthdayValidation = z.preprocess((arg) => {
+	if (typeof arg === 'string') {
+		return new Date(arg);
+	}
+	return arg;
+}, z.date().optional());
+
+const linksValidation = z.preprocess((arg) => {
+	if (Array.isArray(arg)) {
+		return arg.filter((link) => link !== '');
+	}
+	return arg;
+}, z.array(z.string()).optional());
+
+const stylesValidation = z.preprocess((arg) => {
+	if (Array.isArray(arg)) {
+		return arg.map((item) => item.value);
+	}
+	return arg;
+}, z.array(z.number()).optional());
+
 export const EmailSchema = z.object({
 	[Field.EMAIL]: emailValidation,
 });
@@ -40,29 +71,11 @@ export const FinishRegisterSchema = z.object({
 export const ChangeMainSettingsValidationSchema = z.object({
 	[Field.FIRST_NAME]: nameValidation,
 	[Field.LAST_NAME]: nameValidation,
-	[Field.CITY]: z.preprocess((arg) => {
-		if (Array.isArray(arg)) {
-			return arg[0].value;
-		}
-		if (arg && typeof arg === 'object' && 'value' in arg) {
-			return arg.value;
-		}
-		return arg;
-	}, z.number().optional()),
-	[Field.BIRTHDAY]: z.preprocess((arg) => {
-		if (typeof arg === 'string') {
-			return new Date(arg);
-		}
-		return arg;
-	}, z.date().optional()),
+	[Field.CITY]: cityValidation,
+	[Field.BIRTHDAY]: birthdayValidation,
 	[Field.PHONE]: z.string().optional(),
 	[Field.EDUCATION]: z.string().optional(),
-	[Field.LINKS]: z.preprocess((arg) => {
-		if (Array.isArray(arg)) {
-			return arg.filter((link) => link !== '');
-		}
-		return arg;
-	}, z.array(z.string()).optional()),
+	[Field.LINKS]: linksValidation,
 
 	[Field.STYLES]: z.preprocess((arg) => {
 		if (Array.isArray(arg)) {
@@ -81,4 +94,14 @@ export const ChangeMainSettingsValidationSchema = z.object({
 
 export const ChangeDescriptionSchema = z.object({
 	[Field.DESCRIPTION]: z.string().optional(),
+});
+
+export const CreateGroupValidateSchema = z.object({
+	[Field.NAME]: nameValidation,
+	[Field.CITY]: cityValidation,
+	[Field.CREATION_DATE]: birthdayValidation,
+	[Field.DESCRIPTION]: z.string().optional(),
+	[Field.LINKS]: linksValidation,
+	[Field.STYLES]: stylesValidation,
+	[Field.AVATAR]: z.instanceof(FormData).optional(),
 });

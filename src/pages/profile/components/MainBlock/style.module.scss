@@ -1,0 +1,157 @@
+@import "../../../../shared/scss/vars";
+
+.section {
+  width: 100%;
+  border-radius: 10px;
+  position: relative;
+  border: 1px solid $borderColor;
+}
+
+.background {
+  width: 100%;
+  height: 160px;
+  border-radius: 10px 10px 0 0;
+}
+
+.wrapper {
+  padding: 50px 24px 24px;
+  background-color: $whiteBg;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  gap: 16px;
+}
+
+.info {
+  width: 58%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.edit {
+  position: absolute;
+  right: 20px;
+  top: 175px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $hoverGray;
+  }
+}
+
+.itemSkill, .itemStyle {
+  padding: 4px 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.itemSkill {
+  background-color: $lightOrange;
+}
+
+.itemStyle {
+  background-color: $gray;
+}
+
+.joinBlock {
+  padding: 10px;
+  border: 1px solid $orange;
+  border-radius: 10px;
+  width: 45%;
+
+  &__link {
+    font-weight: 600;
+    color: $orange;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.groupBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 35%;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  //background-color: $lightGray;
+  border: 1px solid $lightGray;
+  border-radius: 20px;
+  padding: 5px 20px;
+
+  &__ava {
+    width: 36px;
+    height: 36px;
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  &__ava {
+    border-radius: 50%;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    &__name {
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &__roles {
+      display: flex;
+      gap: 2px;
+
+      .role {
+        padding: 2px 4px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        background-color: $lightOrange;
+      }
+    }
+  }
+}
+
+.createGroup {
+  width: 100%;
+  padding: 16px;
+  background-color: $lightGray;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hoverGray;
+  }
+}

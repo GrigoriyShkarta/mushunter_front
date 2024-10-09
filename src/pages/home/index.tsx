@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import Description from './components/Description';
 import Form from './components/Form';
 import s from './style.module.scss';
-import { useUserStore } from '../user/store';
+import { useUserStore } from '../profile/store';
 import { useNavigate } from 'react-router-dom';
 import useToast from '../../shared/hooks/useToast.ts';
 import { RegisterSchemaType } from '../../services/endpoints/auth/schema';

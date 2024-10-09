@@ -14,6 +14,7 @@ import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
 import DescriptionSettingsModal from '../../components/modals/descriptionSettingsModal';
 import { UserSchemaType } from '../../services/endpoints/user/response';
 import ChangeAvaModal from '../../components/modals/changeAvaModal';
+import CreateBandModal from '../../components/modals/createBand';
 
 const User: FC = () => {
 	const profile = useUserStore((state) => state.profile);
@@ -74,6 +75,10 @@ const User: FC = () => {
 				setTitle(t('general.changeAva'));
 				setChildren(<ChangeAvaModal />);
 				break;
+			case UserModal.CreateBand:
+				setTitle(t('user.createBand'));
+				setChildren(<CreateBandModal />);
+				break;
 		}
 	};
 
@@ -101,6 +106,7 @@ const User: FC = () => {
 							pageData.lookingForSkills.map((skill) => skill.name[i18n.language as Languages])
 						}
 						ava={pageData.avatar}
+						groups={pageData.groups}
 					/>
 					{(pageData.id === profile?.id || pageData.skills.length > 0) && (
 						<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} />

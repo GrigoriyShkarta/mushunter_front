@@ -10,7 +10,7 @@ import {
 import { UserSchema, UserSchemaType } from './response';
 
 // export const getMe = async () => {
-// 	const response = await axiosInstance.get('/user/me');
+// 	const response = await axiosInstance.get('/profile/me');
 // };
 
 export const getSettings = async (): Promise<GetSettingsSchemaType> => {

@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import s from './style.module.scss';
-import { useUserStore } from '../../pages/user/store';
+import { useUserStore } from '../../pages/profile/store';
 import Button from '../buttons/Button.tsx';
 import { useTranslation } from 'react-i18next';
 import { SvgDefaultAva, SvgUaFlagIcon, SvgUsaFlagIcon } from '../../assets/svg';
@@ -25,7 +25,7 @@ const ProfilePopup: FC<Props> = ({ setShowPopup, showPopup }) => {
 
 	const logOut = (): void => {
 		logOutProfile();
-		localStorage.removeItem('user-storage');
+		localStorage.removeItem('profile-storage');
 		localStorage.removeItem('tokens');
 		navigate('/');
 	};

@@ -34,6 +34,7 @@
         "choose": "choose {{value}}"
     },
     "general": {
+        "name": "name",
         "firstname": "name",
         "lastname": "lastname",
         "email": "email",
@@ -63,7 +64,8 @@
         "signIn": "Sign In",
         "isLookingForBand": "looking for a band",
         "lookingForSkills": "in search",
-        "changeAva": "Change avatar"
+        "changeAva": "Change avatar",
+        "created_date": "created date"
     },
     "response": {
         "success": {
@@ -88,6 +90,8 @@
         "addSkill": "Add skill",
         "pleaseLogin": "to interact with MusHunter members",
         "join": "Join",
-        "choosePhoto": "Choose profile photo"
+        "choosePhoto": "Choose profile photo",
+        "createBand": "Create band",
+        "createBandPhoto": "Choose photo"
     }
 }

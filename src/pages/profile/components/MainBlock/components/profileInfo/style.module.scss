@@ -1,0 +1,87 @@
+@import "../../../../../../shared/scss/vars";
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.arrayWrapper {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.itemSkill, .itemStyle {
+  padding: 4px 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.itemSkill {
+  background-color: $lightOrange;
+}
+
+.itemStyle {
+  background-color: $gray;
+}
+
+.statuses {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .statusBand {
+    padding: 4px 8px;
+    background-color: $green;
+    width: fit-content;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .statusSearch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+
+    &__text {
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: underline;
+    }
+
+    .skillName {
+      padding: 4px 8px;
+      background-color: $green;
+      width: fit-content;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+  }
+}
+
+.styleBlock {
+  padding: 12px;
+  border: 1px solid $borderColor;
+  border-radius: 10px;
+  width: fit-content;
+
+  .top {
+    display: flex;
+    gap: 8px;
+  }
+
+  .stylesTitle {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .stylesWrapper {
+    display: flex;
+    gap: 4px;
+    padding-left: 24px;
+  }
+}

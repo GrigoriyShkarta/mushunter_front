@@ -5,7 +5,7 @@ import { ChangeMainSettingsSchemaType } from '../../../services/endpoints/user/s
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '../../inputs/TextInput.tsx';
 import { Field } from '../../../shared/constants';
-import { useUserStore } from '../../../pages/user/store';
+import { useUserStore } from '../../../pages/profile/store';
 import SelectInput from '../../inputs/Select.tsx';
 import { useTranslation } from 'react-i18next';
 import DatePickerInput from '../../inputs/DatePickerInput.tsx';

@@ -43,9 +43,8 @@ export enum Field {
 	SEARCH_BAND = 'isLookingForBand',
 	IN_SEARCH = 'lookingForSkills',
 	AVATAR = 'avatar',
-	CODE = 'code',
-	NEW_PASSWORD = 'newPassword',
-	CHECK_PASSWORD = 'checkPassword',
+	ROLE = 'role',
+	CREATION_DATE = 'created_date',
 }
 
 export const toastConfig = {
@@ -63,4 +62,5 @@ export enum UserModal {
 	SkillSettings,
 	DescriptionSettings,
 	ChangeAva,
+	CreateBand,
 }

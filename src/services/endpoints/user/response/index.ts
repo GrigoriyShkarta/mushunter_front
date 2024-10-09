@@ -6,12 +6,12 @@ export const TranslateObj = z.object({
 	en: z.string(),
 });
 
-const Style = z.object({
+export const Style = z.object({
 	id: z.number(),
 	name: z.string(),
 });
 
-const City = z.object({
+export const City = z.object({
 	id: z.number(),
 	name: TranslateObj,
 });
@@ -30,7 +30,7 @@ const GroupSkillSchema = z.object({
 const Group = z.object({
 	id: z.number(),
 	[Field.NAME]: z.string(),
-	[Field.AVATAR]: z.string().optional(),
+	[Field.AVATAR]: z.string().optional().nullable(),
 	[Field.SKILLS]: z.array(GroupSkillSchema).optional(),
 });
 

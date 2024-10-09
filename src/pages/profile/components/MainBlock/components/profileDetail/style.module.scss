@@ -1,0 +1,90 @@
+@import "../../../../../../shared/scss/vars";
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.greyText, .blackText {
+  font-size: 16px;
+  color: $gray;
+}
+
+.blackText {
+  color: black;
+}
+
+.likeWrapper, .hoverLikeWrapper, .activeLike {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background-color: $hoverGray;
+  width: fit-content;
+  border-radius: 15px;
+  padding: 6px 10px;
+
+  svg {
+    path {
+      fill: $lightOrange;
+    }
+  }
+
+  .line {
+    width: 1px;
+    height: 20px;
+    background-color: $orange;
+  }
+
+  .number {
+    color: $orange;
+    font-size: 20px;
+  }
+}
+
+.hoverLikeWrapper {
+  svg {
+    &:hover {
+      cursor: pointer;
+
+      path {
+        fill: $orange;
+      }
+    }
+  }
+}
+
+.activeLike {
+  svg {
+    path {
+      fill: $orange;
+    }
+  }
+}
+
+.links {
+  display: flex;
+  position: relative;
+  gap: 4px;
+
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+
+    &:hover {
+      z-index: 100;
+    }
+  }
+}
+
+.button {
+  @include smallButton;
+  background-color: $orange;
+  gap: 8px;
+  width: 20%;
+}

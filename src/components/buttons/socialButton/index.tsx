@@ -5,7 +5,7 @@ import { useModalStore } from '../../modals/store.ts';
 import { useNavigate } from 'react-router-dom';
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../../firebase.ts';
-import { useUserStore } from '../../../pages/user/store';
+import { useUserStore } from '../../../pages/profile/store';
 import SocialMediaAuthModal from '../../modals/socialMediaAuthModal';
 import { useTranslation } from 'react-i18next';
 import { Field } from '../../../shared/constants';
@@ -37,7 +37,7 @@ const SocialButton: FC<Props> = ({ name, icon, provider }) => {
 							[Field.LAST_NAME]: tokenResponse.lastName,
 							[Field.AVATAR]: tokenResponse.photoUrl,
 						});
-						// localStorage.setItem('emailForRegistration', res.user.email);
+						// localStorage.setItem('emailForRegistration', res.profile.email);
 						// setTitle(t('home.registration'));
 						// setChildren(<SocialMediaAuthModal />);
 						// setIsOpen(true);

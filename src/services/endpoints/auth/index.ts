@@ -27,6 +27,7 @@ export const authWithSocialMedia = async (data: EmailSchemaType): Promise<AuthSc
 	if (typeof response.data.decompressedData === 'boolean' || typeof response.data === 'boolean') {
 		return response.data.decompressedData;
 	}
+	console.log(response.data.decompressedData);
 	localStorage.setItem('tokens', JSON.stringify(response.data.decompressedData.tokens));
 	return AuthSchema.parse(response.data.decompressedData);
 };
