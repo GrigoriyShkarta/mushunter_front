@@ -1,15 +1,22 @@
-@import "../../../../shared/scss/vars";
+@import "../../../../../shared/scss/vars";
 
 .section {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   position: relative;
   border: 1px solid $borderColor;
+  border-top: none;
   padding: 24px;
   background-color: $whiteBg;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.noInfoText {
+  text-align: center;
+  font-weight: 600;
+  color: $gray;
 }
 
 .edit {

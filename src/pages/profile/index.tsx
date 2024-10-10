@@ -4,9 +4,7 @@ import { useUserStore } from './store';
 import { MainBlock } from './components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Languages, UserModal } from '../../shared/constants';
-import SkillsBlock from './components/SkillsBlock';
-import DescriptionBlock from './components/DescriptionBlock';
+import { Languages, PageBlock, UserModal } from '../../shared/constants';
 import { useModalStore } from '../../components/modals/store.ts';
 import MainSettingsModal from '../../components/modals/mainSettingsModal';
 import Modal from '../../components/modals';
@@ -14,7 +12,10 @@ import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
 import DescriptionSettingsModal from '../../components/modals/descriptionSettingsModal';
 import { UserSchemaType } from '../../services/endpoints/user/response';
 import ChangeAvaModal from '../../components/modals/changeAvaModal';
-import CreateBandModal from '../../components/modals/createBand';
+import CreateBandModal from '../../components/modals/createBandModal';
+import Tabs from './components/Tabs';
+import SkillsBlock from './components/Tabs/SkillsBlock';
+import DescriptionBlock from './components/Tabs/DescriptionBlock';
 
 const User: FC = () => {
 	const profile = useUserStore((state) => state.profile);
@@ -28,6 +29,7 @@ const User: FC = () => {
 	const { id } = useParams();
 
 	const [pageData, setPageData] = useState<UserSchemaType | null>(null);
+	const [activeBlock, setActiveBlock] = useState<PageBlock>(PageBlock.DescriptionBlock);
 
 	useEffect(() => {
 		if (!profile && !id) {
@@ -76,7 +78,7 @@ const User: FC = () => {
 				setChildren(<ChangeAvaModal />);
 				break;
 			case UserModal.CreateBand:
-				setTitle(t('user.createBand'));
+				setTitle(t('user.createBandModal'));
 				setChildren(<CreateBandModal />);
 				break;
 		}
@@ -108,13 +110,20 @@ const User: FC = () => {
 						ava={pageData.avatar}
 						groups={pageData.groups}
 					/>
-					{(pageData.id === profile?.id || pageData.skills.length > 0) && (
-						<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} />
-					)}
-
-					{(pageData.id === profile?.id || pageData.skills.length > 0) && (
-						<DescriptionBlock description={pageData.description} id={pageData.id} openModal={openModal} />
-					)}
+					<div className={s.blocks}>
+						<Tabs activeBlock={activeBlock} setActiveBlock={setActiveBlock} />
+						{activeBlock === PageBlock.DescriptionBlock && (
+							<DescriptionBlock
+								description={pageData.description}
+								id={pageData.id}
+								openModal={openModal}
+								profileId={profile?.id}
+							/>
+						)}
+						{activeBlock === PageBlock.SkillBlock && (
+							<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} profileId={profile?.id} />
+						)}
+					</div>
 				</>
 			)}
 			<Modal />

@@ -20,6 +20,7 @@ const SkillSchema = z.object({
 	id: z.number(),
 	name: TranslateObj,
 	experience: z.number(),
+	description: z.string().optional(),
 });
 
 const GroupSkillSchema = z.object({

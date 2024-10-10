@@ -1,0 +1,75 @@
+@import "../../../../../../shared/scss/vars";
+
+.groupBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 35%;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  border: 1px solid $lightGray;
+  border-radius: 20px;
+  padding: 5px 20px;
+
+  &__ava {
+    width: 36px;
+    height: 36px;
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  &__ava {
+    border-radius: 50%;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    &__name {
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &__roles {
+      display: flex;
+      gap: 2px;
+
+      .role {
+        padding: 2px 4px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        background-color: $lightOrange;
+      }
+    }
+  }
+}
+
+.createGroup {
+  width: 100%;
+  padding: 16px;
+  background-color: $lightGray;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hoverGray;
+  }
+}

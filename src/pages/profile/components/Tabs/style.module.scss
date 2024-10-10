@@ -1,0 +1,35 @@
+@import "../../../../shared/scss/vars";
+
+.nav {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  border: 1px solid $borderColor;
+  //border-bottom: none;
+  background-color: $whiteBg;
+
+  &__items {
+    display: flex;
+  }
+
+  &__item {
+    padding: 12px 24px;
+    font-weight: 700;
+    color: $gray;
+
+    &:hover {
+      color: black;
+      cursor: pointer;
+    }
+  }
+
+  .active {
+    color: $orange;
+    border-bottom: 1px solid;
+
+    &:hover {
+      color: $orange;
+      cursor: pointer;
+    }
+  }
+}

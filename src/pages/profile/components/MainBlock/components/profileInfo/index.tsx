@@ -18,32 +18,38 @@ const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lo
 	const { t } = useTranslation();
 
 	return (
-		<div className={s.block}>
-			<h1>
-				{firstName} {lastName} {groupName}
-			</h1>
-			<div className={s.arrayWrapper}>
-				{skills?.map((skill) => (
-					<div className={s.itemSkill} key={skill}>
-						{skill}
+		<div className={s.wrapper}>
+			<div className={s.container}>
+				<div className={s.block}>
+					<h1>
+						{firstName} {lastName} {groupName}
+					</h1>
+					<div className={s.arrayWrapper}>
+						{skills?.map((skill) => (
+							<div className={s.itemSkill} key={skill}>
+								{skill}
+							</div>
+						))}
 					</div>
-				))}
-			</div>
-			{(lookingForSkills.length > 0 || isLookingForBand) && (
-				<div className={s.statuses}>
-					{isLookingForBand && <div className={s.statusBand}>{t('general.isLookingForBand')}</div>}
-					{lookingForSkills.length > 0 && (
-						<div className={s.statusSearch}>
-							<p className={s.statusSearch__text}>{capitalizeFirstLetter(t('general.lookingForSkills'))}:</p>
-							{lookingForSkills.map((skill) => (
-								<div key={skill} className={s.skillName}>
-									{skill}
-								</div>
-							))}
-						</div>
-					)}
 				</div>
-			)}
+
+				{(lookingForSkills.length > 0 || isLookingForBand) && (
+					<div className={s.statuses}>
+						{lookingForSkills.length > 0 && (
+							<div className={s.statusSearch}>
+								<p className={s.statusSearch__text}>{capitalizeFirstLetter(t('general.lookingForSkills'))}:</p>
+								{lookingForSkills.map((skill) => (
+									<div key={skill} className={s.skillName}>
+										{skill}
+									</div>
+								))}
+							</div>
+						)}
+						{isLookingForBand && <div className={s.statusBand}>{t('general.isLookingForBand')}</div>}
+					</div>
+				)}
+			</div>
+
 			{styles.length > 0 && (
 				<div className={s.styleBlock}>
 					<div className={s.top}>

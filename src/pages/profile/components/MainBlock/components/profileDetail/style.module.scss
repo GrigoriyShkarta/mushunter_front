@@ -3,7 +3,18 @@
 .block {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+
+.detailInfo {
+  display: flex;
+  gap: 8px;
+}
+
+.likeAndLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .greyText, .blackText {
@@ -80,11 +91,4 @@
       z-index: 100;
     }
   }
-}
-
-.button {
-  @include smallButton;
-  background-color: $orange;
-  gap: 8px;
-  width: 20%;
 }

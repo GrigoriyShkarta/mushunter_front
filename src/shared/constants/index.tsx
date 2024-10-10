@@ -64,3 +64,8 @@ export enum UserModal {
 	ChangeAva,
 	CreateBand,
 }
+
+export enum PageBlock {
+	DescriptionBlock,
+	SkillBlock,
+}

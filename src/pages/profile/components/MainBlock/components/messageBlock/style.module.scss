@@ -1,0 +1,22 @@
+@import "../../../../../../shared/scss/vars";
+
+.joinBlock {
+  padding: 10px;
+  border: 1px solid $orange;
+  border-radius: 10px;
+  width: fit-content;
+
+  &__link {
+    font-weight: 600;
+    color: $orange;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.button {
+  @include smallButton;
+  background-color: $orange;
+  gap: 8px;
+  width: 20%;
+}

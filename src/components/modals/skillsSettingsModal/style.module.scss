@@ -14,12 +14,16 @@
 
 .inputWrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 8px;
+}
 
-  svg {
-    cursor: pointer;
-  }
+.block {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
 }
 
 .bigInput {
@@ -31,6 +35,17 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.svgBlock {
+  height: 66px;
+  position: relative;
+
+  svg {
+    cursor: pointer;
+    position: absolute;
+    top: 48%;
+  }
 }
 
 .addBtn {
