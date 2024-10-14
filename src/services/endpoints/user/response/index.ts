@@ -23,6 +23,8 @@ const SkillSchema = z.object({
 	description: z.string().optional(),
 });
 
+const SkillObj = z.object({ id: z.number(), name: TranslateObj });
+
 const GroupSkillSchema = z.object({
 	id: z.number(),
 	name: TranslateObj,
@@ -55,7 +57,9 @@ export const UserSchema = z.object({
 	[Field.LINKS]: z.array(z.string()).default([]),
 	[Field.STYLES]: z.array(Style).default([]),
 	[Field.SEARCH_BAND]: z.boolean(),
-	[Field.IN_SEARCH]: z.array(z.object({ id: z.number(), name: TranslateObj })).default([]),
+	[Field.POSITION]: SkillObj.optional(),
+	[Field.DESCRIPTION_POSITION]: z.string().optional(),
+	[Field.IN_SEARCH]: z.array(SkillSchema).default([]),
 	[Field.AVATAR]: z.string().optional(),
 	groups: z.array(Group).optional(),
 });

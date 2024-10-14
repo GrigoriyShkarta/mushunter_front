@@ -2,6 +2,7 @@ import { FC, MouseEvent } from 'react';
 import Portal from './Portal';
 import s from './style.module.scss';
 import { useModalStore } from './store.ts';
+import { capitalizeFirstLetter } from '../../shared/helpers/capitalizeFirstLetter.ts';
 
 const Modal: FC = () => {
 	const { isOpen, title, setIsOpen, children } = useModalStore();
@@ -22,7 +23,7 @@ const Modal: FC = () => {
 		<Portal>
 			<div className={`${s.overlay} ${isOpen ? s.open : ''}`} onClick={handleOverlayClick}>
 				<div className={`${s.modal} ${isOpen ? s.open : ''}`}>
-					{title && <h2 className={s.title}>{title}</h2>}
+					{title && <h2 className={s.title}>{capitalizeFirstLetter(title)}</h2>}
 					<button className={s.close} onClick={handleClose}>
 						×
 					</button>

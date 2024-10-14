@@ -16,6 +16,8 @@ import CreateBandModal from '../../components/modals/createBandModal';
 import Tabs from './components/Tabs';
 import SkillsBlock from './components/Tabs/SkillsBlock';
 import DescriptionBlock from './components/Tabs/DescriptionBlock';
+import InSearchBlock from './components/Tabs/InSearchBlock';
+import InSearchModal from '../../components/modals/inSearchModal';
 
 const User: FC = () => {
 	const profile = useUserStore((state) => state.profile);
@@ -24,12 +26,14 @@ const User: FC = () => {
 	const fetchSettings = useUserStore((state) => state.fetchSettings);
 	const getUser = useUserStore((state) => state.getUserFromId);
 	const { setIsOpen, setTitle, setChildren } = useModalStore();
-	const { i18n, t } = useTranslation();
+	const { t, i18n } = useTranslation();
 	const navigate = useNavigate();
 	const { id } = useParams();
 
 	const [pageData, setPageData] = useState<UserSchemaType | null>(null);
 	const [activeBlock, setActiveBlock] = useState<PageBlock>(PageBlock.DescriptionBlock);
+
+	console.log('pageData', pageData);
 
 	useEffect(() => {
 		if (!profile && !id) {
@@ -46,7 +50,7 @@ const User: FC = () => {
 		if (!settings && profile) {
 			fetchSettings();
 		}
-	}, [navigate, profile, settings, fetchSettings, id, getUser]);
+	}, [navigate, profile, fetchSettings, id, getUser]);
 
 	useEffect(() => {
 		if (id) {
@@ -81,6 +85,23 @@ const User: FC = () => {
 				setTitle(t('user.createBandModal'));
 				setChildren(<CreateBandModal />);
 				break;
+			case UserModal.SearchSettings:
+				setTitle(t('general.lookingForSkills'));
+				setChildren(<InSearchModal />);
+				break;
+		}
+	};
+
+	const ActiveBlock = (data: UserSchemaType): JSX.Element | undefined => {
+		switch (activeBlock) {
+			case PageBlock.DescriptionBlock:
+				return (
+					<DescriptionBlock description={data.description} id={data.id} openModal={openModal} profileId={data?.id} />
+				);
+			case PageBlock.SkillBlock:
+				return <SkillsBlock skills={data.skills} id={data.id} openModal={openModal} profileId={profile?.id} />;
+			case PageBlock.SearchBlock:
+				return <InSearchBlock id={data.id} openModal={openModal} searchArray={profile?.lookingForSkills} />;
 		}
 	};
 
@@ -112,17 +133,8 @@ const User: FC = () => {
 					/>
 					<div className={s.blocks}>
 						<Tabs activeBlock={activeBlock} setActiveBlock={setActiveBlock} />
-						{activeBlock === PageBlock.DescriptionBlock && (
-							<DescriptionBlock
-								description={pageData.description}
-								id={pageData.id}
-								openModal={openModal}
-								profileId={profile?.id}
-							/>
-						)}
-						{activeBlock === PageBlock.SkillBlock && (
-							<SkillsBlock skills={pageData.skills} id={pageData.id} openModal={openModal} profileId={profile?.id} />
-						)}
+
+						{ActiveBlock(pageData)}
 					</div>
 				</>
 			)}

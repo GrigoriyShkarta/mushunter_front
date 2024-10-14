@@ -49,3 +49,8 @@ export const sendAvatar = async (data: FormData): Promise<UserSchemaType> => {
 	const response = await axiosInstance.post('/user/changeAvatar', data);
 	return UserSchema.parse(response.data.decompressedData);
 };
+
+export const sendInSearch = async (data: GetChangeSkillsSchemaType): Promise<UserSchemaType> => {
+	const response = await axiosInstance.post('/user/changeInSearch', data);
+	return UserSchema.parse(response.data.decompressedData);
+};

@@ -10,7 +10,7 @@ i18n
 		fallbackLng: Languages.UK,
 		debug: true,
 		interpolation: {
-			escapeValue: false,
+			escapeValue: true,
 		},
 		backend: {
 			loadPath: '/locales/{{lng}}/{{ns}}.json',

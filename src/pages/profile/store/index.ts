@@ -15,6 +15,7 @@ import {
 	getUser,
 	sendAvatar,
 	sendDescription,
+	sendInSearch,
 	sendMainData,
 	sendSkills,
 	sendToggleLike,
@@ -40,6 +41,7 @@ interface UserStore {
 	logOut: () => void;
 	fetchToggleLike: (data: { id: number }) => void;
 	changeAvatar: (data: FormData) => Promise<void>;
+	changeInSearch: (data: GetChangeSkillsSchemaType) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -154,6 +156,16 @@ export const useUserStore = create<UserStore>()(
 					set({ sendForm: true });
 					const res = await sendAvatar(data);
 					set({ profile: res });
+				} catch (e) {
+					throw new Error(e as string);
+				} finally {
+					set({ sendForm: false });
+				}
+			},
+			changeInSearch: async (data: GetChangeSkillsSchemaType): Promise<void> => {
+				try {
+					const res = await sendInSearch(data);
+					set({ profile: res, sendForm: true });
 				} catch (e) {
 					throw new Error(e as string);
 				} finally {

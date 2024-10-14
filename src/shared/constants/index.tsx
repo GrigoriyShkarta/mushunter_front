@@ -41,6 +41,8 @@ export enum Field {
 	DESCRIPTION = 'description',
 	ID = 'id',
 	SEARCH_BAND = 'isLookingForBand',
+	POSITION = 'position',
+	DESCRIPTION_POSITION = 'descriptionPosition',
 	IN_SEARCH = 'lookingForSkills',
 	AVATAR = 'avatar',
 	ROLE = 'role',
@@ -63,9 +65,11 @@ export enum UserModal {
 	DescriptionSettings,
 	ChangeAva,
 	CreateBand,
+	SearchSettings,
 }
 
 export enum PageBlock {
 	DescriptionBlock,
 	SkillBlock,
+	SearchBlock,
 }
