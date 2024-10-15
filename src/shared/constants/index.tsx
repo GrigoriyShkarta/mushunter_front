@@ -41,6 +41,7 @@ export enum Field {
 	DESCRIPTION = 'description',
 	ID = 'id',
 	SEARCH_BAND = 'isLookingForBand',
+	STYLES_SEARCH_BAND = 'stylesLookingForBand',
 	POSITION = 'position',
 	DESCRIPTION_POSITION = 'descriptionPosition',
 	IN_SEARCH = 'lookingForSkills',

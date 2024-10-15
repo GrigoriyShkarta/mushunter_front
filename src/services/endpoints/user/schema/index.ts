@@ -29,7 +29,15 @@ export const ChangeMainSettingsSchema = z.object({
 });
 
 export const ChangeSkillsSchema = z.object({
-	[Field.SKILLS]: z.array(z.object({ skill: z.number(), experience: z.number() })).default([]),
+	[Field.SKILLS]: z
+		.array(z.object({ skill: z.number(), experience: z.number(), styles: z.array(z.number()) }))
+		.default([]),
+});
+
+export const ChangeInSearchSchema = z.object({
+	[Field.SKILLS]: z
+		.array(z.object({ skill: z.number(), experience: z.number(), styles: z.array(z.number()) }))
+		.default([]),
 });
 
 export const ChangeDescriptionSchema = z.object({
@@ -47,4 +55,5 @@ export type GetSettingsSchemaType = z.infer<typeof GetSettingsSchema>;
 export type GetChangeSkillsSchemaType = z.infer<typeof ChangeSkillsSchema>;
 export type ChangeDescriptionSchemaType = z.infer<typeof ChangeDescriptionSchema>;
 export type ToggleLikeSchemaType = z.infer<typeof ToggleLikeSchema>;
+export type ChangeInSearchSchemaType = z.infer<typeof ChangeInSearchSchema>;
 export type AvatarSchemaType = z.infer<typeof AvatarSchema>;

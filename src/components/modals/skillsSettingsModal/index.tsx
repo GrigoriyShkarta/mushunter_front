@@ -22,6 +22,7 @@ interface Skill {
 	skill: SkillOption;
 	experience: number;
 	description?: string;
+	styles: SkillOption[] | { id: number; name: string }[];
 }
 
 interface UserSkills {
@@ -54,10 +55,12 @@ const SkillsSettingsModal: FC = () => {
 
 	const skillsArray = watch(Field.SKILLS) || [];
 	const formattedOptions = formatToOption(settings?.skills);
+	const formatedUserStyles = formatToOption(user?.skills.map((obj) => obj.styles).flat());
+	const formatedStyles = formatToOption(settings?.styles);
 
 	const addSkillField = (): void => {
 		const currentSkills = getValues(Field.SKILLS) || [];
-		const updatedSkills = [...currentSkills, { skill: { value: NaN, label: '' }, experience: 0 }];
+		const updatedSkills = [...currentSkills, { skill: { value: NaN, label: '' }, experience: 0, styles: [] }];
 		setValue(Field.SKILLS, updatedSkills);
 	};
 
@@ -83,7 +86,9 @@ const SkillsSettingsModal: FC = () => {
 				skill: skillObj.skill.value,
 				experience: Number(skillObj.experience),
 				description: skillObj?.description,
+				styles: skillObj.styles.map((style) => (style as SkillOption).value).flat(),
 			}));
+
 		await changeSkills({ [Field.SKILLS]: formattedData });
 		setIsOpen(false);
 	};
@@ -116,6 +121,13 @@ const SkillsSettingsModal: FC = () => {
 								<IoIosCloseCircle size={'24px'} color={'red'} onClick={() => deleteSkill(index)} />
 							</div>
 						</div>
+						<SelectInput
+							defaultValue={formatedUserStyles}
+							options={formatedStyles}
+							isMulti
+							name={`${Field.SKILLS}.${index}.styles`}
+							control={control}
+						/>
 						<TextareaInput register={register(`${Field.SKILLS}.${index}.description`)} name={Field.DESCRIPTION} />
 					</div>
 				))}

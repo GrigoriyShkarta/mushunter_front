@@ -74,6 +74,7 @@ interface Props {
 	idxPath?: number;
 	handleChange?: (selectedOption: Option | Option[]) => void;
 	placeholder?: string;
+	label?: string;
 }
 
 const SelectInput: FC<Props> = ({
@@ -86,14 +87,13 @@ const SelectInput: FC<Props> = ({
 	objPath,
 	idxPath = 0,
 	placeholder,
+	label,
 }) => {
 	const { t } = useTranslation();
 
-	console.log('defaultValue', defaultValue);
-
 	return (
 		<div className={s.wrapper}>
-			<label className={`${s.label}`}>{capitalizeFirstLetter(t(`general.${name}`))}</label>
+			<label className={`${s.label}`}>{capitalizeFirstLetter(t(`general.${label || name}`))}</label>
 			<Controller
 				name={name}
 				control={control}

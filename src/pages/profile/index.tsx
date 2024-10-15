@@ -47,9 +47,9 @@ const User: FC = () => {
 			setPageData(profile);
 		}
 
-		if (!settings && profile) {
-			fetchSettings();
-		}
+		// if (!settings && profile) {
+		fetchSettings();
+		// }
 	}, [navigate, profile, fetchSettings, id, getUser]);
 
 	useEffect(() => {

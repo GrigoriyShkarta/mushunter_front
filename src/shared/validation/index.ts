@@ -17,7 +17,7 @@ const nameValidation = z
 
 const cityValidation = z.preprocess((arg) => {
 	if (Array.isArray(arg)) {
-		return arg[0].value;
+		return arg[0]?.value;
 	}
 	if (arg && typeof arg === 'object' && 'value' in arg) {
 		return arg.value;

@@ -22,11 +22,34 @@
 .skill {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 16px;
   border-radius: 10px;
-  padding: 8px;
-  width: fit-content;
-  max-width: 95%;
+  padding: 10px;
+  width: 95%;
+  border: 1px solid $lightOrange;
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .main {
+      display: flex;
+      gap: 8px;
+    }
+  }
+
+  &__styles {
+    display: flex;
+    gap: 8px;
+
+    &_style {
+      padding: 2px 4px;
+      border-radius: 8px;
+      background-color: $lightOrange;
+      font-size: 14px;
+    }
+  }
 
   &__name {
     font-weight: bold;

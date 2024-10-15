@@ -65,7 +65,9 @@
         "isLookingForBand": "looking for a band",
         "lookingForSkills": "in search",
         "changeAva": "Change avatar",
-        "created_date": "created date"
+        "created_date": "created date",
+        "position": "role",
+        "aboutYourself": "talk about yourself"
     },
     "response": {
         "success": {

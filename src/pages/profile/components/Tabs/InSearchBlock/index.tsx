@@ -1,29 +1,44 @@
 import { FC } from 'react';
 import { useUserStore } from '../../../store';
 import s from './style.module.scss';
-import { UserModal } from '../../../../../shared/constants';
+import { Languages, UserModal } from '../../../../../shared/constants';
 import { MdOutlineModeEditOutline } from 'react-icons/md';
 import Button from '../../../../../components/buttons/Button.tsx';
 import { useTranslation } from 'react-i18next';
+import { capitalizeFirstLetter } from '../../../../../shared/helpers/capitalizeFirstLetter.ts';
+import { getAgeWord } from '../../../../../shared/helpers/getYears.ts';
+
+interface Position {
+	id: number;
+	name: {
+		ua: string;
+		en: string;
+	};
+}
 
 interface Skill {
-	description?: string;
-	experience: number;
+	id: number;
 	name: {
-		en: string;
 		ua: string;
+		en: string;
 	};
+	experience: number;
+	description?: string;
+	styles: { id: number; name: string }[];
 }
 
 interface Props {
 	id: number;
 	openModal: (name: UserModal) => void;
 	searchArray: Skill[];
+	isLookingForBand: boolean;
+	position?: Position;
+	descriptionPosition?: string;
 }
 
-const InSearchBlock: FC<Props> = ({ id, openModal, searchArray }) => {
+const InSearchBlock: FC<Props> = ({ id, openModal, searchArray, isLookingForBand, position, descriptionPosition }) => {
 	const profile = useUserStore((state) => state.profile);
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 
 	if (profile?.id === id && searchArray.length === 0) {
 		return (
@@ -48,8 +63,48 @@ const InSearchBlock: FC<Props> = ({ id, openModal, searchArray }) => {
 				)}
 			</div>
 			<div className={s.skills}>
+				{/*{isLookingForBand && position &&*/}
+				{/*	<div className={s.skill}>*/}
+				{/*		<div className={s.skill__top}>*/}
+				{/*			<div className={s.main}>*/}
+				{/*				<p className={s.skill__name}>{capitalizeFirstLetter(t('general.isLookingForBand'))}</p>*/}
+				{/*				<p className={s.progress_years}>*/}
+				{/*					{skill.experience > 10*/}
+				{/*						? t('user.more10Years')*/}
+				{/*						: `${getAgeWord(skill.experience, i18n.language as Languages)}`}*/}
+				{/*				</p>*/}
+				{/*			</div>*/}
+				{/*			<div className={s.skill__styles}>*/}
+				{/*				{skill.styles.map((style) => (*/}
+				{/*					<div key={style.id} className={s.skill__styles_style}>*/}
+				{/*						{style.name}*/}
+				{/*					</div>*/}
+				{/*				))}*/}
+				{/*			</div>*/}
+				{/*		</div>*/}
+				{/*		}*/}
 				{searchArray.map((skill) => (
-					<div className={s.skill}></div>
+					<div className={s.skill} key={skill.id}>
+						<div className={s.skill__top}>
+							<div className={s.main}>
+								<p className={s.skill__name}>{capitalizeFirstLetter(skill.name[i18n.language as Languages])}</p>
+								<p className={s.progress_years}>
+									{skill.experience > 10
+										? t('user.more10Years')
+										: `${getAgeWord(skill.experience, i18n.language as Languages)}`}
+								</p>
+							</div>
+							<div className={s.skill__styles}>
+								{skill.styles.map((style) => (
+									<div key={style.id} className={s.skill__styles_style}>
+										{style.name}
+									</div>
+								))}
+							</div>
+						</div>
+
+						<p>{skill.description}</p>
+					</div>
 				))}
 			</div>
 		</section>

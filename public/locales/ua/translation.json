@@ -19,7 +19,7 @@
     },
     "validation": {
         "invalidEmail": "Некоректний формат email",
-        "Required": "Обов'язкове поле",
+        "required": "Обов'язкове поле",
         "correctEmail": "Електронна пошта може містити лише латинські літери, цифри, знаки “.”, “-”, “_” та “@”.",
         "minValue": "Поле має містити принаймні 8 символів",
         "onlyLatinSymbols": "Поле повинно містити латинські літери",
@@ -65,7 +65,9 @@
         "isLookingForBand": "в пошуках гурту",
         "lookingForSkills": "в пошуках",
         "changeAva": "Змінити аватар",
-        "created_date": "дата створення"
+        "created_date": "дата створення",
+        "position": "роль",
+        "aboutYourself": "розкажи про себе"
     },
     "response": {
         "success": {

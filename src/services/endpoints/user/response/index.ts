@@ -21,6 +21,7 @@ const SkillSchema = z.object({
 	name: TranslateObj,
 	experience: z.number(),
 	description: z.string().optional(),
+	styles: z.array(Style).default([]),
 });
 
 const SkillObj = z.object({ id: z.number(), name: TranslateObj });
@@ -57,6 +58,7 @@ export const UserSchema = z.object({
 	[Field.LINKS]: z.array(z.string()).default([]),
 	[Field.STYLES]: z.array(Style).default([]),
 	[Field.SEARCH_BAND]: z.boolean(),
+	[Field.STYLES_SEARCH_BAND]: z.array(Style).default([]),
 	[Field.POSITION]: SkillObj.optional(),
 	[Field.DESCRIPTION_POSITION]: z.string().optional(),
 	[Field.IN_SEARCH]: z.array(SkillSchema).default([]),

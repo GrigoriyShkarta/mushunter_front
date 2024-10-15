@@ -6,6 +6,7 @@ import { getAgeWord } from '../../../../../shared/helpers/getYears.ts';
 import { MdOutlineModeEditOutline } from 'react-icons/md';
 import { useUserStore } from '../../../store';
 import Button from '../../../../../components/buttons/Button.tsx';
+import { capitalizeFirstLetter } from '../../../../../shared/helpers/capitalizeFirstLetter.ts';
 
 interface Props {
 	id: number;
@@ -17,6 +18,7 @@ interface Props {
 		};
 		experience: number;
 		description?: string;
+		styles: { id: number; name: string }[];
 	}[];
 	openModal: (name: UserModal) => void;
 	profileId?: number;
@@ -58,17 +60,24 @@ const SkillsBlock: FC<Props> = ({ skills, id, openModal, profileId }) => {
 				{skills.length > 0 &&
 					skills?.map((skill) => (
 						<div className={s.skill} key={skill.id}>
-							<p className={s.skill__name}>{skill.name[i18n.language as Languages]}</p>
-							<div className={s.progress_bar_container}>
-								<div className={s.progress_bar}>
-									<div className={s.progress} style={{ width: `${skill.experience * 10}%` }} />
+							<div className={s.skill__top}>
+								<div className={s.main}>
+									<p className={s.skill__name}>{capitalizeFirstLetter(skill.name[i18n.language as Languages])}</p>
+									<p className={s.progress_years}>
+										{skill.experience > 10
+											? t('user.more10Years')
+											: `${getAgeWord(skill.experience, i18n.language as Languages)}`}
+									</p>
 								</div>
-								<p className={s.progress_years}>
-									{skill.experience > 10
-										? t('user.more10Years')
-										: `${getAgeWord(skill.experience, i18n.language as Languages)}`}
-								</p>
+								<div className={s.skill__styles}>
+									{skill.styles.map((style) => (
+										<div key={style.id} className={s.skill__styles_style}>
+											{style.name}
+										</div>
+									))}
+								</div>
 							</div>
+
 							<p>{skill.description}</p>
 						</div>
 					))}

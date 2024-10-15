@@ -1,6 +1,7 @@
 import axiosInstance from '../../axios';
 import {
 	ChangeDescriptionSchemaType,
+	ChangeInSearchSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
 	GetSettingsSchema,
@@ -50,7 +51,7 @@ export const sendAvatar = async (data: FormData): Promise<UserSchemaType> => {
 	return UserSchema.parse(response.data.decompressedData);
 };
 
-export const sendInSearch = async (data: GetChangeSkillsSchemaType): Promise<UserSchemaType> => {
+export const sendInSearch = async (data: ChangeInSearchSchemaType): Promise<UserSchemaType> => {
 	const response = await axiosInstance.post('/user/changeInSearch', data);
 	return UserSchema.parse(response.data.decompressedData);
 };

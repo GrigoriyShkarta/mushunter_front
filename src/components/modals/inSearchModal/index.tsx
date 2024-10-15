@@ -13,6 +13,7 @@ import TextInput from '../../inputs/TextInput.tsx';
 import { IoIosCloseCircle } from 'react-icons/io';
 import TextareaInput from '../../inputs/TextareaInput.tsx';
 import Button from '../../buttons/Button.tsx';
+import CheckboxInput from '../../inputs/CheckboxInput.tsx';
 
 interface SkillOption {
 	value: number;
@@ -23,10 +24,15 @@ interface Skill {
 	skill: SkillOption;
 	experience: number;
 	description?: string;
+	styles: SkillOption[];
 }
 
 interface UserSkills {
 	lookingForSkills: Skill[];
+	isLookingForBand: boolean;
+	stylesLookingForBand?: SkillOption[];
+	position?: SkillOption;
+	descriptionPosition?: string;
 }
 
 const InSearchModal: FC = () => {
@@ -49,12 +55,37 @@ const InSearchModal: FC = () => {
 					},
 					experience: skill.experience,
 					description: skill?.description,
+					styles: skill?.styles.map((style) => ({
+						value: style.id,
+						label: style.name,
+					})),
 				})) || [],
+			[Field.SEARCH_BAND]: user?.isLookingForBand,
+			[Field.POSITION]: user?.position
+				? {
+						value: user.position?.id,
+						label: user.position?.name[i18n.language as Languages],
+					}
+				: undefined,
+			[Field.DESCRIPTION_POSITION]: user?.descriptionPosition,
+			[Field.STYLES_SEARCH_BAND]:
+				user?.stylesLookingForBand?.map((style) => ({
+					value: style.id,
+					label: style.name,
+				})) ?? [],
 		},
 	});
 
 	const skillsArray = watch(Field.IN_SEARCH) || [];
-	const formattedOptions = formatToOption(settings?.skills);
+	const isCheckedSearchBand = watch(Field.SEARCH_BAND);
+	const formattedOptionsSkills = formatToOption(settings?.skills);
+	const formattedOptionsStyles = formatToOption(settings?.styles);
+	const formattedUserSkill = formatToOption(user?.skills);
+	const formattedDefaultUserSearchSkill = formatToOption(user?.stylesLookingForBand);
+	const formatedUserStyles = formatToOption(user?.skills.map((obj) => obj.styles).flat());
+	const formatedStyles = formatToOption(settings?.styles);
+
+	console.log('skillsArray', skillsArray);
 
 	const addSkillField = (): void => {
 		const currentSkills = getValues(Field.IN_SEARCH) || [];
@@ -92,6 +123,31 @@ const InSearchModal: FC = () => {
 	return (
 		<form className={s.form} onSubmit={handleSubmit(handleSubmitForm)}>
 			<div className={s.inputs}>
+				<CheckboxInput
+					register={register(Field.SEARCH_BAND)}
+					name={Field.SEARCH_BAND}
+					checked={isCheckedSearchBand}
+					onChange={(e) => setValue(Field.SEARCH_BAND, e.target.checked)}
+				/>
+				{isCheckedSearchBand && (
+					<>
+						<SelectInput name={Field.POSITION} control={control} options={formattedUserSkill} />
+						<SelectInput
+							name={Field.STYLES_SEARCH_BAND}
+							control={control}
+							options={formattedOptionsStyles}
+							placeholder={'styles'}
+							label={'styles'}
+							isMulti
+						/>
+						<TextareaInput
+							register={register(Field.DESCRIPTION_POSITION)}
+							name={Field.DESCRIPTION_POSITION}
+							label={'aboutYourself'}
+							placeholder={'description'}
+						/>
+					</>
+				)}
 				{skillsArray.map((skillObj, index) => (
 					<div key={index} className={s.inputWrapper}>
 						<div className={s.block}>
@@ -99,10 +155,8 @@ const InSearchModal: FC = () => {
 								<SelectInput
 									name={Field.SKILLS}
 									control={control}
-									objPath={'skill'}
-									idxPath={index}
-									defaultValue={[skillObj.skill]}
-									options={formattedOptions}
+									defaultValue={skillObj.skill}
+									options={formattedOptionsSkills}
 									handleChange={(selectedSkill) => updateSkill(index, selectedSkill as Option)}
 								/>
 							</div>
@@ -117,6 +171,15 @@ const InSearchModal: FC = () => {
 								<IoIosCloseCircle size={'24px'} color={'red'} onClick={() => deleteSkill(index)} />
 							</div>
 						</div>
+						<SelectInput
+							defaultValue={skillObj.styles}
+							options={formatedStyles}
+							isMulti
+							name={`${Field.SKILLS}.${index}.styles`}
+							placeholder={'styles'}
+							label={'styles'}
+							control={control}
+						/>
 						<TextareaInput register={register(`${Field.IN_SEARCH}.${index}.description`)} name={Field.DESCRIPTION} />
 					</div>
 				))}
