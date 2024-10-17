@@ -13,6 +13,7 @@ export const GetSettingsSchema = z.object({
 	cities: z.array(ObjectSchema),
 	skills: z.array(ObjectSchema),
 	styles: z.array(z.object({ id: z.number(), name: z.string() })),
+	age: z.array(z.object({ id: z.number(), name: z.string() })),
 });
 
 export const ChangeMainSettingsSchema = z.object({
@@ -24,8 +25,6 @@ export const ChangeMainSettingsSchema = z.object({
 	[Field.EDUCATION]: z.string().optional(),
 	[Field.LINKS]: z.array(z.string().url()).optional(),
 	[Field.STYLES]: z.array(z.number()).optional(),
-	[Field.SEARCH_BAND]: z.boolean(),
-	[Field.IN_SEARCH]: z.array(z.number()),
 });
 
 export const ChangeSkillsSchema = z.object({
@@ -38,6 +37,10 @@ export const ChangeInSearchSchema = z.object({
 	[Field.SKILLS]: z
 		.array(z.object({ skill: z.number(), experience: z.number(), styles: z.array(z.number()) }))
 		.default([]),
+	[Field.SEARCH_BAND]: z.boolean(),
+	[Field.POSITION]: z.number().optional(),
+	[Field.STYLES_SEARCH_BAND]: z.array(z.number()).default([]),
+	[Field.DESCRIPTION_POSITION]: z.string().optional(),
 });
 
 export const ChangeDescriptionSchema = z.object({

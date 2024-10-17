@@ -3,6 +3,7 @@ import s from './style.module.scss';
 import { capitalizeFirstLetter } from '../../../../../../shared/helpers/capitalizeFirstLetter.ts';
 import { useTranslation } from 'react-i18next';
 import { IoIosMusicalNote } from 'react-icons/io';
+import { Languages } from '../../../../../../shared/constants';
 
 interface Props {
 	firstName?: string;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lookingForSkills, skills, styles }) => {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 
 	return (
 		<div className={s.wrapper}>
@@ -38,14 +39,14 @@ const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lo
 						{lookingForSkills.length > 0 && (
 							<div className={s.statusSearch}>
 								<p className={s.statusSearch__text}>{capitalizeFirstLetter(t('general.lookingForSkills'))}:</p>
+								{isLookingForBand && <div className={s.statusBand}>{t('user.searchBand')}</div>}
 								{lookingForSkills.map((skill) => (
 									<div key={skill} className={s.skillName}>
-										{skill}
+										{`${skill}${i18n.language === Languages.UK && 'a'}`}
 									</div>
 								))}
 							</div>
 						)}
-						{isLookingForBand && <div className={s.statusBand}>{t('general.isLookingForBand')}</div>}
 					</div>
 				)}
 			</div>

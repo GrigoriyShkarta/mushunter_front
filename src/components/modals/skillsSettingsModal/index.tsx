@@ -23,6 +23,7 @@ interface Skill {
 	experience: number;
 	description?: string;
 	styles: SkillOption[] | { id: number; name: string }[];
+	age?: SkillOption;
 }
 
 interface UserSkills {
@@ -47,6 +48,7 @@ const SkillsSettingsModal: FC = () => {
 						value: skill.id,
 						label: skill.name[i18n.language as Languages],
 					},
+					styles: skill.styles.map((style) => ({ value: style.id, label: style.name })),
 					experience: skill.experience,
 					description: skill?.description,
 				})) || [],
@@ -55,12 +57,14 @@ const SkillsSettingsModal: FC = () => {
 
 	const skillsArray = watch(Field.SKILLS) || [];
 	const formattedOptions = formatToOption(settings?.skills);
-	const formatedUserStyles = formatToOption(user?.skills.map((obj) => obj.styles).flat());
 	const formatedStyles = formatToOption(settings?.styles);
 
 	const addSkillField = (): void => {
 		const currentSkills = getValues(Field.SKILLS) || [];
-		const updatedSkills = [...currentSkills, { skill: { value: NaN, label: '' }, experience: 0, styles: [] }];
+		const updatedSkills = [
+			...currentSkills,
+			{ skill: { value: NaN, label: '' }, experience: 0, styles: [], age: undefined },
+		];
 		setValue(Field.SKILLS, updatedSkills);
 	};
 
@@ -122,11 +126,12 @@ const SkillsSettingsModal: FC = () => {
 							</div>
 						</div>
 						<SelectInput
-							defaultValue={formatedUserStyles}
 							options={formatedStyles}
 							isMulti
 							name={`${Field.SKILLS}.${index}.styles`}
 							control={control}
+							label={'styles'}
+							placeholder={'styles'}
 						/>
 						<TextareaInput register={register(`${Field.SKILLS}.${index}.description`)} name={Field.DESCRIPTION} />
 					</div>

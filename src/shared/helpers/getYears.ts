@@ -28,6 +28,10 @@ export function getAgeWord(birthDateString: string | Date | number, lang: Langua
 		return `${age} years`;
 	}
 
+	if (lang === Languages.UK && age === 0) {
+		return 'меньше року';
+	}
+
 	// Украинский язык, определение окончания в зависимости от возраста
 	if (age % 100 >= 11 && age % 100 <= 14) {
 		return `${age} років`;

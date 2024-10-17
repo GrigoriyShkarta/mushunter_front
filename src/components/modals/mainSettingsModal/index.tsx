@@ -14,7 +14,6 @@ import { ChangeMainSettingsValidationSchema } from '../../../shared/validation';
 import { formatToOption } from '../../../shared/helpers/formatToOption.ts';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { useModalStore } from '../store.ts';
-import CheckboxInput from '../../inputs/CheckboxInput.tsx';
 
 const MainSettingsModal: FC = () => {
 	const settings = useUserStore((state) => state.settings);
@@ -41,18 +40,14 @@ const MainSettingsModal: FC = () => {
 			[Field.LAST_NAME]: user?.lastname,
 			[Field.PHONE]: user?.phone,
 			[Field.LINKS]: user?.links,
-			[Field.SEARCH_BAND]: user?.isLookingForBand,
 		},
 	});
 
 	const formatedStyles = formatToOption(settings?.styles);
 	const formatedCities = formatToOption(settings?.cities);
 	const formatedUserStyles = formatToOption(user?.styles);
-	const formatedSearchForSkill = formatToOption(user?.lookingForSkills);
-	const formatedSkills = formatToOption(settings?.skills);
 	const formatedUserCities = formatToOption(user?.city ? [user.city] : []);
 	const linksArray = watch(Field.LINKS) ?? [];
-	const isCheckedSearchBand = watch(Field.SEARCH_BAND);
 
 	const onSubmit: SubmitHandler<ChangeMainSettingsSchemaType> = async (data): Promise<void> => {
 		try {
@@ -104,20 +99,6 @@ const MainSettingsModal: FC = () => {
 					control={control}
 				/>
 				<SelectInput defaultValue={formatedUserCities} options={formatedCities} control={control} name={Field.CITY} />
-				<CheckboxInput
-					register={register(Field.SEARCH_BAND)}
-					name={Field.SEARCH_BAND}
-					checked={isCheckedSearchBand}
-					onChange={(e) => setValue(Field.SEARCH_BAND, e.target.checked)}
-				/>
-				<SelectInput
-					defaultValue={formatedSearchForSkill}
-					options={formatedSkills}
-					isMulti
-					name={Field.IN_SEARCH}
-					control={control}
-					placeholder={'skill'}
-				/>
 				<DatePickerInput name={Field.BIRTHDAY} defaultValue={user?.birthday} control={control} />
 				<TextInput register={register(Field.PHONE)} name={Field.PHONE} error={errors.phone?.message} />
 				<TextInput register={register(Field.EDUCATION)} name={Field.EDUCATION} error={errors.education?.message} />

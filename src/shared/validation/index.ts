@@ -76,15 +76,7 @@ export const ChangeMainSettingsValidationSchema = z.object({
 	[Field.PHONE]: z.string().optional(),
 	[Field.EDUCATION]: z.string().optional(),
 	[Field.LINKS]: linksValidation,
-
 	[Field.STYLES]: z.preprocess((arg) => {
-		if (Array.isArray(arg)) {
-			return arg.map((item) => item.value);
-		}
-		return arg;
-	}, z.array(z.number()).optional()),
-	[Field.SEARCH_BAND]: z.boolean(),
-	[Field.IN_SEARCH]: z.preprocess((arg) => {
 		if (Array.isArray(arg)) {
 			return arg.map((item) => item.value);
 		}

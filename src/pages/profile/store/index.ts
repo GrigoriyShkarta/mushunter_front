@@ -6,6 +6,7 @@ import { Statuses } from '../../../shared/constants';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
 import {
 	ChangeDescriptionSchemaType,
+	ChangeInSearchSchemaType,
 	ChangeMainSettingsSchemaType,
 	GetChangeSkillsSchemaType,
 	GetSettingsSchemaType,
@@ -41,7 +42,7 @@ interface UserStore {
 	logOut: () => void;
 	fetchToggleLike: (data: { id: number }) => void;
 	changeAvatar: (data: FormData) => Promise<void>;
-	changeInSearch: (data: GetChangeSkillsSchemaType) => Promise<void>;
+	changeInSearch: (data: ChangeInSearchSchemaType) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -162,7 +163,7 @@ export const useUserStore = create<UserStore>()(
 					set({ sendForm: false });
 				}
 			},
-			changeInSearch: async (data: GetChangeSkillsSchemaType): Promise<void> => {
+			changeInSearch: async (data: ChangeInSearchSchemaType): Promise<void> => {
 				try {
 					const res = await sendInSearch(data);
 					set({ profile: res, sendForm: true });

@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { Field, Languages } from '../../../shared/constants';
 
 import { formatToOption } from '../../../shared/helpers/formatToOption.ts';
-import { Option } from '../../../shared/models';
 import SelectInput from '../../inputs/Select.tsx';
 import TextInput from '../../inputs/TextInput.tsx';
 import { IoIosCloseCircle } from 'react-icons/io';
@@ -25,6 +24,7 @@ interface Skill {
 	experience: number;
 	description?: string;
 	styles: SkillOption[];
+	age: SkillOption;
 }
 
 interface UserSkills {
@@ -59,6 +59,7 @@ const InSearchModal: FC = () => {
 						value: style.id,
 						label: style.name,
 					})),
+					age: { value: skill.age?.id, label: skill.age?.name },
 				})) || [],
 			[Field.SEARCH_BAND]: user?.isLookingForBand,
 			[Field.POSITION]: user?.position
@@ -81,24 +82,16 @@ const InSearchModal: FC = () => {
 	const formattedOptionsSkills = formatToOption(settings?.skills);
 	const formattedOptionsStyles = formatToOption(settings?.styles);
 	const formattedUserSkill = formatToOption(user?.skills);
-	const formattedDefaultUserSearchSkill = formatToOption(user?.stylesLookingForBand);
-	const formatedUserStyles = formatToOption(user?.skills.map((obj) => obj.styles).flat());
 	const formatedStyles = formatToOption(settings?.styles);
-
-	console.log('skillsArray', skillsArray);
+	const formatedAge = formatToOption(settings?.age);
 
 	const addSkillField = (): void => {
 		const currentSkills = getValues(Field.IN_SEARCH) || [];
-		const updatedSkills = [...currentSkills, { skill: { value: NaN, label: '' }, experience: 0 }];
+		const updatedSkills = [
+			...currentSkills,
+			{ skill: { value: NaN, label: '' }, experience: 0, styles: [], age: { value: NaN, label: '' } },
+		];
 		setValue(Field.IN_SEARCH, updatedSkills);
-	};
-
-	const updateSkill = (index: number, selectedSkill: Option): void => {
-		const currentSkills = getValues(Field.IN_SEARCH);
-		const updatedSkills = currentSkills.map((skillObj, idx) =>
-			idx === index ? { ...skillObj, skill: selectedSkill } : skillObj,
-		);
-		setValue(Field.IN_SEARCH, updatedSkills, { shouldValidate: true, shouldDirty: true });
 	};
 
 	const deleteSkill = (index: number): void => {
@@ -115,8 +108,17 @@ const InSearchModal: FC = () => {
 				skill: skillObj.skill.value,
 				experience: Number(skillObj.experience),
 				description: skillObj?.description,
+				styles: skillObj.styles.map((style) => style.value),
+				age: skillObj.age.value,
 			}));
-		await changeInSearch({ [Field.SKILLS]: formattedData });
+
+		await changeInSearch({
+			[Field.SKILLS]: formattedData,
+			[Field.SEARCH_BAND]: data.isLookingForBand,
+			[Field.POSITION]: data.position?.value,
+			[Field.STYLES_SEARCH_BAND]: data.stylesLookingForBand?.map((style) => style.value) ?? [],
+			[Field.DESCRIPTION_POSITION]: data.descriptionPosition,
+		});
 		setIsOpen(false);
 	};
 
@@ -153,11 +155,10 @@ const InSearchModal: FC = () => {
 						<div className={s.block}>
 							<div className={s.bigInput}>
 								<SelectInput
-									name={Field.SKILLS}
+									name={`${Field.IN_SEARCH}.${index}.skill`}
 									control={control}
-									defaultValue={skillObj.skill}
+									defaultValue={[skillObj.skill]}
 									options={formattedOptionsSkills}
-									handleChange={(selectedSkill) => updateSkill(index, selectedSkill as Option)}
 								/>
 							</div>
 							<div className={s.smallInput}>
@@ -172,10 +173,18 @@ const InSearchModal: FC = () => {
 							</div>
 						</div>
 						<SelectInput
+							options={formatedAge}
+							name={`${Field.IN_SEARCH}.${index}.age`}
+							control={control}
+							defaultValue={skillObj.age}
+							label={'age'}
+							placeholder={'age'}
+						/>
+						<SelectInput
 							defaultValue={skillObj.styles}
 							options={formatedStyles}
 							isMulti
-							name={`${Field.SKILLS}.${index}.styles`}
+							name={`${Field.IN_SEARCH}.${index}.styles`}
 							placeholder={'styles'}
 							label={'styles'}
 							control={control}

@@ -82,7 +82,7 @@ const User: FC = () => {
 				setChildren(<ChangeAvaModal />);
 				break;
 			case UserModal.CreateBand:
-				setTitle(t('user.createBandModal'));
+				setTitle(t('user.createBand'));
 				setChildren(<CreateBandModal />);
 				break;
 			case UserModal.SearchSettings:
@@ -101,7 +101,17 @@ const User: FC = () => {
 			case PageBlock.SkillBlock:
 				return <SkillsBlock skills={data.skills} id={data.id} openModal={openModal} profileId={profile?.id} />;
 			case PageBlock.SearchBlock:
-				return <InSearchBlock id={data.id} openModal={openModal} searchArray={profile?.lookingForSkills} />;
+				return (
+					<InSearchBlock
+						id={data.id}
+						openModal={openModal}
+						searchArray={profile?.lookingForSkills}
+						isLookingForBand={profile?.isLookingForBand}
+						position={profile?.position}
+						descriptionPosition={profile?.descriptionPosition}
+						stylesLookingForBand={profile?.stylesLookingForBand}
+					/>
+				);
 		}
 	};
 

@@ -22,6 +22,7 @@ const SkillSchema = z.object({
 	experience: z.number(),
 	description: z.string().optional(),
 	styles: z.array(Style).default([]),
+	age: z.object({ id: z.number(), name: z.string() }).optional(),
 });
 
 const SkillObj = z.object({ id: z.number(), name: TranslateObj });
@@ -54,14 +55,14 @@ export const UserSchema = z.object({
 	likes: z.number(),
 	hasLiked: z.boolean(),
 	[Field.CITY]: City.optional(),
-	[Field.SKILLS]: z.array(SkillSchema).default([]),
-	[Field.LINKS]: z.array(z.string()).default([]),
-	[Field.STYLES]: z.array(Style).default([]),
+	[Field.SKILLS]: z.array(SkillSchema).optional(),
+	[Field.LINKS]: z.array(z.string()).optional(),
+	[Field.STYLES]: z.array(Style).optional(),
 	[Field.SEARCH_BAND]: z.boolean(),
-	[Field.STYLES_SEARCH_BAND]: z.array(Style).default([]),
+	[Field.STYLES_SEARCH_BAND]: z.array(Style).optional(),
 	[Field.POSITION]: SkillObj.optional(),
 	[Field.DESCRIPTION_POSITION]: z.string().optional(),
-	[Field.IN_SEARCH]: z.array(SkillSchema).default([]),
+	[Field.IN_SEARCH]: z.array(SkillSchema).optional(),
 	[Field.AVATAR]: z.string().optional(),
 	groups: z.array(Group).optional(),
 });

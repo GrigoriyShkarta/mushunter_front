@@ -67,7 +67,9 @@
         "changeAva": "Change avatar",
         "created_date": "created date",
         "position": "role",
-        "aboutYourself": "talk about yourself"
+        "aboutYourself": "talk about yourself",
+        "age": "age",
+        "years": "years"
     },
     "response": {
         "success": {
@@ -94,6 +96,8 @@
         "join": "Join",
         "choosePhoto": "Choose profile photo",
         "createBand": "Create band",
-        "createBandPhoto": "Choose photo"
+        "createBandPhoto": "Choose photo",
+        "as": "as a",
+        "searchBand": "band"
     }
 }

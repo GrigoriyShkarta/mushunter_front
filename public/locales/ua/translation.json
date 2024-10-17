@@ -67,7 +67,9 @@
         "changeAva": "Змінити аватар",
         "created_date": "дата створення",
         "position": "роль",
-        "aboutYourself": "розкажи про себе"
+        "aboutYourself": "розкажи про себе",
+        "age": "вік",
+        "years": "років"
     },
     "response": {
         "success": {
@@ -94,6 +96,8 @@
         "join": "Приєднуйтесь",
         "choosePhoto": "Виберіть фото профілю",
         "createBand": "Створити гурт",
-        "createBandPhoto": "Виберіть фото"
+        "createBandPhoto": "Виберіть фото",
+        "as": "як",
+        "searchBand": "гурту"
     }
 }
