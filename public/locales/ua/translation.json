@@ -98,6 +98,8 @@
         "createBand": "Створити гурт",
         "createBandPhoto": "Виберіть фото",
         "as": "як",
-        "searchBand": "гурту"
+        "searchBand": "гурту",
+        "addPosition": "Додати позицію",
+        "noInfo": "Інформації немає"
     }
 }

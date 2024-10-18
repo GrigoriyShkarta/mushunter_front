@@ -22,7 +22,7 @@ import InSearchModal from '../../components/modals/inSearchModal';
 const User: FC = () => {
 	const profile = useUserStore((state) => state.profile);
 	const user = useUserStore((state) => state.user);
-	const settings = useUserStore((state) => state.settings);
+	// const settings = useUserStore((state) => state.settings);
 	const fetchSettings = useUserStore((state) => state.fetchSettings);
 	const getUser = useUserStore((state) => state.getUserFromId);
 	const { setIsOpen, setTitle, setChildren } = useModalStore();
@@ -95,21 +95,19 @@ const User: FC = () => {
 	const ActiveBlock = (data: UserSchemaType): JSX.Element | undefined => {
 		switch (activeBlock) {
 			case PageBlock.DescriptionBlock:
-				return (
-					<DescriptionBlock description={data.description} id={data.id} openModal={openModal} profileId={data?.id} />
-				);
+				return <DescriptionBlock description={data.description} id={data.id} openModal={openModal} />;
 			case PageBlock.SkillBlock:
-				return <SkillsBlock skills={data.skills} id={data.id} openModal={openModal} profileId={profile?.id} />;
+				return <SkillsBlock skills={data.skills} id={data.id} openModal={openModal} />;
 			case PageBlock.SearchBlock:
 				return (
 					<InSearchBlock
 						id={data.id}
 						openModal={openModal}
-						searchArray={profile?.lookingForSkills}
-						isLookingForBand={profile?.isLookingForBand}
-						position={profile?.position}
-						descriptionPosition={profile?.descriptionPosition}
-						stylesLookingForBand={profile?.stylesLookingForBand}
+						searchArray={data?.lookingForSkills}
+						isLookingForBand={data?.isLookingForBand}
+						position={data.position}
+						descriptionPosition={data?.descriptionPosition}
+						stylesLookingForBand={data?.stylesLookingForBand}
 					/>
 				);
 		}
@@ -130,7 +128,7 @@ const User: FC = () => {
 						likes={pageData.likes}
 						links={pageData.links}
 						phone={pageData?.phone}
-						styles={pageData.styles.map((style) => style.name)}
+						styles={pageData?.styles?.map((style) => style.name)}
 						openModal={openModal}
 						hasLiked={pageData.hasLiked}
 						isLookingForBand={pageData.isLookingForBand}

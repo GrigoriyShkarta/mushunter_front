@@ -38,7 +38,6 @@ export const getUser = async (data: { id: number }): Promise<UserSchemaType> => 
 	const response = await axiosInstance.get('/user/getUser', {
 		params: data,
 	});
-	console.log('response.data.decompressedData)', response.data.decompressedData);
 	return UserSchema.parse(response.data.decompressedData);
 };
 

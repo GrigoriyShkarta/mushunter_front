@@ -1,16 +1,15 @@
 import { FC } from 'react';
 import s from './style.module.scss';
 import { useTranslation } from 'react-i18next';
-import { Languages, UserModal } from '../../../../../shared/constants';
-import { getAgeWord } from '../../../../../shared/helpers/getYears.ts';
-import { MdOutlineModeEditOutline } from 'react-icons/md';
+import { UserModal } from '../../../../../shared/constants';
 import { useUserStore } from '../../../store';
 import Button from '../../../../../components/buttons/Button.tsx';
-import { capitalizeFirstLetter } from '../../../../../shared/helpers/capitalizeFirstLetter.ts';
+import SkillContainer from '../../../../../components/skillContainer';
+import Edit from '../../../../../components/editComponent';
 
 interface Props {
 	id: number;
-	skills: {
+	skills?: {
 		id: number;
 		name: {
 			ua: string;
@@ -21,14 +20,13 @@ interface Props {
 		styles: { id: number; name: string }[];
 	}[];
 	openModal: (name: UserModal) => void;
-	profileId?: number;
 }
 
-const SkillsBlock: FC<Props> = ({ skills, id, openModal, profileId }) => {
-	const user = useUserStore((state) => state.profile);
-	const { t, i18n } = useTranslation();
+const SkillsBlock: FC<Props> = ({ skills, id, openModal }) => {
+	const profile = useUserStore((state) => state.profile);
+	const { t } = useTranslation();
 
-	if (profileId === id && skills.length === 0) {
+	if (profile?.id === id && skills?.length === 0) {
 		return (
 			<section className={s.section}>
 				<Button
@@ -41,10 +39,10 @@ const SkillsBlock: FC<Props> = ({ skills, id, openModal, profileId }) => {
 		);
 	}
 
-	if (profileId !== id && skills.length === 0) {
+	if (profile?.id !== id && skills?.length === 0) {
 		return (
 			<section className={s.section}>
-				<p className={s.noInfoText}>There is no information</p>
+				<p className={s.noInfoText}>{t('user.noInfo')}</p>
 			</section>
 		);
 	}
@@ -52,34 +50,17 @@ const SkillsBlock: FC<Props> = ({ skills, id, openModal, profileId }) => {
 	return (
 		<section className={s.section}>
 			<div className={s.wrapper}>
-				{user?.id === id && (
-					<div className={s.edit} onClick={() => openModal(UserModal.SkillSettings)}>
-						<MdOutlineModeEditOutline size={'24px'} />
-					</div>
-				)}
-				{skills.length > 0 &&
+				{profile?.id === id && <Edit openModal={openModal} modal={UserModal.SkillSettings} />}
+				{skills &&
 					skills?.map((skill) => (
-						<div className={s.skill} key={skill.id}>
-							<div className={s.skill__top}>
-								<div className={s.main}>
-									<p className={s.skill__name}>{capitalizeFirstLetter(skill.name[i18n.language as Languages])}</p>
-									<p className={s.progress_years}>
-										{skill.experience > 10
-											? t('user.more10Years')
-											: `${getAgeWord(skill.experience, i18n.language as Languages)}`}
-									</p>
-								</div>
-								<div className={s.skill__styles}>
-									{skill.styles.map((style) => (
-										<div key={style.id} className={s.skill__styles_style}>
-											{style.name}
-										</div>
-									))}
-								</div>
-							</div>
-
-							<p>{skill.description}</p>
-						</div>
+						<SkillContainer
+							key={skill.id}
+							name={skill.name}
+							experience={skill.experience}
+							styles={skill.styles}
+							description={skill.description}
+							isSkill
+						/>
 					))}
 			</div>
 		</section>

@@ -54,3 +54,16 @@ $easyTransition: border 0.3s ease, background-color 0.3s ease;
     height: calc(100vh - 50px);
     min-height: 788px;
 }
+
+@mixin skillSection {
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    border: 1px solid $borderColor;
+    border-top: none;
+    padding: 24px;
+    background-color: $whiteBg;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

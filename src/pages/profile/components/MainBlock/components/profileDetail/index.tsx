@@ -14,7 +14,7 @@ interface Props {
 	phone?: string;
 	education?: string;
 	likes: number;
-	links: string[];
+	links?: string[];
 	profileId?: number;
 	id: number;
 	hasLiked: boolean;
@@ -44,7 +44,7 @@ const ProfileDetail: FC<Props> = ({ birthday, city, education, likes, links, pho
 			</div>
 
 			<div className={s.likeAndLinks}>
-				{links.length > 0 && (
+				{links && links.length > 0 && (
 					<div className={s.links}>
 						{links.map((link, idx) => (
 							<div className={s.link} key={idx}>

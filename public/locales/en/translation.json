@@ -98,6 +98,8 @@
         "createBand": "Create band",
         "createBandPhoto": "Choose photo",
         "as": "as a",
-        "searchBand": "band"
+        "searchBand": "band",
+        "addPosition": "Add position",
+        "noInfo": "There is no information"
     }
 }

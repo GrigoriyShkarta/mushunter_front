@@ -1,76 +1,13 @@
 @import "../../../../../shared/scss/vars";
 
 .section {
-  width: 100%;
-  border-radius: 0 0 10px 10px;
-  position: relative;
-  border: 1px solid $borderColor;
-  border-top: none;
-  padding: 24px;
-  background-color: $whiteBg;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  @include skillSection;
 }
 
 .noInfoText {
   text-align: center;
   font-weight: 600;
   color: $gray;
-}
-
-.skill {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border-radius: 10px;
-  padding: 10px;
-  width: 95%;
-  border: 1px solid $lightOrange;
-
-  &__top {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-
-    .main {
-      display: flex;
-      gap: 8px;
-    }
-  }
-
-  &__styles {
-    display: flex;
-    gap: 8px;
-
-    &_style {
-      padding: 2px 4px;
-      border-radius: 8px;
-      background-color: $lightOrange;
-      font-size: 14px;
-    }
-  }
-
-  &__name {
-    font-weight: bold;
-  }
-}
-
-.edit {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-
-  &:hover {
-    cursor: pointer;
-    background-color: $hoverGray;
-  }
 }
 
 .title {
@@ -87,32 +24,6 @@
 .itemSkill {
   display: flex;
   gap: 4px;
-}
-
-.progress_bar_container {
-  display: flex;
-  align-items: center;
-  width: 360px;
-}
-
-.progress_bar {
-  width: 100%;
-  height: 2px;
-  background-color: #e0e0e0;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-right: 10px;
-}
-
-.progress {
-  height: 100%;
-  background-color: $orange;
-  border-radius: 10px;
-  transition: width 0.3s ease;
-
-  &_years {
-    white-space: nowrap;
-  }
 }
 
 .addSection {

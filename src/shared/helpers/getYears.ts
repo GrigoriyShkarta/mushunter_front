@@ -28,6 +28,8 @@ export function getAgeWord(birthDateString: string | Date | number, lang: Langua
 		return `${age} years`;
 	}
 
+	console.log('age', age);
+
 	if (lang === Languages.UK && age === 0) {
 		return 'меньше року';
 	}

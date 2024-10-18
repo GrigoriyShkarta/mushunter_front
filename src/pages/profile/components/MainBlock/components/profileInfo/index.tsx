@@ -11,8 +11,8 @@ interface Props {
 	groupName?: string;
 	skills?: string[];
 	isLookingForBand: boolean;
-	lookingForSkills: string[];
-	styles: string[];
+	lookingForSkills?: string[];
+	styles?: string[];
 }
 
 const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lookingForSkills, skills, styles }) => {
@@ -34,9 +34,9 @@ const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lo
 					</div>
 				</div>
 
-				{(lookingForSkills.length > 0 || isLookingForBand) && (
+				{((lookingForSkills && lookingForSkills.length > 0) || isLookingForBand) && (
 					<div className={s.statuses}>
-						{lookingForSkills.length > 0 && (
+						{lookingForSkills && lookingForSkills.length > 0 && (
 							<div className={s.statusSearch}>
 								<p className={s.statusSearch__text}>{capitalizeFirstLetter(t('general.lookingForSkills'))}:</p>
 								{isLookingForBand && <div className={s.statusBand}>{t('user.searchBand')}</div>}
@@ -51,7 +51,7 @@ const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lo
 				)}
 			</div>
 
-			{styles.length > 0 && (
+			{styles && styles.length > 0 && (
 				<div className={s.styleBlock}>
 					<div className={s.top}>
 						<IoIosMusicalNote />

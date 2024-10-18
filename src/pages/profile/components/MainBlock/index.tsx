@@ -33,12 +33,12 @@ interface Props {
 	birthday?: Date;
 	hasLiked: boolean;
 	likes: number;
-	links: string[];
-	styles: string[];
+	links?: string[];
+	styles?: string[];
 	education?: string;
 	openModal: (name: UserModal) => void;
 	isLookingForBand: boolean;
-	lookingForSkills: string[];
+	lookingForSkills?: string[];
 	groups?: Group[];
 }
 

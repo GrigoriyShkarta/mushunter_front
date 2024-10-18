@@ -1,12 +1,11 @@
 import { FC } from 'react';
 import { useUserStore } from '../../../store';
 import s from './style.module.scss';
-import { Languages, UserModal } from '../../../../../shared/constants';
-import { MdOutlineModeEditOutline } from 'react-icons/md';
+import { UserModal } from '../../../../../shared/constants';
 import Button from '../../../../../components/buttons/Button.tsx';
 import { useTranslation } from 'react-i18next';
-import { capitalizeFirstLetter } from '../../../../../shared/helpers/capitalizeFirstLetter.ts';
-import { getAgeWord } from '../../../../../shared/helpers/getYears.ts';
+import SkillContainer from '../../../../../components/skillContainer';
+import Edit from '../../../../../components/editComponent';
 
 interface DetailObj {
 	id: number;
@@ -48,7 +47,15 @@ const InSearchBlock: FC<Props> = ({
 	descriptionPosition,
 }) => {
 	const profile = useUserStore((state) => state.profile);
-	const { t, i18n } = useTranslation();
+	const { t } = useTranslation();
+
+	if (profile?.id !== id && (!isLookingForBand || searchArray?.length === 0)) {
+		return (
+			<section className={s.section}>
+				<p className={s.noInfoText}>{t('user.noInfo')}</p>
+			</section>
+		);
+	}
 
 	if (profile?.id === id && searchArray?.length === 0 && !isLookingForBand) {
 		return (
@@ -66,64 +73,27 @@ const InSearchBlock: FC<Props> = ({
 	return (
 		<section className={s.section}>
 			<div className={s.wrapper}>
-				{profile?.id === id && (
-					<div className={s.edit} onClick={() => openModal(UserModal.SearchSettings)}>
-						<MdOutlineModeEditOutline size={'24px'} />
-					</div>
-				)}
+				{profile?.id === id && <Edit openModal={openModal} modal={UserModal.SearchSettings} />}
 			</div>
 			<div className={s.skills}>
 				{isLookingForBand && (
-					<div className={s.skill}>
-						<div className={s.skill__top}>
-							<div className={s.main}>
-								<p className={s.skill__name}>
-									{capitalizeFirstLetter(t('general.isLookingForBand'))}
-									{' ' + t('user.as') + ' '}
-									{capitalizeFirstLetter(position?.name[i18n.language as Languages] ?? '')}
-								</p>
-							</div>
-							<div className={s.skill__styles}>
-								{stylesLookingForBand?.map((style) => (
-									<div key={style.id} className={s.skill__styles_style}>
-										{style.name}
-									</div>
-								))}
-							</div>
-						</div>
-
-						<p>{descriptionPosition}</p>
-					</div>
+					<SkillContainer
+						name={position?.name}
+						styles={stylesLookingForBand}
+						description={descriptionPosition}
+						isLookingForBand
+					/>
 				)}
-				{searchArray?.map((skill) => (
-					<div className={s.skill} key={skill.id}>
-						<div className={s.skill__top}>
-							<div className={s.main}>
-								<p className={s.skill__name}>
-									{capitalizeFirstLetter(t('general.lookingForSkills') + ' ')}
-									{capitalizeFirstLetter(skill.name[i18n.language as Languages])}
-									{i18n.language === Languages.UK && 'a'}
-								</p>
-								<p className={s.progress_years}>
-									{skill.experience > 10
-										? `(${t('user.more10Years')})`
-										: `(${getAgeWord(skill.experience, i18n.language as Languages)})`}
-								</p>
-							</div>
-							<div className={s.skill__styles}>
-								{skill?.styles?.map((style) => (
-									<div key={style.id} className={s.skill__styles_style}>
-										{style.name}
-									</div>
-								))}
-							</div>
-							<div className={s.skill__age}>
-								{skill.age?.name} {t('general.years')}
-							</div>
-						</div>
 
-						<p>{skill.description}</p>
-					</div>
+				{searchArray?.map((skill) => (
+					<SkillContainer
+						key={skill.id}
+						name={skill.name}
+						experience={skill.experience}
+						styles={skill.styles}
+						age={skill.age?.name}
+						description={skill.description}
+					/>
 				))}
 			</div>
 		</section>

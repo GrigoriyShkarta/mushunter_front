@@ -1,23 +1,30 @@
 import { FC } from 'react';
 import s from './style.module.scss';
 import { useTranslation } from 'react-i18next';
-import { MdOutlineModeEditOutline } from 'react-icons/md';
 import { useUserStore } from '../../../store';
 import Button from '../../../../../components/buttons/Button.tsx';
 import { UserModal } from '../../../../../shared/constants';
+import Edit from '../../../../../components/editComponent';
 
 interface Props {
 	id: number;
 	description?: string;
 	openModal: (name: UserModal) => void;
-	profileId?: number;
 }
 
-const DescriptionBlock: FC<Props> = ({ description, id, openModal, profileId }) => {
-	const user = useUserStore((state) => state.profile);
+const DescriptionBlock: FC<Props> = ({ description, id, openModal }) => {
+	const profile = useUserStore((state) => state.profile);
 	const { t } = useTranslation();
 
-	if (profileId === id && !description) {
+	if (profile?.id !== id && !description) {
+		return (
+			<section className={s.section}>
+				<p className={s.noInfoText}>{t('user.noInfo')}</p>
+			</section>
+		);
+	}
+
+	if (profile?.id === id && !description) {
 		return (
 			<section className={s.section}>
 				<Button
@@ -30,21 +37,9 @@ const DescriptionBlock: FC<Props> = ({ description, id, openModal, profileId }) 
 		);
 	}
 
-	if (profileId !== id && !description) {
-		return (
-			<section className={s.section}>
-				<p className={s.noInfoText}>There is no information</p>
-			</section>
-		);
-	}
-
 	return (
 		<section className={s.section}>
-			{user?.id === id && (
-				<div className={s.edit} onClick={() => openModal(UserModal.DescriptionSettings)}>
-					<MdOutlineModeEditOutline size={'24px'} />
-				</div>
-			)}
+			{profile?.id === id && <Edit openModal={openModal} modal={UserModal.DescriptionSettings} />}
 			<p className={s.text}>{description}</p>
 		</section>
 	);

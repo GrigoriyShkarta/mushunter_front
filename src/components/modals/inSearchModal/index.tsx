@@ -48,7 +48,7 @@ const InSearchModal: FC = () => {
 	const { register, handleSubmit, getValues, setValue, control, watch } = useForm<UserSkills>({
 		defaultValues: {
 			[Field.IN_SEARCH]:
-				user?.lookingForSkills.map((skill) => ({
+				user?.lookingForSkills?.map((skill) => ({
 					skill: {
 						value: skill.id,
 						label: skill.name[i18n.language as Languages],
@@ -159,6 +159,8 @@ const InSearchModal: FC = () => {
 									control={control}
 									defaultValue={[skillObj.skill]}
 									options={formattedOptionsSkills}
+									label={'skills'}
+									placeholder={'skill'}
 								/>
 							</div>
 							<div className={s.smallInput}>
@@ -192,7 +194,7 @@ const InSearchModal: FC = () => {
 						<TextareaInput register={register(`${Field.IN_SEARCH}.${index}.description`)} name={Field.DESCRIPTION} />
 					</div>
 				))}
-				<Button type={'button'} value={t('user.addSkill')} func={addSkillField} className={s.addBtn} />
+				<Button type={'button'} value={t('user.addPosition')} func={addSkillField} className={s.addBtn} />
 			</div>
 			<Button type={'submit'} value={t('general.send')} className={s.sendBtn} loading={sendForm} />
 		</form>
