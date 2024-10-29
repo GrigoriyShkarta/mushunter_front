@@ -3,6 +3,7 @@ import s from './style.module.scss';
 import { useTranslation } from 'react-i18next';
 import { PageBlock } from '../../../../shared/constants';
 import { capitalizeFirstLetter } from '../../../../shared/helpers/capitalizeFirstLetter.ts';
+import { useUserStore } from '../../store';
 
 interface Props {
 	activeBlock: PageBlock;
@@ -11,6 +12,7 @@ interface Props {
 
 const Tabs: FC<Props> = ({ activeBlock, setActiveBlock }) => {
 	const { t } = useTranslation();
+	const profile = useUserStore((state) => state.profile);
 
 	return (
 		<nav className={s.nav}>
@@ -31,7 +33,20 @@ const Tabs: FC<Props> = ({ activeBlock, setActiveBlock }) => {
 					className={`${s.nav__item} ${activeBlock === PageBlock.SearchBlock && s.active}`}
 					onClick={() => setActiveBlock(PageBlock.SearchBlock)}
 				>
-					{capitalizeFirstLetter(t('general.lookingForSkills'))}
+					<p>{capitalizeFirstLetter(t('general.lookingForSkills'))}</p>
+					{profile?.lookingForSkills?.length || profile?.isLookingForBand ? (
+						<div className={s.countWrapper}>
+							<span className={s.count}>
+								{profile?.lookingForSkills?.length
+									? profile?.lookingForSkills?.length + (profile?.isLookingForBand ? 1 : 0)
+									: profile?.isLookingForBand
+										? 1
+										: 0}
+							</span>
+						</div>
+					) : (
+						''
+					)}
 				</li>
 			</ul>
 		</nav>

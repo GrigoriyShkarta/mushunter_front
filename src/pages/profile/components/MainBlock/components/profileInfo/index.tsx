@@ -34,21 +34,21 @@ const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lo
 					</div>
 				</div>
 
-				{((lookingForSkills && lookingForSkills.length > 0) || isLookingForBand) && (
-					<div className={s.statuses}>
-						{lookingForSkills && lookingForSkills.length > 0 && (
-							<div className={s.statusSearch}>
-								<p className={s.statusSearch__text}>{capitalizeFirstLetter(t('general.lookingForSkills'))}:</p>
-								{isLookingForBand && <div className={s.statusBand}>{t('user.searchBand')}</div>}
-								{lookingForSkills.map((skill) => (
-									<div key={skill} className={s.skillName}>
-										{`${skill}${i18n.language === Languages.UK && 'a'}`}
-									</div>
-								))}
-							</div>
-						)}
-					</div>
-				)}
+				{/*{((lookingForSkills && lookingForSkills.length > 0) || isLookingForBand) && (*/}
+				{/*	<div className={s.statuses}>*/}
+				{/*		{lookingForSkills && lookingForSkills.length > 0 && (*/}
+				{/*			<div className={s.statusSearch}>*/}
+				{/*				<p className={s.statusSearch__text}>{capitalizeFirstLetter(t('general.lookingForSkills'))}:</p>*/}
+				{/*				{isLookingForBand && <div className={s.statusBand}>{t('user.searchBand')}</div>}*/}
+				{/*				{lookingForSkills.map((skill) => (*/}
+				{/*					<div key={skill} className={s.skillName}>*/}
+				{/*						{`${skill}${i18n.language === Languages.UK && 'a'}`}*/}
+				{/*					</div>*/}
+				{/*				))}*/}
+				{/*			</div>*/}
+				{/*		)}*/}
+				{/*	</div>*/}
+				{/*)}*/}
 			</div>
 
 			{styles && styles.length > 0 && (

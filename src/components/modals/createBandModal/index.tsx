@@ -15,11 +15,13 @@ import { useTranslation } from 'react-i18next';
 import { IoIosCloseCircle } from 'react-icons/io';
 import Button from '../../buttons/Button.tsx';
 import TextareaInput from '../../inputs/TextareaInput.tsx';
-import { create } from '../../../services/endpoints/group';
+import { useModalStore } from '../store.ts';
 
 const CreateBandModal: FC = () => {
 	const settings = useUserStore((state) => state.settings);
 	const sendForm = useUserStore((state) => state.sendForm);
+	const createBand = useUserStore((state) => state.fetchCreateDataBand);
+	const { setIsOpen } = useModalStore();
 
 	const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
@@ -92,9 +94,11 @@ const CreateBandModal: FC = () => {
 				formData.append('file', blob, `avatar_id${data.name}_${randomNumber}.png`);
 			}
 
-			await create(formData);
+			await createBand(formData);
 		} catch (e) {
 			console.error('responseError', e);
+		} finally {
+			setIsOpen(false);
 		}
 	};
 

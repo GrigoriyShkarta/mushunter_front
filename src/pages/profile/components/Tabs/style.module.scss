@@ -13,6 +13,9 @@
   }
 
   &__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 12px 24px;
     font-weight: 700;
     color: $gray;
@@ -20,6 +23,22 @@
     &:hover {
       color: black;
       cursor: pointer;
+    }
+
+    .countWrapper {
+      padding: 4px;
+      border-radius: 50%;
+      background-color: $green;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .count {
+      color: white;
+      //font-size: 12px;
     }
   }
 

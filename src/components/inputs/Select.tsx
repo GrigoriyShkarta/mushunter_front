@@ -70,8 +70,6 @@ interface Props {
 	options?: Option[];
 	name: string;
 	control: any;
-	objPath?: string;
-	idxPath?: number;
 	handleChange?: (selectedOption: Option | Option[]) => void;
 	placeholder?: string;
 	label?: string;
@@ -84,12 +82,12 @@ const SelectInput: FC<Props> = ({
 	name,
 	control,
 	handleChange,
-	objPath,
-	idxPath = 0,
 	placeholder,
 	label,
 }) => {
 	const { t } = useTranslation();
+
+	// console.log('defaultValue', defaultValue);
 
 	return (
 		<div className={s.wrapper}>
@@ -97,7 +95,6 @@ const SelectInput: FC<Props> = ({
 			<Controller
 				name={name}
 				control={control}
-				defaultValue={defaultValue}
 				render={({ field: { onChange, value } }) => (
 					<Select
 						components={animatedComponents}
@@ -117,7 +114,7 @@ const SelectInput: FC<Props> = ({
 						onChange={handleChange || onChange}
 						placeholder={capitalizeFirstLetter(t('input.choose', { value: t(`general.${placeholder || name}`) }))}
 						styles={colourStyles}
-						value={objPath ? value[idxPath][objPath] : value}
+						value={value}
 					/>
 				)}
 			/>

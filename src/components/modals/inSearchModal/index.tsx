@@ -78,6 +78,7 @@ const InSearchModal: FC = () => {
 	});
 
 	const skillsArray = watch(Field.IN_SEARCH) || [];
+	console.log('skillsArray', skillsArray);
 	const isCheckedSearchBand = watch(Field.SEARCH_BAND);
 	const formattedOptionsSkills = formatToOption(settings?.skills);
 	const formattedOptionsStyles = formatToOption(settings?.styles);
@@ -94,10 +95,11 @@ const InSearchModal: FC = () => {
 		setValue(Field.IN_SEARCH, updatedSkills);
 	};
 
-	const deleteSkill = (index: number): void => {
+	const deleteSkill = (id: number): void => {
 		const currentSkills = getValues(Field.IN_SEARCH) || [];
-		const updatedSkills = [...currentSkills];
-		updatedSkills.splice(index, 1);
+		console.log('currentSkills', currentSkills);
+		const updatedSkills = currentSkills.filter((skillObj) => skillObj.skill.value !== id);
+		console.log('updatedSkills', updatedSkills);
 		setValue(Field.IN_SEARCH, updatedSkills);
 	};
 
@@ -151,13 +153,12 @@ const InSearchModal: FC = () => {
 					</>
 				)}
 				{skillsArray.map((skillObj, index) => (
-					<div key={index} className={s.inputWrapper}>
+					<div key={skillObj.skill.value} className={s.inputWrapper}>
 						<div className={s.block}>
 							<div className={s.bigInput}>
 								<SelectInput
 									name={`${Field.IN_SEARCH}.${index}.skill`}
 									control={control}
-									defaultValue={[skillObj.skill]}
 									options={formattedOptionsSkills}
 									label={'skills'}
 									placeholder={'skill'}
@@ -171,7 +172,7 @@ const InSearchModal: FC = () => {
 								/>
 							</div>
 							<div className={s.svgBlock}>
-								<IoIosCloseCircle size={'24px'} color={'red'} onClick={() => deleteSkill(index)} />
+								<IoIosCloseCircle size={'24px'} color={'red'} onClick={() => deleteSkill(skillObj.skill.value)} />
 							</div>
 						</div>
 						<SelectInput

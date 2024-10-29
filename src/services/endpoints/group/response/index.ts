@@ -10,6 +10,7 @@ const RoleSchema = z.object({
 const Member = z.object({
 	[Field.ID]: z.number(),
 	[Field.NAME]: z.string(),
+	[Field.AVATAR]: z.string(),
 	[Field.ROLE]: z.array(RoleSchema),
 });
 

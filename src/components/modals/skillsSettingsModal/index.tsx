@@ -43,15 +43,17 @@ const SkillsSettingsModal: FC = () => {
 	const { register, handleSubmit, getValues, setValue, control, watch } = useForm<UserSkills>({
 		defaultValues: {
 			[Field.SKILLS]:
-				user?.skills.map((skill) => ({
-					skill: {
-						value: skill.id,
-						label: skill.name[i18n.language as Languages],
-					},
-					styles: skill.styles.map((style) => ({ value: style.id, label: style.name })),
-					experience: skill.experience,
-					description: skill?.description,
-				})) || [],
+				(user &&
+					user?.skills?.map((skill) => ({
+						skill: {
+							value: skill.id,
+							label: skill.name[i18n.language as Languages],
+						},
+						styles: skill.styles.map((style) => ({ value: style.id, label: style.name })),
+						experience: skill.experience,
+						description: skill?.description,
+					}))) ||
+				[],
 		},
 	});
 
@@ -101,15 +103,13 @@ const SkillsSettingsModal: FC = () => {
 		<form className={s.form} onSubmit={handleSubmit(handleSubmitForm)}>
 			<div className={s.inputs}>
 				{skillsArray.map((skillObj, index) => (
-					<div key={index} className={s.inputWrapper}>
+					<div key={skillObj.skill.value} className={s.inputWrapper}>
 						<div className={s.block}>
 							<div className={s.bigInput}>
 								<SelectInput
-									name={Field.SKILLS}
+									name={`${Field.SKILLS}.${index}.skill`}
+									label={'skills'}
 									control={control}
-									objPath={'skill'}
-									idxPath={index}
-									defaultValue={[skillObj.skill]}
 									options={formattedOptions}
 									handleChange={(selectedSkill) => updateSkill(index, selectedSkill as Option)}
 								/>

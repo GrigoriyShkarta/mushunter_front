@@ -1,6 +1,7 @@
 import { Languages } from '../constants';
 
 export function getAgeWord(birthDateString: string | Date | number, lang: Languages): string {
+	console.log('birthDateString', birthDateString);
 	let age: number;
 
 	// Проверка, является ли birthDateString строкой, датой или числом
@@ -20,6 +21,14 @@ export function getAgeWord(birthDateString: string | Date | number, lang: Langua
 		age = birthDateString;
 	}
 
+	if (typeof birthDateString === 'number' && birthDateString > 10) {
+		if (lang === Languages.UK) {
+			return 'більше 10 років';
+		} else {
+			return 'more than 10 years';
+		}
+	}
+
 	// Логика для возврата результата в зависимости от языка
 	if (lang === Languages.EN) {
 		if (age === 0) {
@@ -27,8 +36,6 @@ export function getAgeWord(birthDateString: string | Date | number, lang: Langua
 		}
 		return `${age} years`;
 	}
-
-	console.log('age', age);
 
 	if (lang === Languages.UK && age === 0) {
 		return 'меньше року';

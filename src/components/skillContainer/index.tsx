@@ -17,7 +17,6 @@ interface Props {
 
 const SkillContainer: FC<Props> = ({ age, experience, name, styles, description, isLookingForBand, isSkill }) => {
 	const { t, i18n } = useTranslation();
-	console.log('experience', experience);
 
 	const NameSkill = (): string | JSX.Element | undefined => {
 		if (isSkill) {
@@ -51,13 +50,7 @@ const SkillContainer: FC<Props> = ({ age, experience, name, styles, description,
 						<NameSkill />
 					</p>
 
-					{experience && (
-						<p className={s.progress_years}>
-							{experience > 10
-								? `(${t('user.more10Years')})`
-								: `(${getAgeWord(experience, i18n.language as Languages)})`}
-						</p>
-					)}
+					<p className={s.progress_years}>({getAgeWord(experience ?? 0, i18n.language as Languages)})</p>
 				</div>
 				<div className={s.skill__styles}>
 					{styles?.map((style) => (

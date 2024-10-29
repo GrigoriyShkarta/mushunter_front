@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import s from './style.module.scss';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { ChangeMainSettingsSchemaType } from '../../../services/endpoints/user/schema';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '../../inputs/TextInput.tsx';
 import { Field } from '../../../shared/constants';
@@ -17,9 +16,9 @@ import { useModalStore } from '../store.ts';
 
 const MainSettingsModal: FC = () => {
 	const settings = useUserStore((state) => state.settings);
-	const user = useUserStore((state) => state.profile);
+	const profile = useUserStore((state) => state.profile);
 	const sendForm = useUserStore((state) => state.sendForm);
-	const { changeMainData, toggleSendForm } = useUserStore((state) => state);
+	const { changeMainData } = useUserStore((state) => state);
 	const { setIsOpen } = useModalStore();
 
 	const { t } = useTranslation();
@@ -31,32 +30,30 @@ const MainSettingsModal: FC = () => {
 		setValue,
 		control,
 		watch,
-	} = useForm<ChangeMainSettingsSchemaType>({
+	} = useForm({
 		resolver: zodResolver(ChangeMainSettingsValidationSchema),
 		defaultValues: {
-			[Field.BIRTHDAY]: user?.birthday,
-			[Field.EDUCATION]: user?.education,
-			[Field.FIRST_NAME]: user?.firstname,
-			[Field.LAST_NAME]: user?.lastname,
-			[Field.PHONE]: user?.phone,
-			[Field.LINKS]: user?.links,
+			[Field.BIRTHDAY]: profile?.birthday,
+			[Field.EDUCATION]: profile?.education,
+			[Field.FIRST_NAME]: profile!.firstname,
+			[Field.LAST_NAME]: profile!.lastname,
+			[Field.PHONE]: profile?.phone,
+			[Field.LINKS]: profile?.links,
+			[Field.STYLES]: formatToOption(profile?.styles),
+			[Field.CITY]: formatToOption(profile?.city ? [profile.city] : []),
 		},
 	});
 
 	const formatedStyles = formatToOption(settings?.styles);
 	const formatedCities = formatToOption(settings?.cities);
-	const formatedUserStyles = formatToOption(user?.styles);
-	const formatedUserCities = formatToOption(user?.city ? [user.city] : []);
 	const linksArray = watch(Field.LINKS) ?? [];
 
-	const onSubmit: SubmitHandler<ChangeMainSettingsSchemaType> = async (data): Promise<void> => {
+	const onSubmit = async (data: any): Promise<void> => {
 		try {
-			toggleSendForm();
 			await changeMainData(data);
 		} catch (e) {
 			console.error('responseError', e);
 		} finally {
-			toggleSendForm();
 			setIsOpen(false);
 		}
 	};
@@ -91,15 +88,9 @@ const MainSettingsModal: FC = () => {
 						className={s.input}
 					/>
 				</div>
-				<SelectInput
-					defaultValue={formatedUserStyles}
-					options={formatedStyles}
-					isMulti
-					name={Field.STYLES}
-					control={control}
-				/>
-				<SelectInput defaultValue={formatedUserCities} options={formatedCities} control={control} name={Field.CITY} />
-				<DatePickerInput name={Field.BIRTHDAY} defaultValue={user?.birthday} control={control} />
+				<SelectInput options={formatedStyles} isMulti name={Field.STYLES} control={control} />
+				<SelectInput options={formatedCities} control={control} name={Field.CITY} />
+				<DatePickerInput name={Field.BIRTHDAY} defaultValue={profile?.birthday} control={control} />
 				<TextInput register={register(Field.PHONE)} name={Field.PHONE} error={errors.phone?.message} />
 				<TextInput register={register(Field.EDUCATION)} name={Field.EDUCATION} error={errors.education?.message} />
 				<div className={s.linksWrapper}>

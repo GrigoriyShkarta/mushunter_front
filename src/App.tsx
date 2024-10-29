@@ -1,4 +1,4 @@
-import { JSX, lazy, Suspense } from 'react';
+import { JSX, lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './i18n.ts';
 import Header from './components/header';
@@ -11,6 +11,15 @@ const HomePage = lazy(() => import('./pages/home'));
 const ProfilePage = lazy(() => import('./pages/profile'));
 
 function App(): JSX.Element {
+	const tokens = localStorage.getItem('tokens');
+	console.log('tokens', tokens);
+
+	useEffect(() => {
+		// if (!tokens) {
+		// 	window.location.href = '/';
+		// }
+	}, []);
+
 	return (
 		<div className={'App'}>
 			<Router>

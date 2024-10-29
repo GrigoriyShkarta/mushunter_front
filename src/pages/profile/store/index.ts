@@ -22,6 +22,7 @@ import {
 	sendToggleLike,
 } from '../../../services/endpoints/user';
 import { UserSchemaType } from '../../../services/endpoints/user/response';
+import { createBand } from '../../../services/endpoints/group';
 
 interface UserStore {
 	profile: UserSchemaType | null;
@@ -43,6 +44,7 @@ interface UserStore {
 	fetchToggleLike: (data: { id: number }) => void;
 	changeAvatar: (data: FormData) => Promise<void>;
 	changeInSearch: (data: ChangeInSearchSchemaType) => Promise<void>;
+	fetchCreateDataBand: (data: FormData) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -114,17 +116,21 @@ export const useUserStore = create<UserStore>()(
 
 			changeMainData: async (data: ChangeMainSettingsSchemaType): Promise<void> => {
 				try {
+					set({ sendForm: true });
 					const res = await sendMainData(data);
 					set({ profile: res });
 				} catch (e) {
 					throw new Error(e as string);
+				} finally {
+					set({ sendForm: false });
 				}
 			},
 
 			changeSkills: async (data: GetChangeSkillsSchemaType): Promise<void> => {
 				try {
+					set({ sendForm: true });
 					const res = await sendSkills(data);
-					set({ profile: res, sendForm: true });
+					set({ profile: res });
 				} catch (e) {
 					throw new Error(e as string);
 				} finally {
@@ -165,8 +171,20 @@ export const useUserStore = create<UserStore>()(
 			},
 			changeInSearch: async (data: ChangeInSearchSchemaType): Promise<void> => {
 				try {
+					set({ sendForm: true });
 					const res = await sendInSearch(data);
-					set({ profile: res, sendForm: true });
+					set({ profile: res });
+				} catch (e) {
+					throw new Error(e as string);
+				} finally {
+					set({ sendForm: false });
+				}
+			},
+			fetchCreateDataBand: async (data: FormData): Promise<void> => {
+				try {
+					set({ sendForm: true });
+					const res = await createBand(data);
+					set({ profile: res });
 				} catch (e) {
 					throw new Error(e as string);
 				} finally {
