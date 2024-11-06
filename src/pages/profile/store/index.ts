@@ -1,16 +1,10 @@
 import { create } from 'zustand';
-import { EmailSchemaType, RegisterSchemaType } from '../../../services/endpoints/auth/schema';
-import { authWithSocialMedia, login, registration } from '../../../services/endpoints/auth';
 import { devtools, persist } from 'zustand/middleware';
-import { Statuses } from '../../../shared/constants';
+import { authWithSocialMedia, login, registration } from '../../../services/endpoints/auth';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
-import {
-	ChangeDescriptionSchemaType,
-	ChangeInSearchSchemaType,
-	ChangeMainSettingsSchemaType,
-	GetChangeSkillsSchemaType,
-	GetSettingsSchemaType,
-} from '../../../services/endpoints/user/schema';
+import { EmailSchemaType, RegisterSchemaType } from '../../../services/endpoints/auth/schema';
+import { createBand, getBand } from '../../../services/endpoints/group';
+import { GroupSchemaType } from '../../../services/endpoints/group/response';
 import {
 	getSettings,
 	getUser,
@@ -22,11 +16,19 @@ import {
 	sendToggleLike,
 } from '../../../services/endpoints/user';
 import { UserSchemaType } from '../../../services/endpoints/user/response';
-import { createBand } from '../../../services/endpoints/group';
+import {
+	ChangeDescriptionSchemaType,
+	ChangeInSearchSchemaType,
+	ChangeMainSettingsSchemaType,
+	GetChangeSkillsSchemaType,
+	GetSettingsSchemaType,
+} from '../../../services/endpoints/user/schema';
+import { Statuses } from '../../../shared/constants';
 
 interface UserStore {
 	profile: UserSchemaType | null;
-	user: UserSchemaType | null;
+	pageData: UserSchemaType | GroupSchemaType | null;
+	setPageData: (data: UserSchemaType) => void;
 	registrationUser: (form: RegisterSchemaType) => void;
 	login: (form: EmailSchemaType) => Promise<void>;
 	socialAuth: (form: EmailSchemaType) => Promise<AuthSchemaType | boolean>;
@@ -45,17 +47,18 @@ interface UserStore {
 	changeAvatar: (data: FormData) => Promise<void>;
 	changeInSearch: (data: ChangeInSearchSchemaType) => Promise<void>;
 	fetchCreateDataBand: (data: FormData) => Promise<void>;
+	getBandById: (groupId: number) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
 	persist(
 		devtools((set) => ({
 			profile: null,
-			user: null,
 			error: null,
 			status: null,
 			settings: null,
 			sendForm: false,
+			pageData: null,
 
 			registrationUser: async (form: RegisterSchemaType) => {
 				try {
@@ -96,10 +99,14 @@ export const useUserStore = create<UserStore>()(
 				}
 			},
 
+			setPageData: (data: UserSchemaType): void => {
+				set({ pageData: data });
+			},
+
 			getUserFromId: async (data: { id: number }): Promise<void> => {
 				try {
 					const res = await getUser(data);
-					set({ user: res });
+					set({ pageData: res });
 				} catch (e) {
 					throw new Error(e as string);
 				}
@@ -155,7 +162,7 @@ export const useUserStore = create<UserStore>()(
 
 			fetchToggleLike: async (data: { id: number }): Promise<void> => {
 				const res = await sendToggleLike(data);
-				set({ user: res });
+				set({ pageData: res });
 			},
 
 			changeAvatar: async (data: FormData): Promise<void> => {
@@ -189,6 +196,14 @@ export const useUserStore = create<UserStore>()(
 					throw new Error(e as string);
 				} finally {
 					set({ sendForm: false });
+				}
+			},
+			getBandById: async (groupId: number): Promise<void> => {
+				try {
+					const res = await getBand(groupId);
+					set({ pageData: res });
+				} catch (e) {
+					throw new Error(e as string);
 				}
 			},
 		})),

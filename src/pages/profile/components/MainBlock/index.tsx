@@ -1,107 +1,83 @@
 import { FC } from 'react';
-import s from './style.module.scss';
-import Background from './Background.tsx';
+import { useTranslation } from 'react-i18next';
 import { MdOutlineModeEditOutline } from 'react-icons/md';
-import { UserModal } from '../../../../shared/constants';
+import { GroupSchemaType } from '../../../../services/endpoints/group/response/index.ts';
+import { UserSchemaType } from '../../../../services/endpoints/user/response/index.ts';
+import { Field, Languages, UserModal } from '../../../../shared/constants';
 import { useUserStore } from '../../store';
+import Background from './Background.tsx';
 import { Avatar, GroupBlock, MessageBlock, ProfileDetail, ProfileInfo } from './components';
+import s from './style.module.scss';
 
-interface Role {
-	id: number;
-	name: {
-		ua: string;
-		en: string;
-	};
-}
-
-interface Group {
-	id: number;
-	name: string;
-	avatar?: string | null;
-	skills?: Role[];
-}
-
-interface Props {
-	id: number;
-	firstName?: string;
-	lastName?: string;
-	groupName?: string;
-	city?: string;
-	phone?: string;
-	ava?: string;
-	skills?: string[];
-	birthday?: Date;
-	hasLiked: boolean;
-	likes: number;
-	links?: string[];
-	styles?: string[];
-	education?: string;
+interface UserProps {
 	openModal: (name: UserModal) => void;
-	isLookingForBand: boolean;
-	lookingForSkills?: string[];
-	groups?: Group[];
 }
 
-const MainBlock: FC<Props> = ({
-	id,
-	firstName,
-	lastName,
-	groupName,
-	ava,
-	city,
-	skills,
-	birthday,
-	likes,
-	links,
-	phone,
-	styles,
-	education,
-	openModal,
-	hasLiked,
-	isLookingForBand,
-	lookingForSkills,
-	groups,
-}) => {
+const MainBlock: FC<UserProps> = ({ openModal }) => {
 	const profile = useUserStore((state) => state.profile);
+	const pageData = useUserStore((state) => state.pageData);
+	const { i18n } = useTranslation();
+
+	function isUser(data: UserSchemaType | GroupSchemaType | null): data is UserSchemaType {
+		return data ? Field.FIRST_NAME in data : false;
+	}
 
 	return (
-		<section className={s.section}>
-			<Background />
-			<Avatar profileId={profile?.id} id={id} openModal={openModal} ava={ava} />
-			<div className={s.wrapper}>
-				{profile?.id === id && (
-					<div className={s.edit} onClick={() => openModal(UserModal.MainSettings)}>
-						<MdOutlineModeEditOutline size={'24px'} />
+		pageData && (
+			<section className={s.section}>
+				<Background />
+				<Avatar profileId={profile?.id} id={pageData.id} openModal={openModal} ava={pageData?.avatar} />
+				<div className={s.wrapper}>
+					{profile?.id === pageData.id && (
+						<div className={s.edit} onClick={() => openModal(UserModal.MainSettings)}>
+							<MdOutlineModeEditOutline size={'24px'} />
+						</div>
+					)}
+					<div className={s.info}>
+						<ProfileInfo
+							firstName={isUser(pageData) ? pageData.firstname : undefined}
+							lastName={isUser(pageData) ? pageData.lastname : undefined}
+							groupName={!isUser(pageData) ? pageData?.name : undefined}
+							isLookingForBand={isUser(pageData) && pageData.isLookingForBand}
+							lookingForSkills={
+								isUser(pageData)
+									? pageData?.lookingForSkills &&
+										pageData.lookingForSkills.map((skill) => skill.name[i18n.language as Languages])
+									: undefined
+							}
+							styles={pageData?.styles?.map((style) => style.name)}
+							skills={
+								isUser(pageData)
+									? pageData?.skills && pageData.skills.map((skill) => skill.name[i18n.language as Languages])
+									: undefined
+							}
+						/>
+
+						<ProfileDetail
+							likes={pageData.likes}
+							links={pageData.links}
+							id={pageData.id}
+							hasLiked={pageData.hasLiked}
+							birthday={pageData?.birthday}
+							city={pageData?.city && pageData.city.name[i18n.language as Languages]}
+							education={isUser(pageData) ? pageData?.education : undefined}
+							phone={isUser(pageData) ? pageData?.phone : undefined}
+							profileId={profile?.id}
+						/>
+
+						<MessageBlock id={pageData.id} />
 					</div>
-				)}
-				<div className={s.info}>
-					<ProfileInfo
-						firstName={firstName}
-						lastName={lastName}
-						groupName={groupName}
-						isLookingForBand={isLookingForBand}
-						lookingForSkills={lookingForSkills}
-						styles={styles}
-						skills={skills}
-					/>
-
-					<ProfileDetail
-						likes={likes}
-						links={links}
-						id={id}
-						hasLiked={hasLiked}
-						birthday={birthday}
-						city={city}
-						education={education}
-						phone={phone}
-						profileId={profile?.id}
-					/>
-
-					<MessageBlock id={id} />
+					{isUser(pageData) && (
+						<GroupBlock
+							id={pageData.id}
+							openModal={openModal}
+							profileId={profile?.id}
+							groups={isUser(pageData) ? pageData.groups : undefined}
+						/>
+					)}
 				</div>
-				<GroupBlock id={id} openModal={openModal} profileId={profile?.id} groups={groups} />
-			</div>
-		</section>
+			</section>
+		)
 	);
 };
 

@@ -7,9 +7,10 @@ export const createBand = async (data: FormData): Promise<UserSchemaType> => {
 	return UserSchema.parse(response.data.decompressedData);
 };
 
-export const getBand = async (groupId: number): Promise<GroupSchemaType> => {
+export const getBand = async (id: number): Promise<GroupSchemaType> => {
 	const response = await axiosInstance.get(`/group/getGroup`, {
-		params: { groupId },
+		params: { id },
 	});
+	console.log('response.data.decompressedData', response.data.decompressedData);
 	return GroupSchema.parse(response.data.decompressedData);
 };

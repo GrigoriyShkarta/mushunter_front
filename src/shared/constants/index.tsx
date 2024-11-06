@@ -23,6 +23,11 @@ export enum AuthForms {
 	ConfirmRegistration,
 }
 
+export enum ProfileType {
+	USER = 'user',
+	BAND = 'group',
+}
+
 export enum Field {
 	EMAIL = 'email',
 	PASSWORD = 'password',

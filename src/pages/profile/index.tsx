@@ -1,39 +1,39 @@
 import { FC, useEffect, useState } from 'react';
-import s from './style.module.scss';
-import { useUserStore } from './store';
-import { MainBlock } from './components';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Languages, PageBlock, UserModal } from '../../shared/constants';
-import { useModalStore } from '../../components/modals/store.ts';
-import MainSettingsModal from '../../components/modals/mainSettingsModal';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../components/modals';
-import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
-import DescriptionSettingsModal from '../../components/modals/descriptionSettingsModal';
-import { UserSchemaType } from '../../services/endpoints/user/response';
 import ChangeAvaModal from '../../components/modals/changeAvaModal';
 import CreateBandModal from '../../components/modals/createBandModal';
+import DescriptionSettingsModal from '../../components/modals/descriptionSettingsModal';
+import InSearchModal from '../../components/modals/inSearchModal';
+import MainSettingsModal from '../../components/modals/mainSettingsModal';
+import SkillsSettingsModal from '../../components/modals/skillsSettingsModal';
+import { useModalStore } from '../../components/modals/store.ts';
+import { GroupSchemaType } from '../../services/endpoints/group/response/index.ts';
+import { UserSchemaType } from '../../services/endpoints/user/response';
+import { PageBlock, ProfileType, UserModal } from '../../shared/constants';
+import { MainBlock } from './components';
 import Tabs from './components/Tabs';
-import SkillsBlock from './components/Tabs/SkillsBlock';
 import DescriptionBlock from './components/Tabs/DescriptionBlock';
 import InSearchBlock from './components/Tabs/InSearchBlock';
-import InSearchModal from '../../components/modals/inSearchModal';
+import SkillsBlock from './components/Tabs/SkillsBlock';
+import { useUserStore } from './store';
+import s from './style.module.scss';
 
 const User: FC = () => {
 	const profile = useUserStore((state) => state.profile);
-	const user = useUserStore((state) => state.user);
-	// const settings = useUserStore((state) => state.settings);
+	const pageData = useUserStore((state) => state.pageData);
+	const setPageData = useUserStore((state) => state.setPageData);
 	const fetchSettings = useUserStore((state) => state.fetchSettings);
 	const getUser = useUserStore((state) => state.getUserFromId);
+	const getBand = useUserStore((state) => state.getBandById);
 	const { setIsOpen, setTitle, setChildren } = useModalStore();
-	const { t, i18n } = useTranslation();
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const { id } = useParams();
-
-	const [pageData, setPageData] = useState<UserSchemaType | null>(null);
+	const location = useLocation();
+	const type = location.pathname.includes('/user') ? ProfileType.USER : ProfileType.BAND;
 	const [activeBlock, setActiveBlock] = useState<PageBlock>(PageBlock.DescriptionBlock);
-
-	console.log('pageData', pageData);
 
 	useEffect(() => {
 		if (!profile && !id) {
@@ -41,22 +41,19 @@ const User: FC = () => {
 			return;
 		}
 
-		if (id) {
-			getUser({ id: +id });
-		} else {
-			setPageData(profile);
+		if (type === ProfileType.USER) {
+			if (id) {
+				getUser({ id: +id });
+			} else {
+				profile && setPageData(profile);
+				fetchSettings();
+			}
 		}
 
-		// if (!settings && profile) {
-		fetchSettings();
-		// }
-	}, [navigate, profile, fetchSettings, id, getUser]);
-
-	useEffect(() => {
-		if (id) {
-			setPageData(user);
+		if (type === ProfileType.BAND && id) {
+			getBand(+id);
 		}
-	}, [id, profile, user]);
+	}, [profile, id]);
 
 	if (!profile && !id) {
 		return null;
@@ -92,7 +89,7 @@ const User: FC = () => {
 		}
 	};
 
-	const ActiveBlock = (data: UserSchemaType): JSX.Element | undefined => {
+	const ActiveBlock = (data: UserSchemaType | GroupSchemaType): JSX.Element | undefined => {
 		switch (activeBlock) {
 			case PageBlock.DescriptionBlock:
 				return <DescriptionBlock description={data.description} id={data.id} openModal={openModal} />;
@@ -117,31 +114,9 @@ const User: FC = () => {
 		<div className={s.container}>
 			{pageData && (
 				<>
-					<MainBlock
-						id={pageData.id}
-						firstName={pageData?.firstname}
-						lastName={pageData?.lastname}
-						city={pageData?.city && pageData.city.name[i18n.language as Languages]}
-						skills={pageData?.skills && pageData.skills.map((skill) => skill.name[i18n.language as Languages])}
-						birthday={pageData?.birthday}
-						education={pageData?.education}
-						likes={pageData.likes}
-						links={pageData.links}
-						phone={pageData?.phone}
-						styles={pageData?.styles?.map((style) => style.name)}
-						openModal={openModal}
-						hasLiked={pageData.hasLiked}
-						isLookingForBand={pageData.isLookingForBand}
-						lookingForSkills={
-							pageData?.lookingForSkills &&
-							pageData.lookingForSkills.map((skill) => skill.name[i18n.language as Languages])
-						}
-						ava={pageData.avatar}
-						groups={pageData.groups}
-					/>
+					<MainBlock openModal={openModal} />
 					<div className={s.blocks}>
 						<Tabs activeBlock={activeBlock} setActiveBlock={setActiveBlock} />
-
 						{ActiveBlock(pageData)}
 					</div>
 				</>

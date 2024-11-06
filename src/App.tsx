@@ -1,10 +1,10 @@
 import { JSX, lazy, Suspense, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './i18n.ts';
-import Header from './components/header';
-import './App.css';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+import Header from './components/header';
+import './i18n.ts';
 import { toastConfig } from './shared/constants';
 
 const HomePage = lazy(() => import('./pages/home'));
@@ -29,6 +29,7 @@ function App(): JSX.Element {
 						<Route path={'/'} element={<HomePage />} />
 						<Route path={'/user'} element={<ProfilePage />} />
 						<Route path={'/user/:id'} element={<ProfilePage />} />
+						<Route path={'/group/:id'} element={<ProfilePage />} />
 						{/*<Route path={'/profile/:id'} element={<div>hi</div>} />*/}
 					</Routes>
 				</Suspense>

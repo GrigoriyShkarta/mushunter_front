@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import s from './style.module.scss';
+import { useTranslation } from 'react-i18next';
+import { FaCirclePlus } from 'react-icons/fa6';
 import { MdGroups } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { UserModal } from '../../../../../../shared/constants';
-import { FaCirclePlus } from 'react-icons/fa6';
-import { useTranslation } from 'react-i18next';
+import s from './style.module.scss';
 
 interface Role {
 	id: number;
@@ -39,7 +39,7 @@ const GroupBlock: FC<Props> = ({ groups, profileId, id, openModal }) => {
 					<div className={s.group} key={group.id}>
 						{group.avatar ? <img className={s.group__ava} src={group.avatar} alt="avatar" /> : <MdGroups />}
 						<div className={s.group__info}>
-							<Link to={`/group/:${group.id}`} className={s.group__info__name}>
+							<Link to={`/group/${group.id}`} className={s.group__info__name}>
 								{group.name}
 							</Link>
 							<div className={s.group__info__roles}>
