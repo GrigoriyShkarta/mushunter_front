@@ -88,6 +88,18 @@ export const ChangeDescriptionSchema = z.object({
 	[Field.DESCRIPTION]: z.string().optional(),
 });
 
+export const ChangeMainSettingsBandValidationSchema = z.object({
+	[Field.NAME]: nameValidation,
+	[Field.STYLES]: z.preprocess((arg) => {
+		if (Array.isArray(arg)) {
+			return arg.map((item) => item.value);
+		}
+		return arg;
+	}, z.array(z.number()).optional()),
+	[Field.CITY]: cityValidation,
+	[Field.BIRTHDAY]: birthdayValidation,
+});
+
 export const CreateGroupValidateSchema = z.object({
 	[Field.NAME]: nameValidation,
 	[Field.CITY]: cityValidation,

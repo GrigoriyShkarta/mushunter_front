@@ -1,23 +1,23 @@
+import { getMonth, getYear } from 'date-fns';
+import { uk } from 'date-fns/locale/uk';
 import { FC } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
-import { uk } from 'date-fns/locale/uk';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Field, Languages } from '../../shared/constants';
-import s from './Inputs.module.scss';
-import { capitalizeFirstLetter } from '../../shared/helpers/capitalizeFirstLetter.ts';
-import { useTranslation } from 'react-i18next';
 import { Controller } from 'react-hook-form';
-import { getMonth, getYear } from 'date-fns';
+import { useTranslation } from 'react-i18next';
+import { Field, Languages } from '../../shared/constants';
+import { capitalizeFirstLetter } from '../../shared/helpers/capitalizeFirstLetter.ts';
+import s from './Inputs.module.scss';
 
 registerLocale('uk', uk);
 
 interface Props {
 	name: Field;
 	control: any;
-	defaultValue?: Date;
+	label?: string;
 }
 
-const DatePickerInput: FC<Props> = ({ name, control, defaultValue }) => {
+const DatePickerInput: FC<Props> = ({ name, control, label }) => {
 	const { t, i18n } = useTranslation();
 
 	const range = (start: number, end: number): number[] => {
@@ -62,11 +62,10 @@ const DatePickerInput: FC<Props> = ({ name, control, defaultValue }) => {
 
 	return (
 		<div className={s.wrapper}>
-			<label className={s.label}>{capitalizeFirstLetter(t(`general.${name}`))}</label>
+			<label className={s.label}>{capitalizeFirstLetter(label || t(`general.${name}`))}</label>
 			<Controller
 				name={name}
 				control={control}
-				defaultValue={defaultValue}
 				render={({ field: { onChange, onBlur, value } }) => (
 					<DatePicker
 						selected={value}

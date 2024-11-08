@@ -3,8 +3,8 @@ import { devtools, persist } from 'zustand/middleware';
 import { authWithSocialMedia, login, registration } from '../../../services/endpoints/auth';
 import { AuthSchemaType } from '../../../services/endpoints/auth/response';
 import { EmailSchemaType, RegisterSchemaType } from '../../../services/endpoints/auth/schema';
-import { createBand, getBand } from '../../../services/endpoints/group';
-import { GroupSchemaType } from '../../../services/endpoints/group/response';
+import { changeMainData, createBand, getBand } from '../../../services/endpoints/group';
+import { ChangeMainDataDtoType } from '../../../services/endpoints/group/schema';
 import {
 	getSettings,
 	getUser,
@@ -24,10 +24,11 @@ import {
 	GetSettingsSchemaType,
 } from '../../../services/endpoints/user/schema';
 import { Statuses } from '../../../shared/constants';
+import { PageDataSchemaType } from '../../../shared/models';
 
 interface UserStore {
 	profile: UserSchemaType | null;
-	pageData: UserSchemaType | GroupSchemaType | null;
+	pageData: PageDataSchemaType | null;
 	setPageData: (data: UserSchemaType) => void;
 	registrationUser: (form: RegisterSchemaType) => void;
 	login: (form: EmailSchemaType) => Promise<void>;
@@ -48,6 +49,7 @@ interface UserStore {
 	changeInSearch: (data: ChangeInSearchSchemaType) => Promise<void>;
 	fetchCreateDataBand: (data: FormData) => Promise<void>;
 	getBandById: (groupId: number) => Promise<void>;
+	changeMainBandData: (data: ChangeMainDataDtoType) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -201,6 +203,14 @@ export const useUserStore = create<UserStore>()(
 			getBandById: async (groupId: number): Promise<void> => {
 				try {
 					const res = await getBand(groupId);
+					set({ pageData: res });
+				} catch (e) {
+					throw new Error(e as string);
+				}
+			},
+			changeMainBandData: async (data: ChangeMainDataDtoType): Promise<void> => {
+				try {
+					const res = await changeMainData(data);
 					set({ pageData: res });
 				} catch (e) {
 					throw new Error(e as string);

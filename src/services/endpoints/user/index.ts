@@ -1,4 +1,5 @@
 import axiosInstance from '../../axios';
+import { UserSchema, UserSchemaType } from './response';
 import {
 	ChangeDescriptionSchemaType,
 	ChangeInSearchSchemaType,
@@ -8,7 +9,6 @@ import {
 	GetSettingsSchemaType,
 	ToggleLikeSchemaType,
 } from './schema';
-import { UserSchema, UserSchemaType } from './response';
 
 // export const getMe = async () => {
 // 	const response = await axiosInstance.get('/profile/me');
@@ -20,7 +20,7 @@ export const getSettings = async (): Promise<GetSettingsSchemaType> => {
 };
 
 export const sendMainData = async (data: ChangeMainSettingsSchemaType): Promise<UserSchemaType> => {
-	const response = await axiosInstance.post('/user/changeMainData', data);
+	const response = await axiosInstance.put('/user/changeMainData', data);
 	return UserSchema.parse(response.data.decompressedData);
 };
 

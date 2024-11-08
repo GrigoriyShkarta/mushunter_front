@@ -11,4 +11,14 @@ export const CreateGroupDto = z.object({
 	[Field.LINKS]: z.array(z.string().optional()),
 });
 
+export const ChangeMainDataDto = z.object({
+	id: z.number(),
+	[Field.NAME]: z.string(),
+	[Field.CITY]: z.number().optional(),
+	[Field.STYLES]: z.array(z.number()).optional(),
+	[Field.BIRTHDAY]: z.date().optional(),
+	[Field.LINKS]: z.array(z.string().optional()),
+});
+
 export type CreateGroupDtoType = z.infer<typeof CreateGroupDto>;
+export type ChangeMainDataDtoType = z.infer<typeof ChangeMainDataDto>;

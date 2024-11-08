@@ -1,25 +1,26 @@
-import { FC } from 'react';
-import s from './style.module.scss';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import TextInput from '../../inputs/TextInput.tsx';
-import { Field } from '../../../shared/constants';
-import { useUserStore } from '../../../pages/profile/store';
-import SelectInput from '../../inputs/Select.tsx';
+import { FC } from 'react';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import DatePickerInput from '../../inputs/DatePickerInput.tsx';
-import Button from '../../buttons/Button.tsx';
-import { ChangeMainSettingsValidationSchema } from '../../../shared/validation';
-import { formatToOption } from '../../../shared/helpers/formatToOption.ts';
 import { IoIosCloseCircle } from 'react-icons/io';
+import { useUserStore } from '../../../pages/profile/store';
+import { Field } from '../../../shared/constants';
+import { formatToOption } from '../../../shared/helpers/formatToOption.ts';
+import { ChangeMainSettingsBandValidationSchema, ChangeMainSettingsValidationSchema } from '../../../shared/validation';
+import Button from '../../buttons/Button.tsx';
+import DatePickerInput from '../../inputs/DatePickerInput.tsx';
+import SelectInput from '../../inputs/Select.tsx';
+import TextInput from '../../inputs/TextInput.tsx';
 import { useModalStore } from '../store.ts';
+import s from './style.module.scss';
 
 const MainSettingsModal: FC = () => {
 	const settings = useUserStore((state) => state.settings);
-	const profile = useUserStore((state) => state.profile);
+	const pageData = useUserStore((state) => state.pageData);
 	const sendForm = useUserStore((state) => state.sendForm);
-	const { changeMainData } = useUserStore((state) => state);
+	const { changeMainData, changeMainBandData } = useUserStore((state) => state);
 	const { setIsOpen } = useModalStore();
+	const isUser = pageData ? Field.FIRST_NAME in pageData : false;
 
 	const { t } = useTranslation();
 	const {
@@ -31,16 +32,17 @@ const MainSettingsModal: FC = () => {
 		control,
 		watch,
 	} = useForm({
-		resolver: zodResolver(ChangeMainSettingsValidationSchema),
+		resolver: zodResolver(isUser ? ChangeMainSettingsValidationSchema : ChangeMainSettingsBandValidationSchema),
 		defaultValues: {
-			[Field.BIRTHDAY]: profile?.birthday,
-			[Field.EDUCATION]: profile?.education,
-			[Field.FIRST_NAME]: profile!.firstname,
-			[Field.LAST_NAME]: profile!.lastname,
-			[Field.PHONE]: profile?.phone,
-			[Field.LINKS]: profile?.links,
-			[Field.STYLES]: formatToOption(profile?.styles),
-			[Field.CITY]: formatToOption(profile?.city ? [profile.city] : []),
+			[Field.BIRTHDAY]: pageData?.birthday,
+			[Field.EDUCATION]: pageData?.education,
+			[Field.FIRST_NAME]: pageData?.firstname,
+			[Field.LAST_NAME]: pageData?.lastname,
+			[Field.NAME]: pageData?.name,
+			[Field.PHONE]: pageData?.phone,
+			[Field.LINKS]: pageData?.links,
+			[Field.STYLES]: formatToOption(pageData?.styles),
+			[Field.CITY]: formatToOption(pageData?.city ? [pageData.city] : []),
 		},
 	});
 
@@ -49,8 +51,17 @@ const MainSettingsModal: FC = () => {
 	const linksArray = watch(Field.LINKS) ?? [];
 
 	const onSubmit = async (data: any): Promise<void> => {
+		console.log('data', data);
 		try {
-			await changeMainData(data);
+			if (isUser) {
+				await changeMainData(data);
+			} else {
+				const dataToSend = {
+					...data,
+					id: pageData?.id,
+				};
+				await changeMainBandData(dataToSend);
+			}
 		} catch (e) {
 			console.error('responseError', e);
 		} finally {
@@ -74,25 +85,40 @@ const MainSettingsModal: FC = () => {
 	return (
 		<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 			<div className={s.inputs}>
-				<div className={s.nameWrapper}>
+				{isUser ? (
+					<div className={s.nameWrapper}>
+						<TextInput
+							register={register(Field.FIRST_NAME)}
+							name={Field.FIRST_NAME}
+							error={errors.firstname?.message}
+							className={s.input}
+						/>
+						<TextInput
+							register={register(Field.LAST_NAME)}
+							name={Field.LAST_NAME}
+							error={errors?.name?.message}
+							className={s.input}
+						/>
+					</div>
+				) : (
 					<TextInput
-						register={register(Field.FIRST_NAME)}
-						name={Field.FIRST_NAME}
-						error={errors.firstname?.message}
+						register={register(Field.NAME)}
+						name={Field.NAME}
+						error={errors.name?.message}
 						className={s.input}
 					/>
-					<TextInput
-						register={register(Field.LAST_NAME)}
-						name={Field.LAST_NAME}
-						error={errors.lastname?.message}
-						className={s.input}
-					/>
-				</div>
+				)}
+
 				<SelectInput options={formatedStyles} isMulti name={Field.STYLES} control={control} />
 				<SelectInput options={formatedCities} control={control} name={Field.CITY} />
-				<DatePickerInput name={Field.BIRTHDAY} defaultValue={profile?.birthday} control={control} />
-				<TextInput register={register(Field.PHONE)} name={Field.PHONE} error={errors.phone?.message} />
-				<TextInput register={register(Field.EDUCATION)} name={Field.EDUCATION} error={errors.education?.message} />
+				<DatePickerInput name={Field.BIRTHDAY} control={control} label={!isUser ? t('user.foundingData') : ''} />
+				{isUser && (
+					<>
+						<TextInput register={register(Field.PHONE)} name={Field.PHONE} error={errors.phone?.message} />
+						<TextInput register={register(Field.EDUCATION)} name={Field.EDUCATION} error={errors.education?.message} />
+					</>
+				)}
+
 				<div className={s.linksWrapper}>
 					{linksArray.map((_, idx) => (
 						<div className={s.link} key={idx}>

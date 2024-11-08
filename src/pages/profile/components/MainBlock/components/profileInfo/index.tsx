@@ -1,21 +1,17 @@
 import { FC, Fragment } from 'react';
-import s from './style.module.scss';
-import { capitalizeFirstLetter } from '../../../../../../shared/helpers/capitalizeFirstLetter.ts';
 import { useTranslation } from 'react-i18next';
 import { IoIosMusicalNote } from 'react-icons/io';
-import { Languages } from '../../../../../../shared/constants';
+import s from './style.module.scss';
 
 interface Props {
 	firstName?: string;
 	lastName?: string;
 	groupName?: string;
 	skills?: string[];
-	isLookingForBand: boolean;
-	lookingForSkills?: string[];
 	styles?: string[];
 }
 
-const Index: FC<Props> = ({ firstName, groupName, isLookingForBand, lastName, lookingForSkills, skills, styles }) => {
+const Index: FC<Props> = ({ firstName, groupName, lastName, skills, styles }) => {
 	const { t, i18n } = useTranslation();
 
 	return (
